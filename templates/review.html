@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Ownership review{% if sel %} — {{ sel.location.name if sel.location else sel.account.name }}{% endif %}{% endblock %}
+{% block title %}Ownership review{% if sel %} — {{ sel.title }}{% endif %}{% endblock %}
 {% block head %}
 <style>
   .status { padding-bottom: 12px; }
@@ -76,6 +76,13 @@
   }
 </style>
 {% endblock %}
+{% macro evidence_table(rows) %}
+<table class="ev">
+  {% for e in rows %}
+  <tr><td class="w {{ 'pos' if e.weight > 0 else ('neg' if e.weight < 0 else 'zero') }}">{{ '%+.2f'|format(e.weight) }}</td><td class="sig">{{ e.signal }}</td><td>{{ e.detail }}</td></tr>
+  {% endfor %}
+</table>
+{% endmacro %}
 {% block body %}
 <p class="status">
   <b>{{ total }}</b> to review.
@@ -89,14 +96,10 @@
       <div class="group">
         <h2>{{ g.label }}<span>{{ g.entries|length }}</span></h2>
         {% for it in g.entries %}
-          {% if g.type == 'CONFIRM' %}
-            <a class="row {{ 'on' if sel and sel.id == it.id }}" href="{{ url_for('show', pid=it.id) }}"><span class="t">{{ it.title }}</span><span class="s">{{ it.sub }}</span></a>
-          {% else %}
             <a class="row {{ 'on' if sel and sel.id == it.id }}" href="{{ url_for('show', pid=it.id) }}">
-              <span class="t">{{ it.location.name if it.location else it.account.name }}</span>
-              <span class="s">{% if it.confidence_band == 'low' %}<span class="low">Low confidence.</span> {% endif %}{% if it.account and it.location and it.account.name != it.location.name %}CRM: {{ it.account.name }}{% elif not it.account %}no CRM account{% elif not it.location %}{{ it.account.billing_city }}, {{ it.account.billing_state }}{% else %}{{ (it.account.parent_name or 'no parent')|display }}{% endif %}</span>
+              <span class="t">{{ it.title }}</span>
+              <span class="s">{% if it.confidence_band == 'low' and it.actions %}<span class="low">Low confidence.</span> {% endif %}{% if it.account and it.location and it.account.name != it.location.name %}CRM: {{ it.account.name }}{% elif not it.account %}no CRM account{% elif not it.location %}{{ it.account.billing_city }}, {{ it.account.billing_state }}{% else %}{{ it.account.parent_name|parent }}{% endif %}</span>
             </a>
-          {% endif %}
         {% endfor %}
       </div>
     {% else %}
@@ -109,7 +112,7 @@
     <p class="empty">{% if total %}Pick an item from the queue.{% else %}Nothing to review. Every proposal has been decided, or the pipeline has not run yet.{% endif %}</p>
   {% else %}
     <p class="kind">{{ label[sel.type] }}<code>{{ sel.type }}</code></p>
-    <h2>{{ sel.location.name if sel.location else sel.account.name }}</h2>
+    <h2>{{ sel.title }}</h2>
     <div class="conf" aria-label="Match confidence">
       <span>Match confidence</span>
       <span class="track"><span class="fill {{ sel.confidence_band }}" style="width: {{ (sel.confidence * 100)|round|int }}%"></span></span>
@@ -120,16 +123,16 @@
     <p class="explain">{{ explain[sel.type] }}</p>
     {% if sel.attention %}<p class="attention">{{ sel.attention }}</p>{% endif %}
 
-    {% if kind == 'proposal' %}
+    {% if sel.actions %}
     <table class="recon">
       <thead><tr><th></th><th>Website</th><th>CRM now</th><th>After approval</th></tr></thead>
       <tbody>
       {% for r in rows %}
         <tr>
           <td>{{ r.field }}</td>
-          <td class="{{ 'dim' if r.web == '—' }}">{{ r.web }}</td>
-          <td class="{{ 'dim' if r.crm == '—' }}">{{ r.crm }}</td>
-          <td class="after {{ 'changed' if r.changed }} {{ 'dim' if r.after == '—' and not r.changed }}">{{ r.after }}{% if r.note %}<span class="note">{{ r.note }}</span>{% endif %}</td>
+          <td class="{{ 'dim' if not r.web }}">{{ r.web|default('—', true) }}</td>
+          <td class="{{ 'dim' if not r.crm }}">{{ r.crm|default('—', true) }}</td>
+          <td class="after {{ 'changed' if r.changed }} {{ 'dim' if not r.after and not r.changed }}">{{ r.after|default('—', true) }}{% if r.note %}<span class="note">{{ r.note }}</span>{% endif %}</td>
         </tr>
       {% endfor %}
       </tbody>
@@ -139,7 +142,7 @@
         <h3>Successor account to be created</h3>
         <dl>
           <dt>Name</dt><dd>{{ successor.name }}</dd>
-          <dt>Parent</dt><dd>{{ parent.name|display }}</dd>
+          <dt>Parent</dt><dd>{{ parent.name|parent }}</dd>
           <dt>Address</dt><dd>{{ successor.billing_street }}, {{ successor.billing_city }}, {{ successor.billing_state }} {{ successor.billing_zip }}</dd>
           <dt>Care type</dt><dd>{{ successor.care_type }}</dd>
           <dt>Phone</dt><dd>{{ successor.phone }}</dd>
@@ -149,19 +152,12 @@
     {% endif %}
     {% endif %}
 
-    {% if kind == 'proposal' %}
     <h3 class="sec">Why</h3>
-    <p class="why">{{ sel.rationale|display }}</p>
-    {% endif %}
+    <p class="why">{{ sel.rationale }}</p>
 
-    {% set signals = sel.evidence|rejectattr('signal', 'equalto', 'near_misses')|list %}
-    {% if signals %}
+    {% if sel.evidence %}
     <h3 class="sec">How it matched</h3>
-    <table class="ev">
-      {% for e in signals %}
-        <tr><td class="w {{ 'pos' if e.weight > 0 else ('neg' if e.weight < 0 else 'zero') }}">{{ '%+.2f'|format(e.weight) }}</td><td class="sig">{{ e.signal }}</td><td>{{ e.detail }}</td></tr>
-      {% endfor %}
-    </table>
+    {{ evidence_table(sel.evidence) }}
     {% endif %}
 
     {% if sel.near_misses %}
@@ -169,14 +165,14 @@
       <summary>Considered and rejected ({{ sel.near_misses|length }})</summary>
       {% for n in sel.near_misses %}
         <div class="near">
-          <b>{{ n.name }}</b> <span class="meta">{{ n.account_id }}, {{ n.street }}, {{ n.city }}, {{ n.phone }}, under {{ n.parent or 'no parent' }}. Net score {{ '%.2f'|format(n.score) }}.</span>
-          <table class="ev">{% for e in n.evidence %}<tr><td class="w {{ 'pos' if e.weight > 0 else ('neg' if e.weight < 0 else 'zero') }}">{{ '%+.2f'|format(e.weight) }}</td><td class="sig">{{ e.signal }}</td><td>{{ e.detail }}</td></tr>{% endfor %}</table>
+          <b>{{ n.name }}</b> <span class="meta">{{ n.account_id }}, {{ n.street }}, {{ n.city }}, {{ n.phone }}, under {{ n.parent|parent }}. Net score {{ '%.2f'|format(n.score) }}.</span>
+          {{ evidence_table(n.evidence) }}
         </div>
       {% endfor %}
     </details>
     {% endif %}
 
-    {% if kind == 'proposal' %}
+    {% if sel.actions %}
     <details>
       <summary>API calls made on approval ({{ sel.actions|length }})</summary>
       <pre>{{ sel.actions|tojson(indent=1) }}</pre>

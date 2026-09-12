@@ -26,7 +26,7 @@
         <td class="res {{ d.result.status or d.decision }}">{{ d.result.status or d.decision }}</td>
         <td>{{ label.get(d.type, d.type) }}</td>
         <td>{{ d.location or '' }}{% if d.account %}<br><span class="m">{{ d.account }} {{ d.account_id }}</span>{% endif %}</td>
-        <td>{% for c in d.changes %}{{ c.field }}: {{ c['from'] or '—' }} to {{ c.to }}<br>{% endfor %}</td>
+        <td>{% for c in d.changes %}{{ c.field }}: {{ c['from']|default('—', true) }} to {{ c.to }}<br>{% endfor %}</td>
         <td>{{ d.result.detail or '' }}{% if d.result.created_account_id %}<br>Created {{ d.result.created_account_id }}{% endif %}{% if d.result.log %}<br><span class="m">{{ d.result.log|join('; ') }}</span>{% endif %}</td>
       </tr>
     {% endfor %}

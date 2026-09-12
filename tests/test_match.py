@@ -67,11 +67,13 @@ def test_duplicates_keep_billing_history_copy():
 
 
 def test_duplicate_tie_breaks_on_website_agreement():
-    a = acct(account_id="A", name="Bellhaven of X", billing_street="1 Main St", billing_city="Xtown", billing_state="OH", billing_zip="44000", phone="555-000-0000")
-    b = acct(account_id="B", name="Bellhaven of X", billing_street="1 Main Street", billing_city="Xtown", billing_state="OH", billing_zip="44000", phone="555-999-9999")
+    # The copy whose phone matches the website gets the HIGHER id, so the id
+    # tie-break alone would pick the wrong survivor; only the score term saves it.
+    a = acct(account_id="A", name="Bellhaven of X", billing_street="1 Main Street", billing_city="Xtown", billing_state="OH", billing_zip="44000", phone="555-999-9999")
+    b = acct(account_id="B", name="Bellhaven of X", billing_street="1 Main St", billing_city="Xtown", billing_state="OH", billing_zip="44000", phone="555-000-0000")
     out = build_proposals([loc()], [PARENT, a, b])
     dups = [p for p in out["proposals"] if p["type"] == "DUPLICATE"]
-    assert dups[0]["account"]["account_id"] == "B"
+    assert dups[0]["account"]["account_id"] == "A" and dups[0]["survivor"]["account_id"] == "B"
 
 
 def test_false_friend_same_town_different_street_and_phone_is_create():

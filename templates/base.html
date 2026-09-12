@@ -73,7 +73,7 @@
 <body>
 <header class="bar">
   <h1>Ownership review</h1>
-  <span class="operator">{{ (q.parent.name|display) if q.parent else 'no run yet' }}</span>
+  <span class="operator">{{ (q.parent.name|parent) if q.parent else 'no run yet' }}</span>
   <span class="spacer"></span>
   <a href="{{ url_for('history') }}">Decisions{% if history_count is defined %} ({{ history_count }}){% endif %}</a>
   <form method="post" action="{{ url_for('run') }}">

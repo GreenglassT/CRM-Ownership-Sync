@@ -18,7 +18,6 @@ from . import config
 _UA = "ltc-ownership-pipeline/1.0 (+reconciliation bot)"
 _CARD = re.compile(r'<h3><a href="(/communities/[^"]+)">(.*?)</a></h3>', re.S)
 _LINK = re.compile(r'href="(/communities/[a-z0-9\-]+)"')
-_DT = re.compile(r"<dt>\s*{}\s*</dt>\s*<dd>(.*?)</dd>", re.S)
 _BADGE = re.compile(r'<span class="badge">(.*?)</span>', re.S)
 _CITY_LINE = re.compile(r"^(.*?),\s*([A-Z]{2})\s+(\d{5})(?:-\d{4})?\s*$")
 

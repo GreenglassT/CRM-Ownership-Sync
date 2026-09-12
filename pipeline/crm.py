@@ -37,17 +37,13 @@ class CRM:
             try:
                 with urllib.request.urlopen(req, timeout=30) as r:
                     return json.loads(r.read().decode())
-            except urllib.error.HTTPError as e:
-                detail = e.read().decode(errors="replace")
-                if e.code >= 500 and attempt < 2:
+            except urllib.error.URLError as e:          # HTTPError is a subclass
+                is_http = isinstance(e, urllib.error.HTTPError)
+                detail = f"{e.code}: {e.read().decode(errors='replace')}" if is_http else str(e)
+                if (not is_http or e.code >= 500) and attempt < 2:
                     time.sleep(1.5 * (attempt + 1))
                     continue
-                raise CRMError(f"{method} {path} -> {e.code}: {detail}") from None
-            except urllib.error.URLError as e:
-                if attempt < 2:
-                    time.sleep(1.5 * (attempt + 1))
-                    continue
-                raise CRMError(f"{method} {path} -> {e}") from None
+                raise CRMError(f"{method} {path} -> {detail}") from None
 
     # -- reads ---------------------------------------------------------------
     def me(self):

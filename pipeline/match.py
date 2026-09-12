@@ -27,6 +27,38 @@ from .normalize import (is_po_box, jaccard, map_care, name_tokens, norm_city, no
 
 NOTE_TAG = "[ownership-sync]"
 
+# (type, reviewer label, what the type means) in the order a reviewer should work
+# the queue: CHOW before DUPLICATE because a duplicate of a CHOW'd account points
+# at the *new* account id. The review app derives its labels from this list.
+TYPES = [
+    ("CHOW", "Change of ownership",
+     "The account belongs under a different parent, but it has revenue and open AR. Billing needs the old account preserved, "
+     "so a successor account is created under the correct parent and the old one is linked to it. Nothing else on the old account changes."),
+    ("REPARENT", "Move under parent",
+     "The account belongs under a different parent and has no billing exposure (no revenue, or no open AR), so it moves directly."),
+    ("DUPLICATE", "Duplicate account",
+     "More than one CRM account describes this building. The losing copy is marked Inactive and linked to the survivor; the API has no merge."),
+    ("CREATE", "New account", "The website lists this community and no CRM account resolves to its address or phone."),
+    ("UPDATE_NAME", "Rename", "Same building, different name in the CRM. Address or phone agree, so this is a rename, not a different facility."),
+    ("UPDATE_ADDRESS", "Fix address", "Same building, stale address in the CRM (PO box, typo, old formatting)."),
+    ("UPDATE_CARE_TYPE", "Fix care type", "The CRM care type is empty or not among the website's offerings."),
+    ("UPDATE_PHONE", "Fix phone", "The CRM phone is empty or differs from the website listing."),
+    ("REACTIVATE", "Reactivate", "The account is Inactive but the community is live on the website."),
+    ("NOT_ON_SITE", "Not on website",
+     "The account is under the parent but the website no longer lists it. Absence alone is weak evidence of a sale or closure, "
+     "so it is flagged Needs Review for a person rather than deactivated."),
+    ("CONFIRM", "Already matches", "Website and CRM agree on every field the pipeline checks. No change is proposed."),
+]
+ORDER = [t for t, _, _ in TYPES]
+LABEL = {t: label for t, label, _ in TYPES}
+EXPLAIN = {t: explain for t, _, explain in TYPES}
+
+
+def parent_label(name: str | None) -> str:
+    """Parent accounts are named '... (Parent Account)' in the CRM; strip that for reading."""
+    return (name or "").replace(" (Parent Account)", "") or "no parent"
+
+
 
 # --------------------------------------------------------------------------- #
 # Scoring
@@ -147,6 +179,10 @@ def note_line(text: str) -> str:
     return f"{NOTE_TAG} {today()}: {text}"
 
 
+def money(v) -> str:
+    return f"${v or 0:,}"
+
+
 def account_payload_from_location(loc: dict, parent_id: str, note: str) -> dict:
     return {
         "name": loc["name"],
@@ -162,12 +198,13 @@ def account_payload_from_location(loc: dict, parent_id: str, note: str) -> dict:
     }
 
 
-def _proposal(kind, subject_key, loc, acct, changes, actions, evidence, rationale, confidence, attention=""):
+def _proposal(kind, subject_key, loc, acct, changes, actions, evidence, rationale, confidence, attention="", near_misses=None):
     return {
         "id": fingerprint(kind, subject_key, changes),
         "type": kind,
+        "title": (loc or acct)["name"],
         "confidence": confidence,
-        "confidence_band": "high" if confidence >= config.CONFIDENT else ("low" if confidence > 0 else "n/a"),
+        "confidence_band": "high" if confidence >= config.CONFIDENT else "low",
         "subject_key": subject_key,
         "location": loc,
         "account": acct,
@@ -176,6 +213,7 @@ def _proposal(kind, subject_key, loc, acct, changes, actions, evidence, rational
         "evidence": evidence,
         "rationale": rationale,
         "attention": attention,
+        "near_misses": near_misses or [],
     }
 
 
@@ -186,16 +224,26 @@ def _patch(account_id, payload, note=None):
     return a
 
 
+def _patch_proposal(kind, acct, loc, new, note, why, evidence, confidence, attention="", changes=None, near_misses=None):
+    """A proposal that PATCHes `new` onto one account. `changes` defaults to one
+    row per payload field; pass it explicitly when the display diff should be
+    narrower than the payload."""
+    if changes is None:
+        changes = [{"field": k, "from": acct[k], "to": v} for k, v in new.items()]
+    return _proposal(kind, acct["account_id"], loc, acct, changes, [_patch(acct["account_id"], new, note)],
+                     evidence, why, confidence, attention, near_misses)
+
+
 # --------------------------------------------------------------------------- #
 # Main classification
 # --------------------------------------------------------------------------- #
 def build_proposals(site: list[dict], crm: list[dict]) -> dict:
     parent = find_parent(crm)
     pid = parent["account_id"]
+    pname = parent_label(parent["name"])
     # Facility accounts = everything that is not a parent/corporate account.
     facilities = [a for a in crm if a["account_id"] != pid and not a["name"].endswith("(Parent Account)")]
     candidates = [a for a in facilities if not is_superseded(a)]
-    by_id = {a["account_id"]: a for a in crm}
 
     # 1) score every (location, account) pair
     scored = {}
@@ -212,13 +260,14 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
     claimed: set[str] = set()
     proposals, confirms = [], []
 
+    def positive(ev):
+        return sum(e["weight"] for e in ev if e["weight"] > 0)
+
     for loc in order:
         rows = [(sc, a, ev) for sc, a, ev in scored[loc["slug"]] if a["account_id"] not in claimed]
         # "Considered and rejected": rank by *positive* agreement so a candidate that
         # agreed on zip/city/name but was sunk by street+phone conflicts still shows
         # up with the reasons it lost. Net score alone would hide exactly those.
-        def positive(ev):
-            return sum(e["weight"] for e in ev if e["weight"] > 0)
         near = [dict(account_id=a["account_id"], name=a["name"], parent=a["parent_name"], score=sc,
                      street=a["billing_street"], city=a["billing_city"], phone=a["phone"], evidence=ev)
                 for sc, a, ev in sorted(rows, key=lambda r: -positive(r[2]))[:3] if positive(ev) >= 0.35]
@@ -233,13 +282,9 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
                 rationale += f" Closest candidate {near[0]['name']!r} ({near[0]['score']:.2f}) was rejected: " + \
                              "; ".join(e["detail"] for e in near[0]["evidence"] if e["weight"] < 0)
             payload = account_payload_from_location(loc, pid, f"Created from website listing {loc['url']}. Offerings: {', '.join(loc['care_offerings'])}. Administrator: {loc['administrator']}")
-            p = _proposal("CREATE", loc["slug"], loc, None,
-                          [{"field": "(new account)", "from": None, "to": loc["name"]}],
-                          [{"op": "create", "payload": payload}],
-                          [{"signal": "near_misses", "weight": 0, "detail": json.dumps(near)}] if near else [],
-                          rationale, 1.0)
-            p["near_misses"] = near
-            proposals.append(p)
+            proposals.append(_proposal("CREATE", loc["slug"], loc, None,
+                                       [{"field": "(new account)", "from": None, "to": loc["name"]}],
+                                       [{"op": "create", "payload": payload}], [], rationale, 1.0, near_misses=near))
             continue
 
         # Duplicate group: every confident candidate, plus weaker candidates that sit
@@ -250,7 +295,6 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
             group = confident + [r for r in possible if r not in confident and norm_street(r[1]["billing_street"]) == anchor]
         else:
             group = [possible[0]]
-        conf = min(sc for sc, _, _ in group)
         others = [n for n in near if n["account_id"] not in {a["account_id"] for _, a, _ in group}]
 
         # ---- pick survivor, mark the rest DUPLICATE -----------------------------
@@ -260,90 +304,78 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
         attention = ""
         if sum(1 for _, a, _ in group if has_billing_history(a) or has_open_ar(a)) > 1:
             attention = "More than one duplicate carries billing history; confirm survivor with billing before approving."
-
         surv_needs_chow = surv["parent_id"] != pid and has_billing_history(surv) and has_open_ar(surv)
         dup_target = {"$chow_new_of": surv["account_id"]} if surv_needs_chow else surv["account_id"]
+        surv_parent = parent_label(surv["parent_name"])
 
         for sc, a, ev in group[1:]:
-            changes = [{"field": "duplicate_of_account", "from": a["duplicate_of_account"], "to": dup_target},
-                       {"field": "status", "from": a["status"], "to": "Inactive"}]
-            note = f"Duplicate of {surv['account_id']} ({surv['name']}) — same facility at {loc['street']}, {loc['city']}. Survivor chosen by: billing history > correct parent > Active > completeness."
-            proposals.append(_proposal("DUPLICATE", a["account_id"], loc, a, changes,
-                                       [_patch(a["account_id"], {"duplicate_of_account": dup_target, "status": "Inactive"}, note)],
-                                       ev, f"{a['name']!r} and {surv['name']!r} both resolve to {loc['name']} ({loc['street']}, {loc['city']}). "
-                                           f"Keeping {surv['account_id']} (rank: AR={has_open_ar(surv)}, revenue={has_billing_history(surv)}, "
-                                           f"under parent={surv['parent_id']==pid}, {surv['status']}).", sc, attention))
+            p = _patch_proposal(
+                "DUPLICATE", a, loc, {"duplicate_of_account": dup_target, "status": "Inactive"},
+                f"Duplicate of {surv['account_id']} ({surv['name']}) — same facility at {loc['street']}, {loc['city']}. "
+                f"Survivor chosen by: billing history > correct parent > Active > completeness.",
+                f"{a['name']!r} and {surv['name']!r} both resolve to {loc['name']} ({loc['street']}, {loc['city']}). "
+                f"Keeping {surv['account_id']} (rank: AR={has_open_ar(surv)}, revenue={has_billing_history(surv)}, "
+                f"under parent={surv['parent_id'] == pid}, {surv['status']}).",
+                ev, sc, attention, near_misses=others)
+            p["survivor"] = {"account_id": surv["account_id"], "name": surv["name"]}
+            proposals.append(p)
 
-        # ---- survivor: parent -------------------------------------------------
-        if surv["parent_id"] != pid:
-            if surv_needs_chow:
-                payload = account_payload_from_location(
-                    loc, pid,
-                    f"CHOW from {surv['account_id']} ({surv['name']}, was under {surv['parent_name'] or 'no parent'}). "
-                    f"Old account preserved for billing: lifetime_revenue={surv['lifetime_revenue']}, outstanding_ar={surv['outstanding_ar']}. "
-                    f"Offerings: {', '.join(loc['care_offerings'])}.")
-                changes = [{"field": "chow_current_account", "from": surv["chow_current_account"], "to": "(new account)"}]
-                proposals.append(_proposal(
-                    "CHOW", surv["account_id"], loc, surv, changes,
-                    [{"op": "create", "payload": payload, "bind": "new_id"},
-                     {"op": "patch", "account_id": surv["account_id"], "payload": {"chow_current_account": {"$bind": "new_id"}}}],
-                    surv_ev,
-                    f"Account is under {surv['parent_name'] or 'no parent'} but the website lists it as a {config.OPERATOR_NAME} community. "
-                    f"SOP: lifetime_revenue={surv['lifetime_revenue']:,} AND outstanding_ar={surv['outstanding_ar']:,} > 0, so the old account "
-                    f"must be left untouched. Create a new account under {config.OPERATOR_NAME} and link old.chow_current_account to it.",
-                    surv_sc, attention))
-            else:
+        # ---- survivor: parent, then field-level fixes -----------------------------
+        fixes = []   # proposals on the survivor; empty means the match is confirmed as-is
+        if surv_needs_chow:
+            payload = account_payload_from_location(
+                loc, pid,
+                f"CHOW from {surv['account_id']} ({surv['name']}, was under {surv_parent}). "
+                f"Old account preserved for billing: lifetime_revenue={surv['lifetime_revenue']}, outstanding_ar={surv['outstanding_ar']}. "
+                f"Offerings: {', '.join(loc['care_offerings'])}.")
+            fixes.append(_proposal(
+                "CHOW", surv["account_id"], loc, surv,
+                [{"field": "chow_current_account", "from": surv["chow_current_account"], "to": "(new account)"}],
+                [{"op": "create", "payload": payload, "bind": "new_id"},
+                 {"op": "patch", "account_id": surv["account_id"], "payload": {"chow_current_account": {"$bind": "new_id"}}}],
+                surv_ev,
+                f"Account is under {surv_parent} but the website lists it as a {config.OPERATOR_NAME} community. "
+                f"SOP: lifetime_revenue={money(surv['lifetime_revenue'])} AND outstanding_ar={money(surv['outstanding_ar'])} > 0, so the old account "
+                f"must be left untouched. Create a new account under {config.OPERATOR_NAME} and link old.chow_current_account to it.",
+                surv_sc, attention, near_misses=others))
+        else:
+            def fix(kind, new, note, why, changes=None):
+                fixes.append(_patch_proposal(kind, surv, loc, new, note, why, surv_ev, surv_sc, attention, changes, others))
+
+            if surv["parent_id"] != pid:
                 why = "no revenue history" if not has_billing_history(surv) else "no outstanding AR"
-                changes = [{"field": "parent_id", "from": surv["parent_id"], "to": pid}]
-                proposals.append(_proposal(
-                    "REPARENT", surv["account_id"], loc, surv, changes,
-                    [_patch(surv["account_id"], {"parent_id": pid},
-                            f"Re-parented from {surv['parent_name'] or 'no parent'} to {parent['name']}; listed at {loc['url']}. SOP: {why}, so direct re-parent is allowed.")],
-                    surv_ev,
-                    f"Account is under {surv['parent_name'] or 'no parent'} but the website lists it as a {config.OPERATOR_NAME} community. "
-                    f"SOP: {why} (revenue={surv['lifetime_revenue']:,}, AR={surv['outstanding_ar']:,}), so re-parent directly.",
-                    surv_sc, attention))
-
-        # ---- survivor: field-level fixes (skipped when CHOW'd: old acct is frozen) ---
-        if not surv_needs_chow:
-            fixes = 0
+                fix("REPARENT", {"parent_id": pid},
+                    f"Re-parented from {surv_parent} to {pname}; listed at {loc['url']}. SOP: {why}, so direct re-parent is allowed.",
+                    f"Account is under {surv_parent} but the website lists it as a {config.OPERATOR_NAME} community. "
+                    f"SOP: {why} (revenue={money(surv['lifetime_revenue'])}, AR={money(surv['outstanding_ar'])}), so re-parent directly.")
             if surv["name"].strip().lower() != loc["name"].strip().lower():
-                proposals.append(_proposal("UPDATE_NAME", surv["account_id"], loc, surv,
-                                           [{"field": "name", "from": surv["name"], "to": loc["name"]}],
-                                           [_patch(surv["account_id"], {"name": loc["name"]}, f"Renamed from {surv['name']!r} to match website listing.")],
-                                           surv_ev, f"Website name {loc['name']!r} differs from CRM {surv['name']!r}; same address/phone so this is a rename, not a different facility.",
-                                           surv_sc, attention)); fixes += 1
+                fix("UPDATE_NAME", {"name": loc["name"]}, f"Renamed from {surv['name']!r} to match website listing.",
+                    f"Website name {loc['name']!r} differs from CRM {surv['name']!r}; same address/phone so this is a rename, not a different facility.")
             addr_stale = (is_po_box(surv["billing_street"]) or norm_street(surv["billing_street"]) != norm_street(loc["street"])
                           or norm_zip(surv["billing_zip"]) != norm_zip(loc["zip"]) or norm_city(surv["billing_city"]) != norm_city(loc["city"])
                           or (surv["billing_state"] or "").upper() != loc["state"].upper())
             if addr_stale:
                 new = {"billing_street": loc["street"], "billing_city": loc["city"], "billing_state": loc["state"], "billing_zip": loc["zip"]}
-                changes = [{"field": k, "from": surv[k], "to": v} for k, v in new.items() if (surv[k] or "") != v]
                 why = "CRM has a PO Box; website has the street address" if is_po_box(surv["billing_street"]) else "address differs from website"
-                proposals.append(_proposal("UPDATE_ADDRESS", surv["account_id"], loc, surv, changes,
-                                           [_patch(surv["account_id"], new, f"Address updated from website: {why}.")],
-                                           surv_ev, f"{why.capitalize()}. Matched on other signals, so this is a data-quality fix.", surv_sc, attention)); fixes += 1
+                fix("UPDATE_ADDRESS", new, f"Address updated from website: {why}.",
+                    f"{why.capitalize()}. Matched on other signals, so this is a data-quality fix.",
+                    changes=[{"field": k, "from": surv[k], "to": v} for k, v in new.items() if (surv[k] or "") != v])
             offered = map_care(loc["care_offerings"])
             if offered and surv["care_type"] not in offered:
-                proposals.append(_proposal("UPDATE_CARE_TYPE", surv["account_id"], loc, surv,
-                                           [{"field": "care_type", "from": surv["care_type"], "to": offered[0]}],
-                                           [_patch(surv["account_id"], {"care_type": offered[0]}, f"care_type set from website offerings: {', '.join(loc['care_offerings'])}.")],
-                                           surv_ev, f"CRM care_type {surv['care_type']!r} is not among website offerings {offered}; set primary to {offered[0]!r}.", surv_sc, attention)); fixes += 1
+                fix("UPDATE_CARE_TYPE", {"care_type": offered[0]}, f"care_type set from website offerings: {', '.join(loc['care_offerings'])}.",
+                    f"CRM care_type {surv['care_type']!r} is not among website offerings {offered}; set primary to {offered[0]!r}.")
             if config.PROPOSE_PHONE_UPDATES and loc["phone"] and norm_phone(surv["phone"]) != norm_phone(loc["phone"]):
-                proposals.append(_proposal("UPDATE_PHONE", surv["account_id"], loc, surv,
-                                           [{"field": "phone", "from": surv["phone"], "to": loc["phone"]}],
-                                           [_patch(surv["account_id"], {"phone": loc["phone"]}, "Phone updated from website.")],
-                                           surv_ev, "CRM phone is empty or differs from the website listing.", surv_sc, attention)); fixes += 1
+                fix("UPDATE_PHONE", {"phone": loc["phone"]}, "Phone updated from website.", "CRM phone is empty or differs from the website listing.")
             if surv["status"] != "Active":
-                proposals.append(_proposal("REACTIVATE", surv["account_id"], loc, surv,
-                                           [{"field": "status", "from": surv["status"], "to": "Active"}],
-                                           [_patch(surv["account_id"], {"status": "Active"}, "Reactivated: facility is listed on the website.")],
-                                           surv_ev, f"Account is {surv['status']} but the facility is live on the website.", surv_sc, attention)); fixes += 1
-            if fixes == 0 and surv["parent_id"] == pid:
-                confirms.append({"location": loc["name"], "account_id": surv["account_id"], "account": surv["name"], "confidence": surv_sc, "evidence": surv_ev})
-        for p in proposals:
-            if p["location"]["slug"] == loc["slug"] and "near_misses" not in p:
-                p["near_misses"] = others
+                fix("REACTIVATE", {"status": "Active"}, "Reactivated: facility is listed on the website.",
+                    f"Account is {surv['status']} but the facility is live on the website.")
+
+        if fixes:
+            proposals.extend(fixes)
+        else:
+            checked = "name, parent, address, care type, status" + (", phone" if config.PROPOSE_PHONE_UPDATES else "")
+            confirms.append(_proposal("CONFIRM", surv["account_id"], loc, surv, [], [], surv_ev,
+                                      f"Website and CRM agree on {checked}. Nothing to change.", surv_sc, near_misses=others))
 
     # ---- NOT_ON_SITE: under our parent, live, not linked to any website location ---
     for a in facilities:
@@ -351,16 +383,14 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
             continue
         caution = ""
         if has_billing_history(a) or has_open_ar(a):
-            caution = f" Billing history present (revenue={a['lifetime_revenue']:,}, AR={a['outstanding_ar']:,}) — do not deactivate without billing sign-off."
-        changes = [{"field": "status", "from": a["status"], "to": "Needs Review"}]
-        proposals.append(_proposal(
-            "NOT_ON_SITE", a["account_id"], None, a, changes,
-            [_patch(a["account_id"], {"status": "Needs Review"},
-                    f"Under {parent['name']} but not listed on {config.SITE_BASE}/communities as of {today()}. Possible divestiture or closure; confirm with rep.{caution}")],
-            [{"signal": "website", "weight": 0, "detail": f"No website location within {config.POSSIBLE:.2f} of this account (city {a['billing_city']}, {a['billing_state']})."}],
+            caution = f" Billing history present (revenue={money(a['lifetime_revenue'])}, AR={money(a['outstanding_ar'])}) — do not deactivate without billing sign-off."
+        proposals.append(_patch_proposal(
+            "NOT_ON_SITE", a, None, {"status": "Needs Review"},
+            f"Under {pname} but not listed on {config.SITE_BASE}/communities as of {today()}. Possible divestiture or closure; confirm with rep.{caution}",
             f"Account is parented to {config.OPERATOR_NAME} but no website community matches it. Absence from a website is weak evidence of "
-            f"divestiture, so flag Needs Review rather than Inactive.{caution}", 1.0,
-            "Has billing history." if caution else ""))
+            f"divestiture, so flag Needs Review rather than Inactive.{caution}",
+            [{"signal": "website", "weight": 0, "detail": f"No website location within {config.POSSIBLE:.2f} of this account (city {a['billing_city']}, {a['billing_state']})."}],
+            1.0, "Has billing history." if caution else ""))
 
     return {"parent": {"account_id": pid, "name": parent["name"]}, "proposals": proposals, "confirmed": confirms}
 

@@ -4,6 +4,7 @@ Everything here is deterministic and dependency-free so the matching can be
 explained field-by-field to a reviewer.
 """
 import re
+from functools import lru_cache
 
 # USPS-style suffix / directional abbreviations. Keys are lowercase full words.
 _STREET_WORDS = {
@@ -40,6 +41,7 @@ _NAME_GENERIC = {
 }
 
 
+@lru_cache(maxsize=None)
 def norm_street(s: str) -> str:
     """'4850 Northwest Sylvania Avenue' -> '4850 nw sylvania ave'. Drops unit numbers."""
     s = (s or "").lower().replace(".", " ").replace(",", " ")
@@ -56,38 +58,44 @@ def norm_street(s: str) -> str:
     return " ".join(out)
 
 
+@lru_cache(maxsize=None)
 def is_po_box(s: str) -> bool:
     return bool(re.match(r"^\s*p\.?\s*o\.?\s*box\b", (s or "").lower()))
 
 
+@lru_cache(maxsize=None)
 def street_number(s: str) -> str:
     m = re.match(r"^\s*(\d+)", s or "")
     return m.group(1) if m else ""
 
 
+@lru_cache(maxsize=None)
 def norm_phone(s: str) -> str:
     d = re.sub(r"\D", "", s or "")
     return d[-10:] if len(d) >= 10 else ""
 
 
+@lru_cache(maxsize=None)
 def norm_zip(s: str) -> str:
     return (s or "").strip()[:5]
 
 
+@lru_cache(maxsize=None)
 def norm_city(s: str) -> str:
     return re.sub(r"[^a-z ]", "", (s or "").lower()).strip()
 
 
-def name_tokens(s: str, drop_generic: bool = True) -> set[str]:
+@lru_cache(maxsize=None)
+def name_tokens(s: str, drop_generic: bool = True) -> frozenset[str]:
     s = (s or "").lower().replace("&", " and ")
     toks = set(re.findall(r"[a-z0-9]+", s))
     toks -= _NAME_STOP
     if drop_generic:
         toks -= _NAME_GENERIC
-    return toks
+    return frozenset(toks)
 
 
-def jaccard(a: set, b: set) -> float:
+def jaccard(a: frozenset, b: frozenset) -> float:
     if not a or not b:
         return 0.0
     return len(a & b) / len(a | b)
