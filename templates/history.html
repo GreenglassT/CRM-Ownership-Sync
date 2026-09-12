@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Decision history</title>
+<style>body{font:14px/1.45 -apple-system,Segoe UI,Inter,system-ui,sans-serif;margin:0;padding:20px 24px;color:#1c1f24}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid #e4e7ec;vertical-align:top;font-size:13px}th{color:#667085}.applied{color:#0f7b4f;font-weight:600}.rejected{color:#667085}.failed,.stale,.blocked{color:#b42318;font-weight:600}a{color:#2f5bea}</style></head>
+<body><p><a href="/">← queue</a></p><h2>Decision history ({{ history|length }})</h2>
+<table><tr><th>when (UTC)</th><th>decision</th><th>type</th><th>subject</th><th>changes</th><th>result</th></tr>
+{% for pid, d in history %}<tr><td>{{ d.decided_at }}</td><td class="{{ d.result.status or d.decision }}">{{ d.result.status or d.decision }}</td><td>{{ d.type }}</td>
+<td>{{ d.location or '' }}{% if d.account %}<br><span style="color:#667085">{{ d.account }} {{ d.account_id }}</span>{% endif %}</td>
+<td>{% for c in d.changes %}{{ c.field }}: {{ c['from'] or '—' }} → {{ c.to }}<br>{% endfor %}</td>
+<td>{{ d.result.detail or '' }}{% if d.result.created_account_id %}<br>created {{ d.result.created_account_id }}{% endif %}<br><span style="color:#667085">{{ d.result.log|join(' | ') if d.result.log else '' }}</span></td></tr>{% endfor %}
+</table></body></html>

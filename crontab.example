@@ -1,0 +1,3 @@
+# Daily at 06:00 local. Reads CRM_TOKEN from .env in the project directory.
+# Re-runs are safe: state/decisions.json suppresses anything already approved or rejected.
+0 6 * * * cd /path/to/ltc-ownership-pipeline && /usr/bin/python3 run_pipeline.py >> state/cron.log 2>&1

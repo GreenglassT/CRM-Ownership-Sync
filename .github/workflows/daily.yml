@@ -1,0 +1,35 @@
+# Daily ownership reconciliation. Scrapes the operator site, diffs against the
+# CRM, and commits a refreshed proposal queue. It never writes to the CRM —
+# approvals happen in the review app, which records decisions to
+# state/decisions.json so re-runs never re-propose anything already decided.
+name: daily-ownership-sync
+on:
+  schedule:
+    - cron: "0 11 * * *"        # 06:00 America/Chicago, before the sales day starts
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+      - name: Run pipeline (read-only against CRM)
+        env:
+          CRM_TOKEN: ${{ secrets.CRM_TOKEN }}
+        run: python run_pipeline.py | tee run.txt
+      - name: Job summary
+        run: |
+          { echo '## Ownership sync'; echo '```'; cat run.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit refreshed queue
+        run: |
+          git config user.name "ownership-sync[bot]"
+          git config user.email "ownership-sync@users.noreply.github.com"
+          git add state/
+          git commit -m "chore(sync): daily proposal queue $(date -u +%F)" || echo "queue unchanged"
+          git push

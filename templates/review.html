@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Ownership review · {{ q.parent.name or 'CRM' }}</title>
+<style>
+  :root{--bg:#f6f7f9;--card:#fff;--ink:#1c1f24;--mut:#667085;--line:#e4e7ec;--ok:#0f7b4f;--bad:#b42318;--warn:#b54708;--acc:#2f5bea}
+  *{box-sizing:border-box}body{margin:0;font:14px/1.45 -apple-system,Segoe UI,Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+  header{background:#fff;border-bottom:1px solid var(--line);padding:14px 24px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  header h1{font-size:17px;margin:0 12px 0 0}header form{margin:0}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 24px 60px}
+  .flash{padding:10px 14px;border-radius:8px;margin:0 0 10px;border:1px solid}.flash.ok{background:#ecfdf3;border-color:#abefc6;color:#067647}.flash.error{background:#fef3f2;border-color:#fecdca;color:var(--bad)}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}.filters a{padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none}
+  .filters a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .badge{font-weight:600;font-size:12px;letter-spacing:.02em;padding:3px 9px;border-radius:6px;background:#eef2ff;color:var(--acc)}
+  .badge.CHOW{background:#fff4e5;color:var(--warn)}.badge.DUPLICATE{background:#fef3f2;color:var(--bad)}.badge.CREATE{background:#ecfdf3;color:var(--ok)}.badge.NOT_ON_SITE{background:#f2f4f7;color:#475467}
+  .conf{font-size:12px;color:var(--mut)}.conf.low{color:var(--warn);font-weight:600}
+  .attn{background:#fffaeb;border:1px solid #fedf89;color:#93370d;padding:8px 12px;border-radius:8px;margin:8px 0;font-size:13px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:10px 0}.cols h4{margin:0 0 6px;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+  .kv{margin:0;font-size:13px}.kv b{font-weight:600}.kv .m{color:var(--mut)}
+  table{border-collapse:collapse;width:100%;margin:8px 0;font-size:13px}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--mut);font-weight:600;font-size:12px}
+  .from{color:var(--bad);text-decoration:line-through}.to{color:var(--ok);font-weight:600}
+  .rat{margin:8px 0;padding:10px 12px;background:#f9fafb;border-radius:8px}
+  ul.ev{margin:6px 0;padding-left:0;list-style:none;font-size:13px}ul.ev li{padding:2px 0}.w{display:inline-block;min-width:52px;font-family:ui-monospace,Menlo,monospace;font-size:12px}.w.pos{color:var(--ok)}.w.neg{color:var(--bad)}.w.zero{color:var(--mut)}
+  details{margin:6px 0}summary{cursor:pointer;color:var(--mut);font-size:13px}pre{background:#0f172a;color:#e2e8f0;padding:10px;border-radius:8px;font-size:12px;overflow:auto}
+  .acts{display:flex;gap:8px;align-items:center;margin-top:10px}
+  button{border:1px solid var(--line);background:#fff;padding:7px 14px;border-radius:8px;cursor:pointer;font:inherit}button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}button.bad{color:var(--bad)}button.run{background:var(--acc);color:#fff;border-color:var(--acc)}
+  .bulk{position:sticky;top:0;z-index:5;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;gap:10px;align-items:center;margin-bottom:12px}
+  .muted{color:var(--mut)}.small{font-size:12px}
+  .stat{display:inline-block;margin-right:16px}.stat b{font-size:16px}
+</style></head><body>
+<header>
+  <h1>Ownership review — {{ q.parent.name or 'no run yet' }}</h1>
+  <span class="small muted">{{ q.counts.site_locations }} site locations · {{ q.counts.crm_accounts }} CRM accounts · generated {{ q.generated_at }}</span>
+  <form method="post" action="/run"><button class="run">Re-run pipeline</button> <label class="small muted"><input type="checkbox" name="no_scrape" value="1"> skip scrape</label></form>
+  <a href="/history" class="small">Decision history ({{ ledger.data|length }})</a>
+</header>
+<div class="wrap">
+  {% with msgs = get_flashed_messages() %}{% for kind, m in msgs %}<div class="flash {{ kind }}">{{ m }}</div>{% endfor %}{% endwith %}
+
+  <div>
+    <span class="stat"><b>{{ total }}</b> open proposals</span>
+    <span class="stat"><b>{{ q.confirmed|length }}</b> confirmed, no action</span>
+    <span class="stat"><b>{{ q.suppressed or 0 }}</b> suppressed (already decided)</span>
+  </div>
+  <div class="filters">
+    <a href="/" class="{{ 'on' if not ftype and not fband }}">All ({{ total }})</a>
+    {% for t, n in counts.items() %}<a href="/?type={{ t }}" class="{{ 'on' if ftype == t }}">{{ t }} ({{ n }})</a>{% endfor %}
+    <a href="/?band=low" class="{{ 'on' if fband == 'low' }}">low confidence only</a>
+  </div>
+  {% if ftype and blurb.get(ftype) %}<p class="muted">{{ blurb[ftype] }}</p>{% endif %}
+
+  <form method="post" action="/decide-bulk" id="bulk">
+    <div class="bulk">
+      <label><input type="checkbox" onclick="document.querySelectorAll('.pick').forEach(c=>c.checked=this.checked)"> select all shown</label>
+      <button class="ok" name="decision" value="approve" onclick="return confirm('Approve every selected proposal and write to the CRM?')">Approve selected → write to CRM</button>
+      <button class="bad" name="decision" value="reject">Reject selected</button>
+      <span class="small muted">Approvals write immediately via the API and are recorded so they never re-appear.</span>
+    </div>
+
+  {% for p in props %}
+    {% set L = p.location %}{% set A = p.account %}
+    <div class="card" id="{{ p.id }}">
+      <div class="top">
+        <input type="checkbox" class="pick" name="ids" value="{{ p.id }}">
+        <span class="badge {{ p.type }}">{{ p.type }}</span>
+        <b>{{ (L and L.name) or (A and A.name) }}</b>
+        <span class="conf {{ p.confidence_band }}">match confidence {{ '%.2f'|format(p.confidence) }}{% if p.confidence_band == 'low' %} — LOW, read the evidence{% endif %}</span>
+        <span class="small muted">#{{ p.id }}</span>
+      </div>
+      {% if p.attention %}<div class="attn">⚠ {{ p.attention }}</div>{% endif %}
+      <div class="cols">
+        <div><h4>Website location</h4>
+          {% if L %}<p class="kv"><b>{{ L.name }}</b><br>{{ L.street }}<br>{{ L.city }}, {{ L.state }} {{ L.zip }}<br><span class="m">{{ L.care_offerings|join(' · ') }} · {{ L.phone }}</span><br><a class="small" href="{{ L.url }}" target="_blank">{{ L.url }}</a></p>
+          {% else %}<p class="kv m">Not listed on the website.</p>{% endif %}
+        </div>
+        <div><h4>CRM account</h4>
+          {% if A %}<p class="kv"><b>{{ A.name }}</b> <span class="m">{{ A.account_id }}</span><br>{{ A.billing_street }}<br>{{ A.billing_city }}, {{ A.billing_state }} {{ A.billing_zip }}<br>
+            <span class="m">parent:</span> {{ A.parent_name or '— none —' }}<br>
+            <span class="m">status:</span> {{ A.status }} · <span class="m">care:</span> {{ A.care_type or '—' }} · <span class="m">phone:</span> {{ A.phone or '—' }}<br>
+            <span class="m">lifetime_revenue:</span> ${{ '{:,}'.format(A.lifetime_revenue or 0) }} · <span class="m">outstanding_ar:</span> ${{ '{:,}'.format(A.outstanding_ar or 0) }}
+            {% if A.note %}<br><span class="m">note:</span> {{ A.note }}{% endif %}</p>
+          {% else %}<p class="kv m">No CRM account.</p>{% endif %}
+        </div>
+      </div>
+      <div class="rat">{{ p.rationale }}</div>
+      <table><tr><th>field</th><th>current</th><th>proposed</th></tr>
+        {% for c in p.changes %}<tr><td>{{ c.field }}</td><td><span class="from">{{ c['from'] if c['from'] not in (None, '') else '—' }}</span></td><td><span class="to">{{ c.to }}</span></td></tr>{% endfor %}
+      </table>
+      {% if p.evidence %}<ul class="ev">{% for e in p.evidence if e.signal != 'near_misses' %}
+        <li><span class="w {{ 'pos' if e.weight > 0 else ('neg' if e.weight < 0 else 'zero') }}">{{ '%+.2f'|format(e.weight) }}</span> <b>{{ e.signal }}</b> — {{ e.detail }}</li>{% endfor %}</ul>{% endif %}
+      {% if p.near_misses %}<details><summary>Considered and rejected ({{ p.near_misses|length }})</summary>
+        {% for n in p.near_misses %}<p class="kv small"><b>{{ n.name }}</b> {{ n.account_id }} · {{ n.street }}, {{ n.city }} · {{ n.phone }} · parent {{ n.parent or '—' }} · net {{ '%.2f'|format(n.score) }}<br>
+          {% for e in n.evidence %}<span class="w {{ 'pos' if e.weight > 0 else ('neg' if e.weight < 0 else 'zero') }}">{{ '%+.2f'|format(e.weight) }}</span> {{ e.detail }}<br>{% endfor %}</p>{% endfor %}</details>{% endif %}
+      <details><summary>Exact API calls on approve</summary><pre>{{ p.actions|tojson(indent=1) }}</pre></details>
+      <div class="acts">
+        <button class="ok" form="one-{{ p.id }}" name="decision" value="approve">Approve &amp; write</button>
+        <button class="bad" form="one-{{ p.id }}" name="decision" value="reject">Reject</button>
+      </div>
+      <form id="one-{{ p.id }}" method="post" action="/decide/{{ p.id }}"><input type="hidden" name="next" value="/{% if ftype %}?type={{ ftype }}{% elif fband %}?band={{ fband }}{% endif %}"></form>
+    </div>
+  {% else %}
+    <div class="card"><b>Queue is empty.</b> <span class="muted">Every proposal has been decided, or the pipeline has not run yet.</span></div>
+  {% endfor %}
+  </form>
+
+  <details class="card"><summary><b>Confirmed matches — no change needed ({{ q.confirmed|length }})</b></summary>
+    <table><tr><th>website</th><th>CRM account</th><th>confidence</th></tr>
+    {% for c in q.confirmed %}<tr><td>{{ c.location }}</td><td>{{ c.account }} <span class="muted small">{{ c.account_id }}</span></td><td>{{ '%.2f'|format(c.confidence) }}</td></tr>{% endfor %}</table>
+  </details>
+</div>
+</body></html>
