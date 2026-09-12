@@ -4,3 +4,4 @@ __pycache__/
 .pytest_cache/
 state/cron.log
 .claude/
+state/app.log
