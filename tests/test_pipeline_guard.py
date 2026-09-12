@@ -18,6 +18,7 @@ def state(tmp_path, monkeypatch):
 
 
 def test_empty_crawl_aborts_without_writing_queue(state, monkeypatch):
+    monkeypatch.setattr(run_pipeline, "CRM", lambda: object())     # no token needed to test the guard
     monkeypatch.setattr(run_pipeline, "scrape", lambda: [])
     with pytest.raises(RuntimeError, match="35"):
         run_pipeline.run()

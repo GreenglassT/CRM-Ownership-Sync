@@ -30,7 +30,7 @@ jobs:
       - name: Job summary
         if: always()
         run: |
-          { echo '## Ownership sync'; echo '```'; cat run.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          { echo '## Ownership sync'; echo '```'; cat run.txt 2>/dev/null || echo "pipeline did not run (an earlier step failed)"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - name: Commit refreshed queue
         run: |
           git config user.name "ownership-sync[bot]"
