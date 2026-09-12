@@ -70,14 +70,31 @@ def recon_rows(p: dict, parent: dict) -> list[dict]:
     if t == "NOT_ON_SITE":
         return [row("Listed on website", "no", "under " + parent_label(A["parent_name"])), row("Status", "", A["status"], key="status")] + billing
 
-    rows = [row("Name", L["name"], A["name"], key="name", differs=L["name"].strip().casefold() != A["name"].strip().casefold())]
     if t == "CHOW":
-        rows += [row("Parent", parent_label(parent["name"]), parent_label(A["parent_name"]),
-                     note="stays as is; successor account is created under " + parent_label(parent["name"])),
-                 row("Change of ownership link", "", A["chow_current_account"], key="chow_current_account", after="new successor account")]
-    else:
-        rows.append(row("Parent", parent_label(parent["name"]), parent_label(A["parent_name"]), key="parent_id",
-                        after=parent_label(parent["name"]) if "parent_id" in ch else None, differs=A["parent_id"] != parent.get("account_id")))
+        # Two accounts after approval: the old one, frozen except for the link, and
+        # the successor, which starts with no billing. Show them side by side.
+        pl = p["actions"][0]["payload"]
+        def pair(field, web, old, new, old_after=None):
+            return {"field": field, "web": web, "crm": old, "after": new, "changed": new not in (None, ""), "note": "",
+                    "differs": False, "old_after": old_after}
+        return [
+            pair("Name", L["name"], A["name"], pl["name"]),
+            pair("Parent", parent_label(parent["name"]), parent_label(A["parent_name"]), parent_label(parent["name"])),
+            pair("Street", L["street"], A["billing_street"], pl["billing_street"]),
+            pair("City, state ZIP", f"{L['city']}, {L['state']} {L['zip']}", f"{A['billing_city']}, {A['billing_state']} {A['billing_zip']}",
+                 f"{pl['billing_city']}, {pl['billing_state']} {pl['billing_zip']}"),
+            pair("Care", ", ".join(L["care_offerings"]), A["care_type"], pl["care_type"]),
+            pair("Phone", L["phone"], A["phone"], pl["phone"]),
+            pair("Status", "on website", A["status"], pl["status"]),
+            pair("Lifetime revenue", "", money(A["lifetime_revenue"]), money(0)),
+            pair("Outstanding AR", "", money(A["outstanding_ar"]), money(0)),
+            pair("Change of ownership link", "", A["chow_current_account"], "", old_after="the successor's id"),
+            pair("Note", "", A["note"], pl["note"]),
+        ]
+
+    rows = [row("Name", L["name"], A["name"], key="name", differs=L["name"].strip().casefold() != A["name"].strip().casefold())]
+    rows.append(row("Parent", parent_label(parent["name"]), parent_label(A["parent_name"]), key="parent_id",
+                    after=parent_label(parent["name"]) if "parent_id" in ch else None, differs=A["parent_id"] != parent.get("account_id")))
     rows += [
         row("Street", L["street"], A["billing_street"], key="billing_street", differs=norm_street(L["street"]) != norm_street(A["billing_street"])),
         row("City, state ZIP", f"{L['city']}, {L['state']} {L['zip']}", f"{A['billing_city']}, {A['billing_state']} {A['billing_zip']}",
@@ -133,10 +150,9 @@ def _render(selected_id: str | None):
         flash(("ok", "That item has been decided or is no longer in the queue."))
         return redirect(url_for("index"))
     rows = recon_rows(sel, parent) if sel else []
-    successor = sel["actions"][0]["payload"] if sel and sel["type"] == "CHOW" else None
     does = describe_actions(sel, parent) if sel and sel["actions"] else []
     return render_template("review.html", q=q, groups=groups_for(props, q.get("confirmed", [])), total=len(props), sel=sel,
-                           rows=rows, successor=successor, does=does, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
+                           rows=rows, does=does, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
 
 
 @app.get("/")

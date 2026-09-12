@@ -41,7 +41,7 @@
   .recon th { text-align: left; font-weight: 500; color: var(--ink-2); font-size: 12px; padding: 0 10px 6px 0; border-bottom: 1px solid var(--ink); }
   .recon td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; }
   .recon td:first-child { color: var(--ink-2); width: 150px; }
-  .recon td.after.changed { background: var(--change); color: var(--change-ink); font-weight: 500; padding-left: 8px; }
+  .recon td.after.changed, .recon td.changed { background: var(--change); color: var(--change-ink); font-weight: 500; padding-left: 8px; }
   .recon td .note { display: block; font-size: 12px; color: var(--ink-2); font-weight: 400; }
   .recon .dim { color: var(--ink-3); }
   .recon td.differs { background: var(--change); color: var(--change-ink); padding-left: 8px; }
@@ -51,10 +51,6 @@
   .does li { margin: 2px 0; }
   .does .sub { color: var(--ink-2); }
 
-  .successor { border: 1px solid var(--rule); border-radius: 4px; padding: 12px 14px; margin: -8px 0 22px; font-size: 13px; }
-  .successor h3 { font-size: 13px; font-weight: 600; margin: 0 0 6px; }
-  .successor dl { display: grid; grid-template-columns: 110px 1fr; gap: 2px 12px; margin: 0; }
-  .successor dt { color: var(--ink-2); } .successor dd { margin: 0; }
 
   h3.sec { font-size: 13px; font-weight: 600; margin: 22px 0 8px; }
   table.ev { border-collapse: collapse; font-size: 13px; margin-bottom: 6px; }
@@ -142,31 +138,19 @@
     {% set writes = sel.actions|length > 0 %}
     {% if rows %}
     <table class="recon">
-      <thead><tr><th></th><th>Website</th><th>CRM now</th>{% if writes %}<th>After approval</th>{% endif %}</tr></thead>
+      {% set chow = sel.type == 'CHOW' %}
+      <thead><tr><th></th><th>Website</th><th>{{ 'Old account (stays as is)' if chow else 'CRM now' }}</th>{% if writes %}<th>{{ 'New successor account' if chow else 'After approval' }}</th>{% endif %}</tr></thead>
       <tbody>
       {% for r in rows %}
         <tr>
           <td>{{ r.field }}</td>
           <td class="{{ 'dim' if not r.web }}">{{ r.web|default('—', true) }}</td>
-          <td class="{{ 'dim' if not r.crm }} {{ 'differs' if r.differs and not writes }}">{{ r.crm|default('—', true) }}</td>
+          <td class="{{ 'dim' if not r.crm and not r.old_after }} {{ 'differs' if r.differs and not writes }} {{ 'changed' if r.old_after }}">{{ r.crm|default('—', true) }}{% if r.old_after %} → {{ r.old_after }}{% endif %}</td>
           {% if writes %}<td class="after {{ 'changed' if r.changed }} {{ 'dim' if not r.after and not r.changed }}">{{ r.after|default('—', true) }}{% if r.note %}<span class="note">{{ r.note }}</span>{% endif %}</td>{% endif %}
         </tr>
       {% endfor %}
       </tbody>
     </table>
-    {% if successor %}
-      <div class="successor">
-        <h3>Successor account to be created</h3>
-        <dl>
-          <dt>Name</dt><dd>{{ successor.name }}</dd>
-          <dt>Parent</dt><dd>{{ parent.name|parent }}</dd>
-          <dt>Address</dt><dd>{{ successor.billing_street }}, {{ successor.billing_city }}, {{ successor.billing_state }} {{ successor.billing_zip }}</dd>
-          <dt>Care type</dt><dd>{{ successor.care_type }}</dd>
-          <dt>Phone</dt><dd>{{ successor.phone }}</dd>
-          <dt>Note</dt><dd>{{ successor.note }}</dd>
-        </dl>
-      </div>
-    {% endif %}
     {% endif %}
 
     <h3 class="sec">Why</h3>
