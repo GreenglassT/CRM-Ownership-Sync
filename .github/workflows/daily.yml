@@ -1,5 +1,5 @@
 # Daily ownership reconciliation. Scrapes the operator site, diffs against the
-# CRM, and commits a refreshed proposal queue. It never writes to the CRM —
+# CRM, and commits a refreshed proposal queue. It never writes to the CRM;
 # approvals happen in the review app, which records decisions to
 # state/decisions.json. Commit that file after a review session; this job pulls
 # it before running so nothing already decided is re-proposed.
