@@ -16,6 +16,8 @@ CRM API ──snapshot─▶ crm_accounts.json ──┘                 ▲
 
 ## Quick start
 
+Python 3.10 or newer; the only dependencies are Flask and pytest.
+
 ```bash
 pip install -r requirements.txt
 cp .env.example .env            # put your CRM token in it
