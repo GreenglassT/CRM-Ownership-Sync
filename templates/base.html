@@ -77,8 +77,8 @@
   <span class="spacer"></span>
   <a href="{{ url_for('history') }}">Decisions{% if history_count is defined %} ({{ history_count }}){% endif %}</a>
   <form method="post" action="{{ url_for('run') }}">
-    <label><input type="checkbox" name="no_scrape" value="1"> reuse last website snapshot</label>
-    <button class="btn">Run pipeline</button>
+    <label><input type="checkbox" name="no_scrape" value="1"> skip the crawl, use this morning's copy</label>
+    <button class="btn">Check the website again</button>
   </form>
 </header>
 {% with msgs = get_flashed_messages() %}{% for kind, m in msgs %}<div class="notice {{ kind }}">{{ m }}</div>{% endfor %}{% endwith %}

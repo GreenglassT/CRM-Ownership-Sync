@@ -131,29 +131,48 @@ def recon_rows(p: dict, parent: dict) -> list[dict]:
     return rows + billing
 
 
+FIELD = {"billing_street": "street", "billing_city": "city", "billing_state": "state", "billing_zip": "ZIP", "care_type": "care type",
+         "phone": "phone", "name": "name"}
+
+
+def describe_change(field: str, frm, to, parent: dict, survivor: dict | None = None, before=None) -> str:
+    """One field change, in the reviewer's words. Used by the page, the confirm-match
+    preview, and the history page so they never disagree."""
+    if field == "parent_id":
+        to_name = parent_label(parent["name"]) if to == parent.get("account_id") else to
+        return f"moves it under {to_name}" + (f" (from {parent_label(frm)})" if frm and not str(frm).startswith("001") else "")
+    if field == "status":
+        return f"sets it to {to}" + (f" (was {before})" if before and before != to else "")
+    if field == "duplicate_of_account":
+        who = f"{survivor['name']} ({survivor['account_id']})" if survivor else (to if isinstance(to, str) else "the new account")
+        return f"marks it as a duplicate of {who}"
+    if field == "chow_current_account":
+        return "links it to the new account"
+    if field == "name":
+        return f"renames it to {to}" + (f" (from {before or frm})" if (before or frm) else "")
+    if field in FIELD:
+        return f"sets the {FIELD[field]} to {to}" + (f" (was {before or frm})" if (before or frm) not in (None, "", to) else "")
+    if field == "note":
+        return "adds a dated note"
+    return f"sets {field} to {to}"
+
+
 def describe_actions(p: dict, parent: dict) -> list[str]:
     """What approving does, in the reviewer's words. One sentence per API call."""
     out = []
     for a in p["actions"]:
         if a["op"] == "create":
             pl = a["payload"]
-            out.append(f"Creates a new account \u201c{pl['name']}\u201d under {parent_label(parent['name'])} at {pl['billing_street']}, "
+            out.append(f"Creates a new account, {pl['name']}, under {parent_label(parent['name'])} at {pl['billing_street']}, "
                        f"{pl['billing_city']}, {pl['billing_state']} {pl['billing_zip']} ({pl['care_type'] or 'no care type'}, {pl['phone'] or 'no phone'}).")
         else:
             acct = p["account"] if p["account"] and p["account"]["account_id"] == a["account_id"] else None
-            who = f"account {a['account_id']}" + (f" (\u201c{acct['name']}\u201d)" if acct else "")
-            fields = []
-            for k, v in a["payload"].items():
-                if isinstance(v, dict):
-                    v = "the new account's id"
-                elif k == "parent_id":
-                    v = parent_label(parent["name"]) if v == parent.get("account_id") else v
-                elif k == "duplicate_of_account" and p.get("survivor"):
-                    v = f"{p['survivor']['name']} ({v})"
-                before = (acct or {}).get(k)
-                fields.append(f"{k} \u2192 {v}" + (f" (was {before})" if before not in (None, "", v) else ""))
-            note = " and appends a dated note" if a.get("note_append") else ""
-            out.append(f"Updates {who}: " + "; ".join(fields) + note + ".")
+            who = f"{acct['name']} ({a['account_id']})" if acct else f"account {a['account_id']}"
+            parts = [describe_change(k, (acct or {}).get(k), v, parent, p.get("survivor"), before=(acct or {}).get(k))
+                     for k, v in a["payload"].items()]
+            if a.get("note_append"):
+                parts.append("adds a dated note")
+            out.append(f"Updates {who}: " + "; ".join(parts) + ".")
     return out
 
 
@@ -169,17 +188,33 @@ def _render(selected_id: str | None):
     rows = recon_rows(sel, parent) if sel else []
     does = describe_actions(sel, parent) if sel and sel["actions"] else []
     # Other open items touching the same account(s), so "kept as is" on this page
-    # is never mistaken for "left stale" — the phone or name fix is its own item.
+    # is never mistaken for "left stale"; the phone or name fix is its own item.
     related = []
     if sel:
         ids = {(sel.get("account") or {}).get("account_id"), (sel.get("survivor") or {}).get("account_id")} - {None}
         related = [{"label": LABEL.get(o["type"], o["type"]), "account": o["account"]["name"], "id": o["id"],
                     "survivor": o["account"]["account_id"] == (sel.get("survivor") or {}).get("account_id")}
                    for o in props if o["id"] != sel["id"] and o.get("account") and o["account"]["account_id"] in ids]
+    conf_text = ""
+    if sel:
+        c = sel["confidence"]
+        if sel["type"] == "CREATE":
+            conf_text = "no CRM account matches this community"
+        elif sel["type"] == "NOT_ON_SITE":
+            conf_text = "nothing on the website matches this account"
+        elif c >= 0.95:
+            conf_text = "very likely the same building"
+        elif c >= config.CONFIDENT:
+            conf_text = "likely the same building"
+        else:
+            conf_text = "probably the same building; read the evidence"
+    decided = sum(1 for d in ledger.data.values() if Ledger.is_decided_entry(d))
+    approved = sum(1 for d in ledger.data.values() if d["decision"] == "approved" and d["result"].get("status") == "applied")
     cols = {"CHOW": ("Old account (stays as is)", "New successor account"),
             "DUPLICATE": ("This copy (retired on approval)", "Surviving copy (kept as is)")}.get(sel["type"] if sel else "", ("CRM now", "After approval"))
     return render_template("review.html", q=q, groups=groups_for(props, q.get("confirmed", [])), total=len(props), sel=sel,
-                           rows=rows, does=does, cols=cols, related=related, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
+                           rows=rows, does=does, cols=cols, related=related, conf_text=conf_text,
+                           decided=decided, approved=approved, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
 
 
 @app.get("/")
@@ -229,15 +264,26 @@ def decide(pid):
 @app.post("/run")
 def run():
     out = run_pipeline.run(no_scrape=bool(request.form.get("no_scrape")))
-    flash(("ok", f"Pipeline finished. {out['counts']['site_locations']} website locations checked against {out['counts']['crm_accounts']} CRM accounts: "
+    flash(("ok", f"Checked {out['counts']['site_locations']} website communities against {out['counts']['crm_accounts']} CRM accounts: "
                  f"{len(out['proposals'])} to review, {out['counts']['confirmed']} already match, {out['suppressed']} skipped as previously decided."))
     return redirect(url_for("index"))
 
 
 @app.get("/history")
 def history():
-    return render_template("history.html", history=Ledger().history(), label=LABEL, q=load_queue())
+    q = load_queue()
+    parent = q.get("parent") or {}
+    rows = []
+    for pid, d in Ledger().history():
+        said = [describe_change(c["field"], c["from"], c["to"], parent, None, before=c["from"]) for c in d["changes"]
+                if c["field"] not in ("(new account)", "linked account")]
+        if d["type"] == "CREATE":
+            said = [f"creates {d.get('title') or d.get('location')}"]
+        elif d["type"] == "CONFIRM_MATCH":
+            said = [("confirmed as the same building" if d["decision"] == "approved" else "rejected as a different facility")]
+        rows.append((pid, d, said))
+    return render_template("history.html", history=rows, label=LABEL, q=q)
 
 
 if __name__ == "__main__":
-    app.run(port=5055, debug=False)
+    app.run(port=config.PORT, debug=False)

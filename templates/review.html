@@ -1,8 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Ownership review{% if sel %} — {{ sel.title }}{% endif %}{% endblock %}
+{% block title %}Ownership review{% if sel %}: {{ sel.title }}{% endif %}{% endblock %}
 {% block head %}
 <style>
-  .status { padding-bottom: 12px; }
+  .status { padding: 12px 24px; color: var(--ink-2); font-size: 13px; }
+  .status b { color: var(--ink); font-weight: 600; }
+  .prog { margin-right: 6px; }
+  .prog .bar { display: inline-block; vertical-align: middle; width: 120px; height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; margin-right: 6px; }
+  .prog .fill { display: block; height: 100%; background: var(--ok); }
+  .done { padding: 40px 32px; max-width: 52ch; }
+  .done h2 { font-size: 22px; margin: 0 0 10px; }
+  .done p { color: var(--ink-2); margin: 0 0 8px; }
   .work { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 0; min-height: calc(100vh - 120px); }
 
   /* queue rail */
@@ -58,12 +65,14 @@
   .related { margin: -6px 0 14px; font-size: 13px; color: var(--ink-2); max-width: 72ch; }
   table.ev { border-collapse: collapse; font-size: 13px; margin-bottom: 6px; }
   .ev td { padding: 4px 12px 4px 0; vertical-align: top; border-bottom: 1px solid var(--rule-2); }
-  .ev td.w { width: 52px; font-weight: 500; }
+  .ev td.w { width: 24px; font-weight: 600; }
+  .ev td.sig { width: 170px; font-weight: 500; color: var(--ink); }
+  .ev .wt { color: var(--ink-3); font-size: 12px; margin-left: 10px; }
   .ev td.w.pos { color: var(--ok); } .ev td.w.neg { color: var(--bad); } .ev td.w.zero { color: var(--ink-3); }
-  .ev td.sig { width: 70px; color: var(--ink-2); }
 
   details { margin: 10px 0; }
   summary { cursor: pointer; color: var(--ink-2); font-size: 13px; }
+  summary code { font-family: inherit; color: var(--ink-3); margin-left: 6px; }
   details .near { padding: 8px 0 4px 16px; font-size: 13px; }
   details .near b { font-weight: 500; }
   details .near .meta { color: var(--ink-2); }
@@ -87,17 +96,17 @@
 {% macro evidence_table(rows) %}
 <table class="ev">
   {% for e in rows %}
-  <tr><td class="w {{ 'pos' if e.weight > 0 else ('neg' if e.weight < 0 else 'zero') }}">{{ '%+.2f'|format(e.weight) }}</td><td class="sig">{{ e.signal }}</td><td>{{ e.detail }}</td></tr>
+  <tr><td class="w {{ 'pos' if e.weight > 0 else ('neg' if e.weight < 0 else 'zero') }}">{{ '✓' if e.weight > 0 else ('✗' if e.weight < 0 else '–') }}</td><td class="sig">{{ e.signal }}</td><td>{{ e.detail }}<span class="wt">{{ '%+.2f'|format(e.weight) }}</span></td></tr>
   {% endfor %}
 </table>
 {% endmacro %}
 {% block body %}
-<p class="status">
-  <b>{{ total }}</b> to review.
-  {{ q.confirmed|length }} website locations already match their CRM account.
-  {% if q.suppressed %}{{ q.suppressed }} skipped as previously decided.{% endif %}
-  {% if q.counts %}Checked {{ q.counts.site_locations }} website locations against {{ q.counts.crm_accounts }} CRM accounts.{% endif %}
-</p>
+<div class="status">
+  {% set all = decided + total %}
+  {% if all %}<span class="prog"><span class="bar"><span class="fill" style="width: {{ (100 * decided / all)|round|int }}%"></span></span> <b>{{ decided }}</b> of {{ all }} decided, <b>{{ total }}</b> to go.</span>{% endif %}
+  {{ q.confirmed|length }} communities already match their CRM account.
+  {% if q.counts %}Checked {{ q.counts.site_locations }} website communities against {{ q.counts.crm_accounts }} CRM accounts.{% endif %}
+</div>
 <div class="work">
   <nav class="queue" aria-label="Review queue">
     {% for g in groups %}
@@ -117,9 +126,16 @@
 
   <main class="detail">
   {% if not sel %}
-    <p class="empty">{% if total %}Pick an item from the queue.{% else %}Nothing to review. Every proposal has been decided, or the pipeline has not run yet.{% endif %}</p>
+    {% if total %}<p class="empty">Pick an item from the queue.</p>
+    {% elif decided %}
+    <div class="done">
+      <h2>All caught up.</h2>
+      <p>{{ approved }} change{{ '' if approved == 1 else 's' }} approved{% if decided - approved %}, {{ decided - approved }} rejected{% endif %}. {{ q.confirmed|length }} of {{ q.counts.site_locations }} communities on the website now match their CRM account.</p>
+      <p>The next scheduled check runs at 6:00 AM Central, or use "Check the website again" above.</p>
+    </div>
+    {% else %}<p class="empty">Nothing to review yet. Use "Check the website again" to run the first check.</p>{% endif %}
   {% else %}
-    <p class="kind">{{ label[sel.type] }}<code>{{ sel.type }}</code></p>
+    <p class="kind">{{ label[sel.type] }}</p>
     <h2>{{ sel.title }}</h2>
     <p class="ids">
       {% if sel.account %}CRM account <span>{{ sel.account.account_id }}</span>{% endif %}
@@ -130,8 +146,8 @@
     <div class="conf" aria-label="Match confidence">
       <span>Match confidence</span>
       <span class="track"><span class="fill {{ sel.confidence_band }}" style="width: {{ (sel.confidence * 100)|round|int }}%"></span></span>
-      <span>{{ '%.2f'|format(sel.confidence) }}</span>
-      {% if sel.confidence_band == 'low' %}<span class="lowtext">Low. Read the evidence before deciding.</span>{% endif %}
+      <span>{{ (sel.confidence * 100)|round|int }}%</span>
+      <span class="{{ 'lowtext' if sel.confidence_band == 'low' else '' }}">{{ conf_text }}</span>
     </div>
 
     <p class="explain">{{ explain[sel.type] }}</p>
@@ -165,7 +181,7 @@
     <p class="why">{{ sel.rationale }}</p>
 
     {% if sel.evidence %}
-    <h3 class="sec">How it matched</h3>
+    <h3 class="sec">{{ 'Why nothing matched' if sel.type in ('CREATE', 'NOT_ON_SITE') else 'Why we think it is the same building' }}</h3>
     {{ evidence_table(sel.evidence) }}
     {% endif %}
 
@@ -187,7 +203,7 @@
       <ul>{% for d in does %}<li>{{ d }}</li>{% endfor %}</ul>
     </div>
     <details>
-      <summary>API calls made on approval ({{ sel.actions|length }})</summary>
+      <summary>API calls made on approval ({{ sel.actions|length }}) <code>{{ sel.type }}</code></summary>
       <pre>{{ sel.actions|tojson(indent=1) }}</pre>
     </details>
     {% elif decidable %}
@@ -195,7 +211,7 @@
       <h3>If you approve</h3>
       <p class="sub" style="margin:0 0 6px">Nothing is written now. The pair is recorded as the same facility and the next pipeline run proposes these, each for its own approval:</p>
       <ul>
-        {% for f in sel.if_approved %}<li><b>{{ f.label }}</b>{% for c in f.changes %} — {{ c.field }}: {{ c['from']|default('—', true) }} → {{ c.to }}{% endfor %}</li>
+        {% for f in sel.if_approved %}<li><b>{{ f.label }}</b>: {% for c in f.changes %}{{ c.field|replace('_', ' ')|replace('billing ', '')|replace('parent id', 'parent') }} {{ c['from']|default('blank', true) }} → {{ c.to }}{{ '; ' if not loop.last }}{% endfor %}</li>
         {% else %}<li>No field changes: the two records already agree.</li>{% endfor %}
       </ul>
       <h3 style="margin-top:10px">If you reject</h3>

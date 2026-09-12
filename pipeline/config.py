@@ -3,7 +3,7 @@ import os
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-STATE_DIR = ROOT / "state"
+STATE_DIR = pathlib.Path(os.environ.get("STATE_DIR", ROOT / "state"))
 
 
 def _load_dotenv() -> None:
@@ -38,6 +38,8 @@ POSSIBLE = 0.55    # >= : surface to reviewer as a low-confidence match
 # phone is proposed as a fix (on the surviving account only). Set to 0 to use phone
 # purely as a matching signal.
 PROPOSE_PHONE_UPDATES = os.environ.get("PROPOSE_PHONE_UPDATES", "1") == "1"
+
+PORT = int(os.environ.get("PORT", "5055"))
 
 # Files
 SITE_SNAPSHOT = STATE_DIR / "site_locations.json"
