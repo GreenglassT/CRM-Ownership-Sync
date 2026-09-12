@@ -171,3 +171,21 @@ def test_parent_override_errors_are_descriptive(monkeypatch):
     monkeypatch.setattr(config, "PARENT_ID_OVERRIDE", "A")
     with pytest.raises(RuntimeError, match="not a parent"):
         find_parent([PARENT, acct(account_id="A", name="Facility")])
+
+
+def test_proposal_id_tracks_the_write_payload(monkeypatch):
+    # A CREATE's id must change when the address it would write changes, but not
+    # when only the dated note line changes.
+    import pipeline.match as m
+    crm = [PARENT]
+    a = build_proposals([loc(street="118 Union Square Dr")], crm)["proposals"][0]
+    b = build_proposals([loc(street="999 Different Rd")], crm)["proposals"][0]
+    assert a["type"] == b["type"] == "CREATE" and a["id"] != b["id"]
+    monkeypatch.setattr(m, "today", lambda: "2031-01-01")
+    c = build_proposals([loc(street="118 Union Square Dr")], crm)["proposals"][0]
+    assert c["id"] == a["id"]
+    # same for the successor a CHOW would create
+    old = acct(name="Bellhaven of X", parent_id="P2", parent_name="Cedar Trail", billing_street="1 Main St", billing_city="Xtown", billing_state="OH", billing_zip="44000", lifetime_revenue=50000, outstanding_ar=1200)
+    x = build_proposals([loc(care_offerings=["Assisted Living"])], [PARENT, OTHER, old])["proposals"][0]
+    y = build_proposals([loc(care_offerings=["Memory Support"])], [PARENT, OTHER, old])["proposals"][0]
+    assert x["type"] == y["type"] == "CHOW" and x["id"] != y["id"]

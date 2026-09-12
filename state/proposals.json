@@ -5,7 +5,7 @@
  },
  "proposals": [
   {
-   "id": "6d5435233cc6",
+   "id": "4c19059c0a7f",
    "type": "UPDATE_NAME",
    "title": "Bellhaven Rehabilitation & Nursing of Grove City",
    "confidence": 1.0,
@@ -94,7 +94,7 @@
    "near_misses": []
   },
   {
-   "id": "ae488380d33a",
+   "id": "94e13df3a49f",
    "type": "DUPLICATE",
    "title": "Bellhaven of Owosso",
    "confidence": 0.95,
@@ -193,7 +193,7 @@
    }
   },
   {
-   "id": "b9f5c313c1a1",
+   "id": "66560c56acc2",
    "type": "UPDATE_ADDRESS",
    "title": "Bellhaven of Portsmouth",
    "confidence": 1.0,
@@ -285,7 +285,7 @@
    "near_misses": []
   },
   {
-   "id": "fa4b45a3fac6",
+   "id": "1d5a8c80d142",
    "type": "UPDATE_NAME",
    "title": "Bellhaven of Chesterton",
    "confidence": 1.0,
@@ -374,7 +374,7 @@
    "near_misses": []
   },
   {
-   "id": "0065f3736202",
+   "id": "09a695b2423f",
    "type": "REPARENT",
    "title": "Bellhaven Meadows of Findlay",
    "confidence": 0.95,
@@ -464,7 +464,7 @@
    "near_misses": []
   },
   {
-   "id": "6faefb4b1938",
+   "id": "3f47a5860afa",
    "type": "UPDATE_NAME",
    "title": "Bellhaven at Sycamore Ridge",
    "confidence": 0.95,
@@ -553,7 +553,7 @@
    "near_misses": []
   },
   {
-   "id": "9bc3ed9ab406",
+   "id": "06275a94624d",
    "type": "UPDATE_NAME",
    "title": "The Arbors at Bellhaven - Dayton",
    "confidence": 0.95,
@@ -642,7 +642,7 @@
    "near_misses": []
   },
   {
-   "id": "f2d5351da5ad",
+   "id": "a5f7d0275f79",
    "type": "UPDATE_NAME",
    "title": "Bellhaven Healthcare Centre of Ashland",
    "confidence": 0.95,
@@ -731,7 +731,7 @@
    "near_misses": []
   },
   {
-   "id": "dc9a5544f98c",
+   "id": "c8d5b26782bb",
    "type": "DUPLICATE",
    "title": "Bellhaven of Port Clinton",
    "confidence": 0.825,
@@ -830,7 +830,7 @@
    }
   },
   {
-   "id": "ac300cdc6696",
+   "id": "28d2b4fd593a",
    "type": "DUPLICATE",
    "title": "Bellhaven Shores of Erie",
    "confidence": 0.825,
@@ -930,7 +930,7 @@
    }
   },
   {
-   "id": "7687410f9ad1",
+   "id": "0d5324963946",
    "type": "DUPLICATE",
    "title": "Bellhaven Gardens of Monroe",
    "confidence": 0.825,
@@ -1029,7 +1029,7 @@
    }
   },
   {
-   "id": "08dc63b5f9c9",
+   "id": "06dad793613e",
    "type": "DUPLICATE",
    "title": "Bellhaven Gardens of Monroe",
    "confidence": 0.762,
@@ -1128,7 +1128,7 @@
    }
   },
   {
-   "id": "237e93f16b7d",
+   "id": "b91fcd236ee0",
    "type": "CHOW",
    "title": "Bellhaven of Tiffin",
    "confidence": 0.95,
@@ -1234,7 +1234,7 @@
    "near_misses": []
   },
   {
-   "id": "b3ea8f29f616",
+   "id": "6fcdfff1b002",
    "type": "CHOW",
    "title": "Bellhaven of Marietta",
    "confidence": 0.95,
@@ -1340,7 +1340,7 @@
    "near_misses": []
   },
   {
-   "id": "6c8338721e73",
+   "id": "369c88b7cbe6",
    "type": "REPARENT",
    "title": "Bellhaven Crossings of Lima",
    "confidence": 0.95,
@@ -1429,7 +1429,7 @@
    "near_misses": []
   },
   {
-   "id": "cfda1f03aba5",
+   "id": "1ad013d50909",
    "type": "UPDATE_ADDRESS",
    "title": "Bellhaven of Ashtabula",
    "confidence": 0.95,
@@ -1521,7 +1521,7 @@
    "near_misses": []
   },
   {
-   "id": "280d9cf5b5ad",
+   "id": "c9628b4495ae",
    "type": "DUPLICATE",
    "title": "Bellhaven of Kettering",
    "confidence": 0.825,
@@ -1620,7 +1620,7 @@
    }
   },
   {
-   "id": "f8a5c6e3ddf1",
+   "id": "db4f80f55638",
    "type": "DUPLICATE",
    "title": "Bellhaven of Kettering",
    "confidence": 0.825,
@@ -1719,7 +1719,7 @@
    }
   },
   {
-   "id": "d88a0918da83",
+   "id": "cb7af5949965",
    "type": "REPARENT",
    "title": "Bellhaven of Kettering",
    "confidence": 0.825,
@@ -1808,7 +1808,7 @@
    "near_misses": []
   },
   {
-   "id": "1c9cbe1b1fea",
+   "id": "1c1053d88ba1",
    "type": "UPDATE_NAME",
    "title": "Bellhaven of Kettering",
    "confidence": 0.825,
@@ -1897,7 +1897,7 @@
    "near_misses": []
   },
   {
-   "id": "36913b6c9e44",
+   "id": "90e016f7d81c",
    "type": "CONFIRM_MATCH",
    "title": "Bellhaven of Zanesville",
    "confidence": 0.762,
@@ -1977,7 +1977,7 @@
    "near_misses": []
   },
   {
-   "id": "753b0eef62ce",
+   "id": "d122d06484d7",
    "type": "CONFIRM_MATCH",
    "title": "Bellhaven of Chagrin Falls",
    "confidence": 0.7,
@@ -2057,7 +2057,7 @@
    "near_misses": []
   },
   {
-   "id": "a8c9d00e4cdb",
+   "id": "98e7c1487851",
    "type": "CONFIRM_MATCH",
    "title": "Bellhaven Willow Creek",
    "confidence": 0.7,
@@ -2137,7 +2137,7 @@
    "near_misses": []
   },
   {
-   "id": "227c61505f09",
+   "id": "673da8f7f9fa",
    "type": "CREATE",
    "title": "Bellhaven at Union Square",
    "confidence": 1.0,
@@ -2225,7 +2225,7 @@
    ]
   },
   {
-   "id": "74002851480a",
+   "id": "b30d6f8b93db",
    "type": "CREATE",
    "title": "Bellhaven of Batavia",
    "confidence": 1.0,
@@ -2276,7 +2276,7 @@
    "near_misses": []
   },
   {
-   "id": "45fcda44c11e",
+   "id": "f518f181bdff",
    "type": "CREATE",
    "title": "Bellhaven of Carlisle",
    "confidence": 1.0,
@@ -2327,7 +2327,7 @@
    "near_misses": []
   },
   {
-   "id": "a31342d5ea36",
+   "id": "68c3b2469925",
    "type": "CREATE",
    "title": "Amberly Manor",
    "confidence": 1.0,
@@ -2378,7 +2378,7 @@
    "near_misses": []
   },
   {
-   "id": "4cbe66c412f3",
+   "id": "2e49daeb4265",
    "type": "NOT_ON_SITE",
    "title": "Bellhaven Care Center of Alliance",
    "confidence": 1.0,
@@ -2434,7 +2434,7 @@
    "near_misses": []
   },
   {
-   "id": "4ab7febcc5cf",
+   "id": "0c10e3d91ca2",
    "type": "NOT_ON_SITE",
    "title": "Bellhaven of Coldwater",
    "confidence": 1.0,
@@ -2490,7 +2490,7 @@
    "near_misses": []
   },
   {
-   "id": "ae232addde94",
+   "id": "d26f9f25e0f8",
    "type": "NOT_ON_SITE",
    "title": "Bellhaven of Sandusky",
    "confidence": 1.0,
@@ -2548,7 +2548,7 @@
  ],
  "confirmed": [
   {
-   "id": "a2bd1fa64040",
+   "id": "ad972c9b05db",
    "type": "CONFIRM",
    "title": "Bellhaven of Maplewood",
    "confidence": 1.0,
@@ -2659,7 +2659,7 @@
    ]
   },
   {
-   "id": "851355624ae6",
+   "id": "ccc8aa389164",
    "type": "CONFIRM",
    "title": "Bellhaven of New Carlisle",
    "confidence": 1.0,
@@ -2733,7 +2733,7 @@
    "near_misses": []
   },
   {
-   "id": "d0825495823f",
+   "id": "42c3a6855d13",
    "type": "CONFIRM",
    "title": "Bellhaven of Wooster",
    "confidence": 1.0,
@@ -2807,7 +2807,7 @@
    "near_misses": []
   },
   {
-   "id": "4dc8a590c5d8",
+   "id": "5bcaa783f7be",
    "type": "CONFIRM",
    "title": "Bellhaven Terrace of Akron",
    "confidence": 1.0,
@@ -2881,7 +2881,7 @@
    "near_misses": []
   },
   {
-   "id": "d1ce5a4ed4e8",
+   "id": "2a4bdbf3075f",
    "type": "CONFIRM",
    "title": "Bellhaven of Saline",
    "confidence": 1.0,
@@ -2955,7 +2955,7 @@
    "near_misses": []
   },
   {
-   "id": "b4d61bc487f4",
+   "id": "cdd61ed8f298",
    "type": "CONFIRM",
    "title": "Bellhaven of Meadville",
    "confidence": 1.0,
@@ -3029,7 +3029,7 @@
    "near_misses": []
   },
   {
-   "id": "d38b96291a10",
+   "id": "88a39996c257",
    "type": "CONFIRM",
    "title": "Bellhaven Woods of Toledo",
    "confidence": 1.0,
@@ -3103,7 +3103,7 @@
    "near_misses": []
   },
   {
-   "id": "8d99195ac3cd",
+   "id": "dbc8cbfcfed3",
    "type": "CONFIRM",
    "title": "Bellhaven of Kalamazoo",
    "confidence": 1.0,
@@ -3177,7 +3177,7 @@
    "near_misses": []
   },
   {
-   "id": "68ccc0967234",
+   "id": "d5e3c513ecfe",
    "type": "CONFIRM",
    "title": "Bellhaven Court of Altoona",
    "confidence": 1.0,
@@ -3251,7 +3251,7 @@
    "near_misses": []
   },
   {
-   "id": "5c4ed3399153",
+   "id": "de8755a42be9",
    "type": "CONFIRM",
    "title": "Bellhaven of Owosso",
    "confidence": 1.0,
@@ -3325,7 +3325,7 @@
    "near_misses": []
   },
   {
-   "id": "428aff3b69ee",
+   "id": "67503d7f8477",
    "type": "CONFIRM",
    "title": "Bellhaven of Goshen",
    "confidence": 0.95,
@@ -3399,7 +3399,7 @@
    "near_misses": []
   },
   {
-   "id": "e46f5d88b446",
+   "id": "a398b7c75bca",
    "type": "CONFIRM",
    "title": "Bellhaven of Defiance",
    "confidence": 0.95,
@@ -3473,7 +3473,7 @@
    "near_misses": []
   },
   {
-   "id": "9cab80554745",
+   "id": "32c6eabbd00a",
    "type": "CONFIRM",
    "title": "Bellhaven of Marion",
    "confidence": 0.95,
@@ -3547,7 +3547,7 @@
    "near_misses": []
   },
   {
-   "id": "b3c729e71d5b",
+   "id": "bf1e5e7b7391",
    "type": "CONFIRM",
    "title": "Bellhaven of Port Clinton",
    "confidence": 0.95,
@@ -3621,7 +3621,7 @@
    "near_misses": []
   },
   {
-   "id": "93ee157649b9",
+   "id": "5e352c72f2bb",
    "type": "CONFIRM",
    "title": "Bellhaven Shores of Erie",
    "confidence": 0.95,
@@ -3696,7 +3696,7 @@
    "near_misses": []
   },
   {
-   "id": "037d86408407",
+   "id": "5e07d159f506",
    "type": "CONFIRM",
    "title": "Bellhaven Gardens of Monroe",
    "confidence": 0.95,
@@ -3771,7 +3771,7 @@
   }
  ],
  "suppressed": 0,
- "generated_at": "2026-09-12T19:17:04+00:00",
+ "generated_at": "2026-09-12T19:34:43+00:00",
  "counts": {
   "site_locations": 35,
   "crm_accounts": 121,

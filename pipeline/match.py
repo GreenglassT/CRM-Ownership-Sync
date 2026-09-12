@@ -179,8 +179,13 @@ def survivor_rank(acct: dict, parent_id: str, match_score: float = 0.0, successo
     )
 
 
-def fingerprint(kind: str, subject: str, changes) -> str:
-    raw = json.dumps({"t": kind, "s": subject, "c": changes}, sort_keys=True)
+def fingerprint(kind: str, subject: str, changes, actions=()) -> str:
+    """Stable id for 'this exact change to this subject'. The write payloads are
+    part of it, so a proposal whose payload was refreshed by a later run cannot be
+    approved under an id the reviewer saw with different values. Dated note lines
+    are excluded so ids do not drift day to day."""
+    writes = [{k: v for k, v in a.get("payload", {}).items() if k != "note"} for a in actions]
+    raw = json.dumps({"t": kind, "s": subject, "c": changes, "w": writes}, sort_keys=True)
     return hashlib.sha1(raw.encode()).hexdigest()[:12]
 
 
@@ -213,7 +218,7 @@ def account_payload_from_location(loc: dict, parent_id: str, note: str) -> dict:
 
 def _proposal(kind, subject_key, loc, acct, changes, actions, evidence, rationale, confidence, attention="", near_misses=None):
     return {
-        "id": fingerprint(kind, subject_key, changes),
+        "id": fingerprint(kind, subject_key, changes, actions),
         "type": kind,
         "title": (loc or acct)["name"],
         "confidence": confidence,
