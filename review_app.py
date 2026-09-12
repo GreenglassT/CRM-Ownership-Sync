@@ -168,10 +168,18 @@ def _render(selected_id: str | None):
         return redirect(url_for("index"))
     rows = recon_rows(sel, parent) if sel else []
     does = describe_actions(sel, parent) if sel and sel["actions"] else []
+    # Other open items touching the same account(s), so "kept as is" on this page
+    # is never mistaken for "left stale" — the phone or name fix is its own item.
+    related = []
+    if sel:
+        ids = {(sel.get("account") or {}).get("account_id"), (sel.get("survivor") or {}).get("account_id")} - {None}
+        related = [{"label": LABEL.get(o["type"], o["type"]), "account": o["account"]["name"], "id": o["id"],
+                    "survivor": o["account"]["account_id"] == (sel.get("survivor") or {}).get("account_id")}
+                   for o in props if o["id"] != sel["id"] and o.get("account") and o["account"]["account_id"] in ids]
     cols = {"CHOW": ("Old account (stays as is)", "New successor account"),
             "DUPLICATE": ("This copy (retired on approval)", "Surviving copy (kept as is)")}.get(sel["type"] if sel else "", ("CRM now", "After approval"))
     return render_template("review.html", q=q, groups=groups_for(props, q.get("confirmed", [])), total=len(props), sel=sel,
-                           rows=rows, does=does, cols=cols, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
+                           rows=rows, does=does, cols=cols, related=related, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
 
 
 @app.get("/")

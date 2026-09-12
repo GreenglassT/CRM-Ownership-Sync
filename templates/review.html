@@ -55,6 +55,7 @@
 
 
   h3.sec { font-size: 13px; font-weight: 600; margin: 22px 0 8px; }
+  .related { margin: -6px 0 14px; font-size: 13px; color: var(--ink-2); max-width: 72ch; }
   table.ev { border-collapse: collapse; font-size: 13px; margin-bottom: 6px; }
   .ev td { padding: 4px 12px 4px 0; vertical-align: top; border-bottom: 1px solid var(--rule-2); }
   .ev td.w { width: 52px; font-weight: 500; }
@@ -152,6 +153,12 @@
       {% endfor %}
       </tbody>
     </table>
+    {% endif %}
+
+    {% if related %}
+    <p class="related">Also queued for this building:
+      {% for r in related %}<a href="{{ url_for('show', pid=r.id) }}">{{ r.label }}</a> ({{ 'surviving copy' if r.survivor else r.account }}){{ ', ' if not loop.last }}{% endfor %}.
+      Each is its own approval; this item does not make those changes.</p>
     {% endif %}
 
     <h3 class="sec">Why</h3>
