@@ -168,15 +168,21 @@ point at an Active survivor. 127 accounts: 121 + 2 successors + 4 created.
 
 ## What I'd build next
 
-1. **Contacts.** The API has a contacts endpoint; the website lists an administrator
-   per community. Proposing contact creates/updates is the same pattern one level down.
-2. **A second source of truth.** CMS/state licensure data would turn "not on the
-   website" into "not on the website *and* license transferred", which is strong
-   enough to propose Inactive instead of Needs Review.
-3. **Change detection between runs.** Diffing today's site snapshot against
-   yesterday's would give the sales team an "ownership changed" feed, not just a
-   corrected CRM.
-4. **Generalize the operator.** The parent is discovered by name and the scraper is
-   the only Bellhaven-specific module; a per-operator scraper adapter would let the
-   same matcher and review flow run across the sixty percent of facilities with a
-   corporate parent.
+1. **Contacts.** Every community page names an administrator (Findlay's is Sam
+   Pruitt), which is the person a rep actually calls. The CRM has a contacts table
+   the API can write to, and the pipeline ignores that field today. Proposing "add or
+   update the administrator contact on this account" is the same approve/reject flow
+   as a phone fix.
+2. **Stronger evidence before deactivating.** When a community disappears from the
+   website, all the pipeline can honestly say is "someone should look." Nursing homes
+   are state licensed and Medicare publishes their owners. If the pipeline also checked
+   that public list and saw the license had moved to a different owner, it could mark
+   the account Inactive on its own instead of flagging it.
+3. **Tell reps what changed.** Compare today's website to yesterday's and post a short
+   daily note ("Bellhaven added Findlay; Bellhaven dropped Alliance"). That is a
+   heads-up for sales, not just a records cleanup.
+4. **Other operators.** Only the scraper knows what Bellhaven's website looks like;
+   the matching, the SOP rules, and the review app do not care whose facilities they
+   are. Covering Juniper Point or Stonebridge means writing one small scraper for their
+   site and reusing everything else. Sixty percent of facilities have a corporate
+   parent; this is how one pipeline covers all of them.
