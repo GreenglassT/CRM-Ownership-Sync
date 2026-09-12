@@ -15,6 +15,7 @@ from pipeline.apply import apply_proposal
 from pipeline.crm import CRM
 from pipeline.ledger import Ledger
 from pipeline.match import EXPLAIN, LABEL, ORDER, money, parent_label
+from pipeline.normalize import map_care, norm_phone, norm_street, norm_zip, norm_city
 import run_pipeline
 
 app = Flask(__name__)
@@ -53,9 +54,8 @@ def recon_rows(p: dict, parent: dict) -> list[dict]:
     ch = {c["field"]: c["to"] for c in p["changes"]}
     t = p["type"]
 
-    def row(field, web, crm, key=None, after=None, note=""):
+    def row(field, web, crm, key=None, after=None, note="", differs=False):
         changed = key in ch
-        differs = bool(web) and bool(crm) and str(web).casefold().strip() != str(crm).casefold().strip()
         return {"field": field, "web": web, "crm": crm, "differs": differs,
                 "after": after if after is not None else (ch[key] if changed else crm), "changed": changed, "note": note}
 
@@ -70,21 +70,24 @@ def recon_rows(p: dict, parent: dict) -> list[dict]:
     if t == "NOT_ON_SITE":
         return [row("Listed on website", "no", "under " + parent_label(A["parent_name"])), row("Status", "", A["status"], key="status")] + billing
 
-    rows = [row("Name", L["name"], A["name"], key="name")]
+    rows = [row("Name", L["name"], A["name"], key="name", differs=L["name"].strip().casefold() != A["name"].strip().casefold())]
     if t == "CHOW":
         rows += [row("Parent", parent_label(parent["name"]), parent_label(A["parent_name"]),
                      note="stays as is; successor account is created under " + parent_label(parent["name"])),
                  row("Change of ownership link", "", A["chow_current_account"], key="chow_current_account", after="new successor account")]
     else:
         rows.append(row("Parent", parent_label(parent["name"]), parent_label(A["parent_name"]), key="parent_id",
-                        after=parent_label(parent["name"]) if "parent_id" in ch else None))
+                        after=parent_label(parent["name"]) if "parent_id" in ch else None, differs=A["parent_id"] != parent.get("account_id")))
     rows += [
-        row("Street", L["street"], A["billing_street"], key="billing_street"),
+        row("Street", L["street"], A["billing_street"], key="billing_street", differs=norm_street(L["street"]) != norm_street(A["billing_street"])),
         row("City, state ZIP", f"{L['city']}, {L['state']} {L['zip']}", f"{A['billing_city']}, {A['billing_state']} {A['billing_zip']}",
             key=next((k for k in ("billing_city", "billing_state", "billing_zip") if k in ch), None),
-            after=f"{ch.get('billing_city', A['billing_city'])}, {ch.get('billing_state', A['billing_state'])} {ch.get('billing_zip', A['billing_zip'])}"),
-        row("Care", ", ".join(L["care_offerings"]), A["care_type"], key="care_type"),
-        row("Phone", L["phone"], A["phone"], key="phone"),
+            after=f"{ch.get('billing_city', A['billing_city'])}, {ch.get('billing_state', A['billing_state'])} {ch.get('billing_zip', A['billing_zip'])}",
+            differs=(norm_city(L["city"]) != norm_city(A["billing_city"]) or norm_zip(L["zip"]) != norm_zip(A["billing_zip"])
+                     or (L["state"] or "").upper() != (A["billing_state"] or "").upper())),
+        row("Care", ", ".join(L["care_offerings"]), A["care_type"], key="care_type",
+            differs=bool(map_care(L["care_offerings"])) and A["care_type"] not in map_care(L["care_offerings"])),
+        row("Phone", L["phone"], A["phone"], key="phone", differs=bool(L["phone"]) and norm_phone(L["phone"]) != norm_phone(A["phone"])),
         row("Status", "on website", A["status"], key="status"),
     ]
     if t == "DUPLICATE":
