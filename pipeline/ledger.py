@@ -3,7 +3,7 @@
 Every proposal has a stable id (hash of type + subject + desired changes). Once a
 reviewer approves or rejects it, the id is recorded here and the pipeline never
 re-proposes it. An approval whose write failed is *not* considered decided, so it
-comes back on the next run — but every attempt is kept, so an account created by
+comes back on the next run, but every attempt is kept, so an account created by
 a failed attempt is reused rather than created again.
 """
 import datetime as dt
