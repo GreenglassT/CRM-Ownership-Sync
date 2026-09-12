@@ -182,8 +182,8 @@
  {
   "account_id": "001LGFPBJY4N9MB6KL",
   "name": "Bellhaven Crossings of Lima",
-  "parent_id": "001FJZYHR7MLFMNPLL",
-  "parent_name": "Harborview Care Group (Parent Account)",
+  "parent_id": "0015QAPLGS3FVYEEEM",
+  "parent_name": "Bellhaven Senior Living (Parent Account)",
   "billing_street": "3115 N Cole St",
   "billing_city": "Lima",
   "billing_state": "OH",
@@ -195,9 +195,9 @@
   "outstanding_ar": 0,
   "chow_current_account": "",
   "duplicate_of_account": "",
-  "note": "",
+  "note": "[ownership-sync] 2026-09-12: Re-parented from Harborview Care Group to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-crossings-of-lima. SOP: no outstanding AR, so direct re-parent is allowed.",
   "created_by_candidate": false,
-  "updated_at": "2026-09-12 16:00:31Z"
+  "updated_at": "2026-09-12 20:36:35Z"
  },
  {
   "account_id": "001U1750VLVJAGG1S5",
@@ -242,8 +242,8 @@
  {
   "account_id": "001UKEFGADQ8YCZ4YM",
   "name": "Bellhaven Meadows of Findlay",
-  "parent_id": "",
-  "parent_name": "",
+  "parent_id": "0015QAPLGS3FVYEEEM",
+  "parent_name": "Bellhaven Senior Living (Parent Account)",
   "billing_street": "1800 N Blanchard St",
   "billing_city": "Findlay",
   "billing_state": "OH",
@@ -255,9 +255,9 @@
   "outstanding_ar": 0,
   "chow_current_account": "",
   "duplicate_of_account": "",
-  "note": "",
+  "note": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-meadows-of-findlay. SOP: no outstanding AR, so direct re-parent is allowed.",
   "created_by_candidate": false,
-  "updated_at": "2026-09-12 16:00:31Z"
+  "updated_at": "2026-09-12 20:36:32Z"
  },
  {
   "account_id": "001TZCSTBZFM6K5BGN",
@@ -480,6 +480,26 @@
   "updated_at": "2026-09-12 16:53:05Z"
  },
  {
+  "account_id": "00199ABAE69C26D17D",
+  "name": "Bellhaven of Marietta",
+  "parent_id": "0015QAPLGS3FVYEEEM",
+  "parent_name": "Bellhaven Senior Living (Parent Account)",
+  "billing_street": "805 Colegate Dr",
+  "billing_city": "Marietta",
+  "billing_state": "OH",
+  "billing_zip": "45750",
+  "care_type": "Skilled Nursing",
+  "status": "Active",
+  "phone": "(614) 337-1967",
+  "lifetime_revenue": 0,
+  "outstanding_ar": 0,
+  "chow_current_account": "",
+  "duplicate_of_account": "",
+  "note": "[ownership-sync] 2026-09-12: CHOW from 001A34WFSUYHCRBLFT (Bellhaven of Marietta, was under Cedar Trail Communities). Old account preserved for billing: lifetime_revenue=51250, outstanding_ar=3800. Offerings: Short-Term Rehabilitation & Nursing.",
+  "created_by_candidate": true,
+  "updated_at": "2026-09-12 20:36:06Z"
+ },
+ {
   "account_id": "001A34WFSUYHCRBLFT",
   "name": "Bellhaven of Marietta",
   "parent_id": "001FWSQ30SFW6S7604",
@@ -493,11 +513,11 @@
   "phone": "(419) 353-5019",
   "lifetime_revenue": 51250,
   "outstanding_ar": 3800,
-  "chow_current_account": "",
+  "chow_current_account": "00199ABAE69C26D17D",
   "duplicate_of_account": "",
   "note": "",
   "created_by_candidate": false,
-  "updated_at": "2026-09-12 16:00:31Z"
+  "updated_at": "2026-09-12 20:36:06Z"
  },
  {
   "account_id": "0015L38R1Z5947ZZP7",
@@ -700,6 +720,26 @@
   "updated_at": "2026-09-12 16:00:31Z"
  },
  {
+  "account_id": "001BAFF7A3C72D54DC",
+  "name": "Bellhaven of Tiffin",
+  "parent_id": "0015QAPLGS3FVYEEEM",
+  "parent_name": "Bellhaven Senior Living (Parent Account)",
+  "billing_street": "45 St Lawrence Dr",
+  "billing_city": "Tiffin",
+  "billing_state": "OH",
+  "billing_zip": "44883",
+  "care_type": "Skilled Nursing",
+  "status": "Active",
+  "phone": "(260) 589-2589",
+  "lifetime_revenue": 0,
+  "outstanding_ar": 0,
+  "chow_current_account": "",
+  "duplicate_of_account": "",
+  "note": "[ownership-sync] 2026-09-12: CHOW from 001U6RW32TY0WSXZZB (Bellhaven of Tiffin, was under Cedar Trail Communities). Old account preserved for billing: lifetime_revenue=84000, outstanding_ar=12400. Offerings: Short-Term Rehabilitation & Nursing.",
+  "created_by_candidate": true,
+  "updated_at": "2026-09-12 20:25:35Z"
+ },
+ {
   "account_id": "001U6RW32TY0WSXZZB",
   "name": "Bellhaven of Tiffin",
   "parent_id": "001FWSQ30SFW6S7604",
@@ -713,11 +753,11 @@
   "phone": "(614) 829-9278",
   "lifetime_revenue": 84000,
   "outstanding_ar": 12400,
-  "chow_current_account": "",
+  "chow_current_account": "001BAFF7A3C72D54DC",
   "duplicate_of_account": "",
   "note": "",
   "created_by_candidate": false,
-  "updated_at": "2026-09-12 16:00:31Z"
+  "updated_at": "2026-09-12 20:25:36Z"
  },
  {
   "account_id": "001W5G121A7SMRP58M",
@@ -1602,8 +1642,8 @@
  {
   "account_id": "0016KTS1UAWBRXS09J",
   "name": "Kettering Nursing & Rehabilitation",
-  "parent_id": "",
-  "parent_name": "",
+  "parent_id": "0015QAPLGS3FVYEEEM",
+  "parent_name": "Bellhaven Senior Living (Parent Account)",
   "billing_street": "3313 Wilmington Pike",
   "billing_city": "Kettering",
   "billing_state": "OH",
@@ -1615,9 +1655,9 @@
   "outstanding_ar": 0,
   "chow_current_account": "",
   "duplicate_of_account": "",
-  "note": "",
+  "note": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering. SOP: no revenue history, so direct re-parent is allowed.",
   "created_by_candidate": false,
-  "updated_at": "2026-09-12 16:00:31Z"
+  "updated_at": "2026-09-12 20:36:37Z"
  },
  {
   "account_id": "001B7XZAA3AFALS9GP",

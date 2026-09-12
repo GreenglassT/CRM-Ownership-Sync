@@ -189,7 +189,23 @@
    "near_misses": [],
    "survivor": {
     "account_id": "001EGU7BMJ942ZTRE6",
-    "name": "Bellhaven of Owosso"
+    "name": "Bellhaven of Owosso",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "1120 W Main St",
+    "billing_city": "Owosso",
+    "billing_state": "MI",
+    "billing_zip": "48867",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(734) 503-1363",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
    }
   },
   {
@@ -370,96 +386,6 @@
     }
    ],
    "rationale": "Website name 'Bellhaven of Chesterton' differs from CRM 'Chesterton Senior Commons'; same address/phone so this is a rename, not a different facility.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "09a695b2423f",
-   "type": "REPARENT",
-   "title": "Bellhaven Meadows of Findlay",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001UKEFGADQ8YCZ4YM",
-   "location": {
-    "slug": "bellhaven-meadows-of-findlay",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-meadows-of-findlay",
-    "name": "Bellhaven Meadows of Findlay",
-    "street": "1800 N Blanchard St",
-    "city": "Findlay",
-    "state": "OH",
-    "zip": "45840",
-    "care_offerings": [
-     "Assisted Living",
-     "Memory Support"
-    ],
-    "phone": "(231) 533-2969",
-    "administrator": "Sam Pruitt"
-   },
-   "account": {
-    "account_id": "001UKEFGADQ8YCZ4YM",
-    "name": "Bellhaven Meadows of Findlay",
-    "parent_id": "",
-    "parent_name": "",
-    "billing_street": "1800 N Blanchard St",
-    "billing_city": "Findlay",
-    "billing_state": "OH",
-    "billing_zip": "45840",
-    "care_type": "Assisted Living",
-    "status": "Active",
-    "phone": "(330) 975-2492",
-    "lifetime_revenue": 22000,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [
-    {
-     "field": "parent_id",
-     "from": "",
-     "to": "0015QAPLGS3FVYEEEM"
-    }
-   ],
-   "actions": [
-    {
-     "op": "patch",
-     "account_id": "001UKEFGADQ8YCZ4YM",
-     "payload": {
-      "parent_id": "0015QAPLGS3FVYEEEM"
-     },
-     "note_append": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-meadows-of-findlay. SOP: no outstanding AR, so direct re-parent is allowed."
-    }
-   ],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '1800 n blanchard st'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 45840"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Findlay, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (231) 533-2969 vs (330) 975-2492"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven Meadows of Findlay' vs 'Bellhaven Meadows of Findlay'"
-    }
-   ],
-   "rationale": "Account is under no parent but the website lists it as a Bellhaven Senior Living community. SOP: no outstanding AR (revenue=$22,000, AR=$0), so re-parent directly.",
    "attention": "",
    "near_misses": []
   },
@@ -826,7 +752,23 @@
    "near_misses": [],
    "survivor": {
     "account_id": "001UELXDAKFRKB8932",
-    "name": "Bellhaven of Port Clinton"
+    "name": "Bellhaven of Port Clinton",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "1420 Harbor Point Dr",
+    "billing_city": "Port Clinton",
+    "billing_state": "OH",
+    "billing_zip": "43452",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(614) 512-8712",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
    }
   },
   {
@@ -926,7 +868,23 @@
    "near_misses": [],
    "survivor": {
     "account_id": "001CVBBCSDM7YHN220",
-    "name": "Bellhaven Shores of Erie"
+    "name": "Bellhaven Shores of Erie",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "4930 W Lake Rd",
+    "billing_city": "Erie",
+    "billing_state": "PA",
+    "billing_zip": "16505",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(419) 495-1741",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
    }
   },
   {
@@ -1025,7 +983,23 @@
    "near_misses": [],
    "survivor": {
     "account_id": "001U1750VLVJAGG1S5",
-    "name": "Bellhaven Gardens of Monroe"
+    "name": "Bellhaven Gardens of Monroe",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "750 Stewart Rd",
+    "billing_city": "Monroe",
+    "billing_state": "MI",
+    "billing_zip": "48162",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(814) 291-2902",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
    }
   },
   {
@@ -1124,309 +1098,24 @@
    "near_misses": [],
    "survivor": {
     "account_id": "001U1750VLVJAGG1S5",
-    "name": "Bellhaven Gardens of Monroe"
-   }
-  },
-  {
-   "id": "b91fcd236ee0",
-   "type": "CHOW",
-   "title": "Bellhaven of Tiffin",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001U6RW32TY0WSXZZB",
-   "location": {
-    "slug": "bellhaven-of-tiffin",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-tiffin",
-    "name": "Bellhaven of Tiffin",
-    "street": "45 St Lawrence Dr",
-    "city": "Tiffin",
-    "state": "OH",
-    "zip": "44883",
-    "care_offerings": [
-     "Short-Term Rehabilitation & Nursing"
-    ],
-    "phone": "(260) 589-2589",
-    "administrator": "Walt Osei"
-   },
-   "account": {
-    "account_id": "001U6RW32TY0WSXZZB",
-    "name": "Bellhaven of Tiffin",
-    "parent_id": "001FWSQ30SFW6S7604",
-    "parent_name": "Cedar Trail Communities (Parent Account)",
-    "billing_street": "45 St Lawrence Dr",
-    "billing_city": "Tiffin",
-    "billing_state": "OH",
-    "billing_zip": "44883",
-    "care_type": "Skilled Nursing",
-    "status": "Active",
-    "phone": "(614) 829-9278",
-    "lifetime_revenue": 84000,
-    "outstanding_ar": 12400,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [
-    {
-     "field": "chow_current_account",
-     "from": "",
-     "to": "(new account)"
-    }
-   ],
-   "actions": [
-    {
-     "op": "create",
-     "payload": {
-      "name": "Bellhaven of Tiffin",
-      "parent_id": "0015QAPLGS3FVYEEEM",
-      "status": "Active",
-      "billing_street": "45 St Lawrence Dr",
-      "billing_city": "Tiffin",
-      "billing_state": "OH",
-      "billing_zip": "44883",
-      "care_type": "Skilled Nursing",
-      "phone": "(260) 589-2589",
-      "note": "[ownership-sync] 2026-09-12: CHOW from 001U6RW32TY0WSXZZB (Bellhaven of Tiffin, was under Cedar Trail Communities). Old account preserved for billing: lifetime_revenue=84000, outstanding_ar=12400. Offerings: Short-Term Rehabilitation & Nursing."
-     },
-     "bind": "new_id"
-    },
-    {
-     "op": "patch",
-     "account_id": "001U6RW32TY0WSXZZB",
-     "payload": {
-      "chow_current_account": {
-       "$bind": "new_id"
-      }
-     }
-    }
-   ],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '45 st lawrence dr'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 44883"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Tiffin, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (260) 589-2589 vs (614) 829-9278"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven of Tiffin' vs 'Bellhaven of Tiffin'"
-    }
-   ],
-   "rationale": "Account is under Cedar Trail Communities but the website lists it as a Bellhaven Senior Living community. SOP: lifetime_revenue=$84,000 AND outstanding_ar=$12,400 > 0, so the old account must be left untouched. Create a new account under Bellhaven Senior Living and link old.chow_current_account to it.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "6fcdfff1b002",
-   "type": "CHOW",
-   "title": "Bellhaven of Marietta",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001A34WFSUYHCRBLFT",
-   "location": {
-    "slug": "bellhaven-of-marietta",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-marietta",
-    "name": "Bellhaven of Marietta",
-    "street": "805 Colegate Dr",
-    "city": "Marietta",
-    "state": "OH",
-    "zip": "45750",
-    "care_offerings": [
-     "Short-Term Rehabilitation & Nursing"
-    ],
-    "phone": "(614) 337-1967",
-    "administrator": "Rosa Dietz"
-   },
-   "account": {
-    "account_id": "001A34WFSUYHCRBLFT",
-    "name": "Bellhaven of Marietta",
-    "parent_id": "001FWSQ30SFW6S7604",
-    "parent_name": "Cedar Trail Communities (Parent Account)",
-    "billing_street": "805 Colegate Drive",
-    "billing_city": "Marietta",
-    "billing_state": "OH",
-    "billing_zip": "45750",
-    "care_type": "Skilled Nursing",
-    "status": "Active",
-    "phone": "(419) 353-5019",
-    "lifetime_revenue": 51250,
-    "outstanding_ar": 3800,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [
-    {
-     "field": "chow_current_account",
-     "from": "",
-     "to": "(new account)"
-    }
-   ],
-   "actions": [
-    {
-     "op": "create",
-     "payload": {
-      "name": "Bellhaven of Marietta",
-      "parent_id": "0015QAPLGS3FVYEEEM",
-      "status": "Active",
-      "billing_street": "805 Colegate Dr",
-      "billing_city": "Marietta",
-      "billing_state": "OH",
-      "billing_zip": "45750",
-      "care_type": "Skilled Nursing",
-      "phone": "(614) 337-1967",
-      "note": "[ownership-sync] 2026-09-12: CHOW from 001A34WFSUYHCRBLFT (Bellhaven of Marietta, was under Cedar Trail Communities). Old account preserved for billing: lifetime_revenue=51250, outstanding_ar=3800. Offerings: Short-Term Rehabilitation & Nursing."
-     },
-     "bind": "new_id"
-    },
-    {
-     "op": "patch",
-     "account_id": "001A34WFSUYHCRBLFT",
-     "payload": {
-      "chow_current_account": {
-       "$bind": "new_id"
-      }
-     }
-    }
-   ],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '805 colegate dr'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 45750"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Marietta, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (614) 337-1967 vs (419) 353-5019"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven of Marietta' vs 'Bellhaven of Marietta'"
-    }
-   ],
-   "rationale": "Account is under Cedar Trail Communities but the website lists it as a Bellhaven Senior Living community. SOP: lifetime_revenue=$51,250 AND outstanding_ar=$3,800 > 0, so the old account must be left untouched. Create a new account under Bellhaven Senior Living and link old.chow_current_account to it.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "369c88b7cbe6",
-   "type": "REPARENT",
-   "title": "Bellhaven Crossings of Lima",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001LGFPBJY4N9MB6KL",
-   "location": {
-    "slug": "bellhaven-crossings-of-lima",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-crossings-of-lima",
-    "name": "Bellhaven Crossings of Lima",
-    "street": "3115 N Cole St",
-    "city": "Lima",
-    "state": "OH",
-    "zip": "45801",
-    "care_offerings": [
-     "Assisted Living"
-    ],
-    "phone": "(231) 539-3617",
-    "administrator": "Tricia Fitch"
-   },
-   "account": {
-    "account_id": "001LGFPBJY4N9MB6KL",
-    "name": "Bellhaven Crossings of Lima",
-    "parent_id": "001FJZYHR7MLFMNPLL",
-    "parent_name": "Harborview Care Group (Parent Account)",
-    "billing_street": "3115 N Cole St",
-    "billing_city": "Lima",
-    "billing_state": "OH",
-    "billing_zip": "45801",
+    "name": "Bellhaven Gardens of Monroe",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "750 Stewart Rd",
+    "billing_city": "Monroe",
+    "billing_state": "MI",
+    "billing_zip": "48162",
     "care_type": "Assisted Living",
     "status": "Active",
-    "phone": "(734) 872-9575",
-    "lifetime_revenue": 47000,
+    "phone": "(814) 291-2902",
+    "lifetime_revenue": 0,
     "outstanding_ar": 0,
     "chow_current_account": "",
     "duplicate_of_account": "",
     "note": "",
     "created_by_candidate": false,
     "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [
-    {
-     "field": "parent_id",
-     "from": "001FJZYHR7MLFMNPLL",
-     "to": "0015QAPLGS3FVYEEEM"
-    }
-   ],
-   "actions": [
-    {
-     "op": "patch",
-     "account_id": "001LGFPBJY4N9MB6KL",
-     "payload": {
-      "parent_id": "0015QAPLGS3FVYEEEM"
-     },
-     "note_append": "[ownership-sync] 2026-09-12: Re-parented from Harborview Care Group to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-crossings-of-lima. SOP: no outstanding AR, so direct re-parent is allowed."
-    }
-   ],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '3115 n cole st'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 45801"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Lima, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (231) 539-3617 vs (734) 872-9575"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven Crossings of Lima' vs 'Bellhaven Crossings of Lima'"
-    }
-   ],
-   "rationale": "Account is under Harborview Care Group but the website lists it as a Bellhaven Senior Living community. SOP: no outstanding AR (revenue=$47,000, AR=$0), so re-parent directly.",
-   "attention": "",
-   "near_misses": []
+   }
   },
   {
    "id": "1ad013d50909",
@@ -1611,12 +1300,28 @@
      "detail": "name token overlap 0.50: 'Bellhaven of Kettering' vs 'Kettering Senior Campus'"
     }
    ],
-   "rationale": "'Kettering Senior Campus' and 'Kettering Nursing & Rehabilitation' both resolve to Bellhaven of Kettering (3313 Wilmington Pike, Kettering). Keeping 0016KTS1UAWBRXS09J (rank: AR=False, revenue=False, under parent=False, Active).",
+   "rationale": "'Kettering Senior Campus' and 'Kettering Nursing & Rehabilitation' both resolve to Bellhaven of Kettering (3313 Wilmington Pike, Kettering). Keeping 0016KTS1UAWBRXS09J (rank: AR=False, revenue=False, under parent=True, Active).",
    "attention": "",
    "near_misses": [],
    "survivor": {
     "account_id": "0016KTS1UAWBRXS09J",
-    "name": "Kettering Nursing & Rehabilitation"
+    "name": "Kettering Nursing & Rehabilitation",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "3313 Wilmington Pike",
+    "billing_city": "Kettering",
+    "billing_state": "OH",
+    "billing_zip": "45429",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(216) 345-3441",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering. SOP: no revenue history, so direct re-parent is allowed.",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 20:36:37Z"
    }
   },
   {
@@ -1710,40 +1415,14 @@
      "detail": "name token overlap 0.50: 'Bellhaven of Kettering' vs 'Kettering Care Centre'"
     }
    ],
-   "rationale": "'Kettering Care Centre' and 'Kettering Nursing & Rehabilitation' both resolve to Bellhaven of Kettering (3313 Wilmington Pike, Kettering). Keeping 0016KTS1UAWBRXS09J (rank: AR=False, revenue=False, under parent=False, Active).",
+   "rationale": "'Kettering Care Centre' and 'Kettering Nursing & Rehabilitation' both resolve to Bellhaven of Kettering (3313 Wilmington Pike, Kettering). Keeping 0016KTS1UAWBRXS09J (rank: AR=False, revenue=False, under parent=True, Active).",
    "attention": "",
    "near_misses": [],
    "survivor": {
     "account_id": "0016KTS1UAWBRXS09J",
-    "name": "Kettering Nursing & Rehabilitation"
-   }
-  },
-  {
-   "id": "cb7af5949965",
-   "type": "REPARENT",
-   "title": "Bellhaven of Kettering",
-   "confidence": 0.825,
-   "confidence_band": "high",
-   "subject_key": "0016KTS1UAWBRXS09J",
-   "location": {
-    "slug": "bellhaven-of-kettering",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering",
-    "name": "Bellhaven of Kettering",
-    "street": "3313 Wilmington Pike",
-    "city": "Kettering",
-    "state": "OH",
-    "zip": "45429",
-    "care_offerings": [
-     "Short-Term Rehabilitation & Nursing"
-    ],
-    "phone": "(231) 269-5449",
-    "administrator": "Priya Ashby"
-   },
-   "account": {
-    "account_id": "0016KTS1UAWBRXS09J",
     "name": "Kettering Nursing & Rehabilitation",
-    "parent_id": "",
-    "parent_name": "",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
     "billing_street": "3313 Wilmington Pike",
     "billing_city": "Kettering",
     "billing_state": "OH",
@@ -1755,57 +1434,10 @@
     "outstanding_ar": 0,
     "chow_current_account": "",
     "duplicate_of_account": "",
-    "note": "",
+    "note": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering. SOP: no revenue history, so direct re-parent is allowed.",
     "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [
-    {
-     "field": "parent_id",
-     "from": "",
-     "to": "0015QAPLGS3FVYEEEM"
-    }
-   ],
-   "actions": [
-    {
-     "op": "patch",
-     "account_id": "0016KTS1UAWBRXS09J",
-     "payload": {
-      "parent_id": "0015QAPLGS3FVYEEEM"
-     },
-     "note_append": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering. SOP: no revenue history, so direct re-parent is allowed."
-    }
-   ],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '3313 wilmington pike'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 45429"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Kettering, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (231) 269-5449 vs (216) 345-3441"
-    },
-    {
-     "signal": "name",
-     "weight": 0.125,
-     "detail": "name token overlap 0.50: 'Bellhaven of Kettering' vs 'Kettering Nursing & Rehabilitation'"
-    }
-   ],
-   "rationale": "Account is under no parent but the website lists it as a Bellhaven Senior Living community. SOP: no revenue history (revenue=$0, AR=$0), so re-parent directly.",
-   "attention": "",
-   "near_misses": []
+    "updated_at": "2026-09-12 20:36:37Z"
+   }
   },
   {
    "id": "1c1053d88ba1",
@@ -1831,8 +1463,8 @@
    "account": {
     "account_id": "0016KTS1UAWBRXS09J",
     "name": "Kettering Nursing & Rehabilitation",
-    "parent_id": "",
-    "parent_name": "",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
     "billing_street": "3313 Wilmington Pike",
     "billing_city": "Kettering",
     "billing_state": "OH",
@@ -1844,9 +1476,9 @@
     "outstanding_ar": 0,
     "chow_current_account": "",
     "duplicate_of_account": "",
-    "note": "",
+    "note": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering. SOP: no revenue history, so direct re-parent is allowed.",
     "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
+    "updated_at": "2026-09-12 20:36:37Z"
    },
    "changes": [
     {
@@ -1897,12 +1529,12 @@
    "near_misses": []
   },
   {
-   "id": "90e016f7d81c",
-   "type": "CONFIRM_MATCH",
+   "id": "6efa5936fa5e",
+   "type": "REPARENT",
    "title": "Bellhaven of Zanesville",
    "confidence": 0.762,
    "confidence_band": "low",
-   "subject_key": "bellhaven-of-zanesville|001H1JMVZWP46D5VUF",
+   "subject_key": "001H1JMVZWP46D5VUF",
    "location": {
     "slug": "bellhaven-of-zanesville",
     "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-zanesville",
@@ -1939,12 +1571,21 @@
    },
    "changes": [
     {
-     "field": "linked account",
-     "from": null,
-     "to": "001H1JMVZWP46D5VUF"
+     "field": "parent_id",
+     "from": "001FWSQ30SFW6S7604",
+     "to": "0015QAPLGS3FVYEEEM"
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001H1JMVZWP46D5VUF",
+     "payload": {
+      "parent_id": "0015QAPLGS3FVYEEEM"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Re-parented from Cedar Trail Communities to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-zanesville. SOP: no revenue history, so direct re-parent is allowed."
+    }
+   ],
    "evidence": [
     {
      "signal": "street",
@@ -1972,42 +1613,106 @@
      "detail": "name token overlap 0.25: 'Bellhaven of Zanesville' vs 'Cedar Trail of Zanesville'"
     }
    ],
-   "rationale": "Best candidate 'Cedar Trail of Zanesville' scores 0.76, below the 0.80 confidence bar. Approve to link this website location to it (field fixes follow on the next run); reject if it is a different facility (a new account is proposed instead).",
+   "rationale": "Account is under Cedar Trail Communities but the website lists it as a Bellhaven Senior Living community. SOP: no revenue history (revenue=$0, AR=$0), so re-parent directly.",
    "attention": "",
-   "near_misses": [],
-   "if_approved": [
-    {
-     "type": "REPARENT",
-     "label": "Move under parent",
-     "changes": [
-      {
-       "field": "parent_id",
-       "from": "Cedar Trail Communities",
-       "to": "Bellhaven Senior Living"
-      }
-     ]
-    },
-    {
-     "type": "UPDATE_NAME",
-     "label": "Rename",
-     "changes": [
-      {
-       "field": "name",
-       "from": "Cedar Trail of Zanesville",
-       "to": "Bellhaven of Zanesville"
-      }
-     ]
-    }
-   ],
-   "if_rejected": "Cedar Trail of Zanesville is excluded for this location; the next run proposes a new account 'Bellhaven of Zanesville' under Bellhaven Senior Living."
+   "near_misses": []
   },
   {
-   "id": "d122d06484d7",
-   "type": "CONFIRM_MATCH",
+   "id": "37381fa5704f",
+   "type": "UPDATE_NAME",
+   "title": "Bellhaven of Zanesville",
+   "confidence": 0.762,
+   "confidence_band": "low",
+   "subject_key": "001H1JMVZWP46D5VUF",
+   "location": {
+    "slug": "bellhaven-of-zanesville",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-zanesville",
+    "name": "Bellhaven of Zanesville",
+    "street": "2680 Maple Ave",
+    "city": "Zanesville",
+    "state": "OH",
+    "zip": "43701",
+    "care_offerings": [
+     "Short-Term Rehabilitation & Nursing"
+    ],
+    "phone": "(814) 599-2533",
+    "administrator": "Dale Amato"
+   },
+   "account": {
+    "account_id": "001H1JMVZWP46D5VUF",
+    "name": "Cedar Trail of Zanesville",
+    "parent_id": "001FWSQ30SFW6S7604",
+    "parent_name": "Cedar Trail Communities (Parent Account)",
+    "billing_street": "2680 Maple Avenue",
+    "billing_city": "Zanesville",
+    "billing_state": "OH",
+    "billing_zip": "43701",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(517) 817-8191",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "name",
+     "from": "Cedar Trail of Zanesville",
+     "to": "Bellhaven of Zanesville"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001H1JMVZWP46D5VUF",
+     "payload": {
+      "name": "Bellhaven of Zanesville"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Renamed from 'Cedar Trail of Zanesville' to match website listing."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '2680 maple ave'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 43701"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Zanesville, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (814) 599-2533 vs (517) 817-8191"
+    },
+    {
+     "signal": "name",
+     "weight": 0.062,
+     "detail": "name token overlap 0.25: 'Bellhaven of Zanesville' vs 'Cedar Trail of Zanesville'"
+    }
+   ],
+   "rationale": "Website name 'Bellhaven of Zanesville' differs from CRM 'Cedar Trail of Zanesville'; same address/phone so this is a rename, not a different facility.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "fb626773bf69",
+   "type": "UPDATE_NAME",
    "title": "Bellhaven of Chagrin Falls",
    "confidence": 0.7,
    "confidence_band": "low",
-   "subject_key": "bellhaven-of-chagrin-falls|001RJU1X4NBWC1Q0G7",
+   "subject_key": "001RJU1X4NBWC1Q0G7",
    "location": {
     "slug": "bellhaven-of-chagrin-falls",
     "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-chagrin-falls",
@@ -2044,12 +1749,21 @@
    },
    "changes": [
     {
-     "field": "linked account",
-     "from": null,
-     "to": "001RJU1X4NBWC1Q0G7"
+     "field": "name",
+     "from": "Riverbend Manor Care Center",
+     "to": "Bellhaven of Chagrin Falls"
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001RJU1X4NBWC1Q0G7",
+     "payload": {
+      "name": "Bellhaven of Chagrin Falls"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Renamed from 'Riverbend Manor Care Center' to match website listing."
+    }
+   ],
    "evidence": [
     {
      "signal": "street",
@@ -2077,31 +1791,17 @@
      "detail": "name token overlap 0.00: 'Bellhaven of Chagrin Falls' vs 'Riverbend Manor Care Center'"
     }
    ],
-   "rationale": "Best candidate 'Riverbend Manor Care Center' scores 0.70, below the 0.80 confidence bar. Approve to link this website location to it (field fixes follow on the next run); reject if it is a different facility (a new account is proposed instead).",
+   "rationale": "Website name 'Bellhaven of Chagrin Falls' differs from CRM 'Riverbend Manor Care Center'; same address/phone so this is a rename, not a different facility.",
    "attention": "",
-   "near_misses": [],
-   "if_approved": [
-    {
-     "type": "UPDATE_NAME",
-     "label": "Rename",
-     "changes": [
-      {
-       "field": "name",
-       "from": "Riverbend Manor Care Center",
-       "to": "Bellhaven of Chagrin Falls"
-      }
-     ]
-    }
-   ],
-   "if_rejected": "Riverbend Manor Care Center is excluded for this location; the next run proposes a new account 'Bellhaven of Chagrin Falls' under Bellhaven Senior Living."
+   "near_misses": []
   },
   {
-   "id": "98e7c1487851",
-   "type": "CONFIRM_MATCH",
+   "id": "bb819bad3f67",
+   "type": "UPDATE_NAME",
    "title": "Bellhaven Willow Creek",
    "confidence": 0.7,
    "confidence_band": "low",
-   "subject_key": "bellhaven-willow-creek|0017MN2JYAJBDS8WQZ",
+   "subject_key": "0017MN2JYAJBDS8WQZ",
    "location": {
     "slug": "bellhaven-willow-creek",
     "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-willow-creek",
@@ -2138,12 +1838,21 @@
    },
    "changes": [
     {
-     "field": "linked account",
-     "from": null,
-     "to": "0017MN2JYAJBDS8WQZ"
+     "field": "name",
+     "from": "Sunny Acres Retirement Home",
+     "to": "Bellhaven Willow Creek"
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "0017MN2JYAJBDS8WQZ",
+     "payload": {
+      "name": "Bellhaven Willow Creek"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Renamed from 'Sunny Acres Retirement Home' to match website listing."
+    }
+   ],
    "evidence": [
     {
      "signal": "street",
@@ -2171,23 +1880,9 @@
      "detail": "name token overlap 0.00: 'Bellhaven Willow Creek' vs 'Sunny Acres Retirement Home'"
     }
    ],
-   "rationale": "Best candidate 'Sunny Acres Retirement Home' scores 0.70, below the 0.80 confidence bar. Approve to link this website location to it (field fixes follow on the next run); reject if it is a different facility (a new account is proposed instead).",
+   "rationale": "Website name 'Bellhaven Willow Creek' differs from CRM 'Sunny Acres Retirement Home'; same address/phone so this is a rename, not a different facility.",
    "attention": "",
-   "near_misses": [],
-   "if_approved": [
-    {
-     "type": "UPDATE_NAME",
-     "label": "Rename",
-     "changes": [
-      {
-       "field": "name",
-       "from": "Sunny Acres Retirement Home",
-       "to": "Bellhaven Willow Creek"
-      }
-     ]
-    }
-   ],
-   "if_rejected": "Sunny Acres Retirement Home is excluded for this location; the next run proposes a new account 'Bellhaven Willow Creek' under Bellhaven Senior Living."
+   "near_misses": []
   },
   {
    "id": "673da8f7f9fa",
@@ -3304,6 +2999,154 @@
    "near_misses": []
   },
   {
+   "id": "51474d175c49",
+   "type": "CONFIRM",
+   "title": "Bellhaven of Tiffin",
+   "confidence": 1.0,
+   "confidence_band": "high",
+   "subject_key": "001BAFF7A3C72D54DC",
+   "location": {
+    "slug": "bellhaven-of-tiffin",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-tiffin",
+    "name": "Bellhaven of Tiffin",
+    "street": "45 St Lawrence Dr",
+    "city": "Tiffin",
+    "state": "OH",
+    "zip": "44883",
+    "care_offerings": [
+     "Short-Term Rehabilitation & Nursing"
+    ],
+    "phone": "(260) 589-2589",
+    "administrator": "Walt Osei"
+   },
+   "account": {
+    "account_id": "001BAFF7A3C72D54DC",
+    "name": "Bellhaven of Tiffin",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "45 St Lawrence Dr",
+    "billing_city": "Tiffin",
+    "billing_state": "OH",
+    "billing_zip": "44883",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(260) 589-2589",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "[ownership-sync] 2026-09-12: CHOW from 001U6RW32TY0WSXZZB (Bellhaven of Tiffin, was under Cedar Trail Communities). Old account preserved for billing: lifetime_revenue=84000, outstanding_ar=12400. Offerings: Short-Term Rehabilitation & Nursing.",
+    "created_by_candidate": true,
+    "updated_at": "2026-09-12 20:25:35Z"
+   },
+   "changes": [],
+   "actions": [],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '45 st lawrence dr'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 44883"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Tiffin, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": 0.35,
+     "detail": "phone equal: (260) 589-2589"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven of Tiffin' vs 'Bellhaven of Tiffin'"
+    }
+   ],
+   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "9f2bcc1b5db0",
+   "type": "CONFIRM",
+   "title": "Bellhaven of Marietta",
+   "confidence": 1.0,
+   "confidence_band": "high",
+   "subject_key": "00199ABAE69C26D17D",
+   "location": {
+    "slug": "bellhaven-of-marietta",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-marietta",
+    "name": "Bellhaven of Marietta",
+    "street": "805 Colegate Dr",
+    "city": "Marietta",
+    "state": "OH",
+    "zip": "45750",
+    "care_offerings": [
+     "Short-Term Rehabilitation & Nursing"
+    ],
+    "phone": "(614) 337-1967",
+    "administrator": "Rosa Dietz"
+   },
+   "account": {
+    "account_id": "00199ABAE69C26D17D",
+    "name": "Bellhaven of Marietta",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "805 Colegate Dr",
+    "billing_city": "Marietta",
+    "billing_state": "OH",
+    "billing_zip": "45750",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(614) 337-1967",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "[ownership-sync] 2026-09-12: CHOW from 001A34WFSUYHCRBLFT (Bellhaven of Marietta, was under Cedar Trail Communities). Old account preserved for billing: lifetime_revenue=51250, outstanding_ar=3800. Offerings: Short-Term Rehabilitation & Nursing.",
+    "created_by_candidate": true,
+    "updated_at": "2026-09-12 20:36:06Z"
+   },
+   "changes": [],
+   "actions": [],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '805 colegate dr'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 45750"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Marietta, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": 0.35,
+     "detail": "phone equal: (614) 337-1967"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven of Marietta' vs 'Bellhaven of Marietta'"
+    }
+   ],
+   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
    "id": "de8755a42be9",
    "type": "CONFIRM",
    "title": "Bellhaven of Owosso",
@@ -3371,6 +3214,81 @@
      "signal": "name",
      "weight": 0.25,
      "detail": "name token overlap 1.00: 'Bellhaven of Owosso' vs 'Bellhaven of Owosso'"
+    }
+   ],
+   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "2720e46730e4",
+   "type": "CONFIRM",
+   "title": "Bellhaven Meadows of Findlay",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "001UKEFGADQ8YCZ4YM",
+   "location": {
+    "slug": "bellhaven-meadows-of-findlay",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-meadows-of-findlay",
+    "name": "Bellhaven Meadows of Findlay",
+    "street": "1800 N Blanchard St",
+    "city": "Findlay",
+    "state": "OH",
+    "zip": "45840",
+    "care_offerings": [
+     "Assisted Living",
+     "Memory Support"
+    ],
+    "phone": "(231) 533-2969",
+    "administrator": "Sam Pruitt"
+   },
+   "account": {
+    "account_id": "001UKEFGADQ8YCZ4YM",
+    "name": "Bellhaven Meadows of Findlay",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "1800 N Blanchard St",
+    "billing_city": "Findlay",
+    "billing_state": "OH",
+    "billing_zip": "45840",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(330) 975-2492",
+    "lifetime_revenue": 22000,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-meadows-of-findlay. SOP: no outstanding AR, so direct re-parent is allowed.",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 20:36:32Z"
+   },
+   "changes": [],
+   "actions": [],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '1800 n blanchard st'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 45840"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Findlay, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (231) 533-2969 vs (330) 975-2492"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven Meadows of Findlay' vs 'Bellhaven Meadows of Findlay'"
     }
    ],
    "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
@@ -3821,21 +3739,93 @@
    "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
    "attention": "",
    "near_misses": []
+  },
+  {
+   "id": "5faa5ec4a0cd",
+   "type": "CONFIRM",
+   "title": "Bellhaven Crossings of Lima",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "001LGFPBJY4N9MB6KL",
+   "location": {
+    "slug": "bellhaven-crossings-of-lima",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-crossings-of-lima",
+    "name": "Bellhaven Crossings of Lima",
+    "street": "3115 N Cole St",
+    "city": "Lima",
+    "state": "OH",
+    "zip": "45801",
+    "care_offerings": [
+     "Assisted Living"
+    ],
+    "phone": "(231) 539-3617",
+    "administrator": "Tricia Fitch"
+   },
+   "account": {
+    "account_id": "001LGFPBJY4N9MB6KL",
+    "name": "Bellhaven Crossings of Lima",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "3115 N Cole St",
+    "billing_city": "Lima",
+    "billing_state": "OH",
+    "billing_zip": "45801",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(734) 872-9575",
+    "lifetime_revenue": 47000,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "[ownership-sync] 2026-09-12: Re-parented from Harborview Care Group to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-crossings-of-lima. SOP: no outstanding AR, so direct re-parent is allowed.",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 20:36:35Z"
+   },
+   "changes": [],
+   "actions": [],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '3115 n cole st'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 45801"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Lima, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (231) 539-3617 vs (734) 872-9575"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven Crossings of Lima' vs 'Bellhaven Crossings of Lima'"
+    }
+   ],
+   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "attention": "",
+   "near_misses": []
   }
  ],
  "suppressed": 0,
- "generated_at": "2026-09-12T19:58:34+00:00",
+ "generated_at": "2026-09-12T20:38:21+00:00",
  "counts": {
   "site_locations": 35,
-  "crm_accounts": 121,
-  "confirmed": 16,
+  "crm_accounts": 123,
+  "confirmed": 20,
   "by_type": {
-   "UPDATE_NAME": 6,
+   "UPDATE_NAME": 9,
    "DUPLICATE": 7,
    "UPDATE_ADDRESS": 2,
-   "REPARENT": 3,
-   "CHOW": 2,
-   "CONFIRM_MATCH": 3,
+   "REPARENT": 1,
    "CREATE": 4,
    "NOT_ON_SITE": 3
   }

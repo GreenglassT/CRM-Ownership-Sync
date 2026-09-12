@@ -70,13 +70,34 @@ def recon_rows(p: dict, parent: dict) -> list[dict]:
     if t == "NOT_ON_SITE":
         return [row("Listed on website", "no", "under " + parent_label(A["parent_name"])), row("Status", "", A["status"], key="status")] + billing
 
+    def pair(field, web, old, new, old_after=None, changed=None, note=""):
+        """A two-account row: the account this proposal touches and a second account
+        beside it (a CHOW successor, or the surviving duplicate)."""
+        return {"field": field, "web": web, "crm": old, "after": new, "note": note, "differs": False,
+                "changed": (new not in (None, "")) if changed is None else changed, "old_after": old_after}
+
+    if t == "DUPLICATE":
+        S = p["survivor"]
+        surv_note = "" if S["parent_id"] == parent.get("account_id") else f"not yet under {parent_label(parent['name'])}; that move is its own item in this queue"
+        return [
+            pair("Account id", "", A["account_id"], S["account_id"], changed=False),
+            pair("Name", L["name"], A["name"], S["name"], changed=False),
+            pair("Parent", parent_label(parent["name"]), parent_label(A["parent_name"]), parent_label(S["parent_name"]), changed=False, note=surv_note),
+            pair("Street", L["street"], A["billing_street"], S["billing_street"], changed=False),
+            pair("City, state ZIP", f"{L['city']}, {L['state']} {L['zip']}", f"{A['billing_city']}, {A['billing_state']} {A['billing_zip']}",
+                 f"{S['billing_city']}, {S['billing_state']} {S['billing_zip']}", changed=False),
+            pair("Care", ", ".join(L["care_offerings"]), A["care_type"], S["care_type"], changed=False),
+            pair("Phone", L["phone"], A["phone"], S["phone"], changed=False),
+            pair("Status", "on website", A["status"], S["status"], old_after="Inactive", changed=False),
+            pair("Lifetime revenue", "", money(A["lifetime_revenue"]), money(S["lifetime_revenue"]), changed=False),
+            pair("Outstanding AR", "", money(A["outstanding_ar"]), money(S["outstanding_ar"]), changed=False),
+            pair("Duplicate of", "", A["duplicate_of_account"], S["duplicate_of_account"], old_after=f"{S['name']} ({S['account_id']})", changed=False),
+        ]
+
     if t == "CHOW":
         # Two accounts after approval: the old one, frozen except for the link, and
         # the successor, which starts with no billing. Show them side by side.
         pl = p["actions"][0]["payload"]
-        def pair(field, web, old, new, old_after=None):
-            return {"field": field, "web": web, "crm": old, "after": new, "changed": new not in (None, ""), "note": "",
-                    "differs": False, "old_after": old_after}
         return [
             pair("Name", L["name"], A["name"], pl["name"]),
             pair("Parent", parent_label(parent["name"]), parent_label(A["parent_name"]), parent_label(parent["name"])),
@@ -107,10 +128,6 @@ def recon_rows(p: dict, parent: dict) -> list[dict]:
         row("Phone", L["phone"], A["phone"], key="phone", differs=bool(L["phone"]) and norm_phone(L["phone"]) != norm_phone(A["phone"])),
         row("Status", "on website", A["status"], key="status"),
     ]
-    if t == "DUPLICATE":
-        surv = p.get("survivor") or {}
-        rows.append(row("Duplicate of", "", A["duplicate_of_account"], key="duplicate_of_account",
-                        after=f"{surv.get('name', '')} {ch['duplicate_of_account']}".strip()))
     return rows + billing
 
 
@@ -151,8 +168,10 @@ def _render(selected_id: str | None):
         return redirect(url_for("index"))
     rows = recon_rows(sel, parent) if sel else []
     does = describe_actions(sel, parent) if sel and sel["actions"] else []
+    cols = {"CHOW": ("Old account (stays as is)", "New successor account"),
+            "DUPLICATE": ("This copy (retired on approval)", "Surviving copy (kept as is)")}.get(sel["type"] if sel else "", ("CRM now", "After approval"))
     return render_template("review.html", q=q, groups=groups_for(props, q.get("confirmed", [])), total=len(props), sel=sel,
-                           rows=rows, does=does, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
+                           rows=rows, does=does, cols=cols, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
 
 
 @app.get("/")

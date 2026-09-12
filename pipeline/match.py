@@ -381,7 +381,7 @@ def build_proposals(site: list[dict], crm: list[dict], links: dict | None = None
                 f"Keeping {surv['account_id']} (rank: AR={has_open_ar(surv)}, revenue={has_billing_history(surv)}, "
                 f"under parent={surv['parent_id'] == pid}, {surv['status']}).",
                 ev, sc, attention, near_misses=others)
-            p["survivor"] = {"account_id": surv["account_id"], "name": surv["name"]}
+            p["survivor"] = surv
             proposals.append(p)
 
         # ---- survivor: parent, then field-level fixes -----------------------------

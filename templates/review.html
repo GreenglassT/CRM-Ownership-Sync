@@ -140,8 +140,7 @@
     {% set writes = sel.actions|length > 0 %}
     {% if rows %}
     <table class="recon">
-      {% set chow = sel.type == 'CHOW' %}
-      <thead><tr><th></th><th>Website</th><th>{{ 'Old account (stays as is)' if chow else 'CRM now' }}</th>{% if writes %}<th>{{ 'New successor account' if chow else 'After approval' }}</th>{% endif %}</tr></thead>
+      <thead><tr><th></th><th>Website</th><th>{{ cols[0] }}</th>{% if writes %}<th>{{ cols[1] }}</th>{% endif %}</tr></thead>
       <tbody>
       {% for r in rows %}
         <tr>
