@@ -37,10 +37,12 @@
   .attention { border-left: 3px solid var(--warn); background: var(--warn-tint); color: var(--warn); padding: 8px 12px; margin: 0 0 18px; max-width: 72ch; }
 
   /* reconciliation worksheet */
-  table.recon { width: 100%; border-collapse: collapse; margin: 0 0 22px; font-size: 13.5px; }
+  table.recon { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 0 0 22px; font-size: 13.5px; }
+  .recon th:first-child { width: 150px; }
+  .recon td { overflow-wrap: anywhere; }
   .recon th { text-align: left; font-weight: 500; color: var(--ink-2); font-size: 12px; padding: 0 10px 6px 0; border-bottom: 1px solid var(--ink); }
   .recon td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; }
-  .recon td:first-child { color: var(--ink-2); width: 150px; }
+  .recon td:first-child { color: var(--ink-2); }
   .recon td.after.changed, .recon td.changed { background: var(--change); color: var(--change-ink); font-weight: 500; padding-left: 8px; }
   .recon td .note { display: block; font-size: 12px; color: var(--ink-2); font-weight: 400; }
   .recon .dim { color: var(--ink-3); }
