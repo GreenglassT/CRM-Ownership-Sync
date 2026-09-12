@@ -236,8 +236,13 @@
       else if (e.key === 'a' && form) { form.querySelector('[value=approve]').click(); }
       else if (e.key === 'r' && form) { form.querySelector('[value=reject]').click(); }
     });
-    if (form) form.addEventListener('submit', function () {  // one decision per page load
-      form.querySelectorAll('button').forEach(function (b) { b.disabled = true; });
+    var submitting = false;
+    if (form) form.addEventListener('submit', function (e) {  // one decision per page load
+      if (submitting) { e.preventDefault(); return; }
+      submitting = true;
+      // Disable on the next tick: a submit button disabled *during* the submit event
+      // is left out of the form data, and the server would never see the decision.
+      setTimeout(function () { form.querySelectorAll('button').forEach(function (b) { b.disabled = true; }); }, 0);
     });
     var on = document.querySelector('.queue .row.on');
     if (on) on.scrollIntoView({ block: 'nearest' });
