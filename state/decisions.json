@@ -302,5 +302,93 @@
     }
    }
   ]
+ },
+ "94e13df3a49f": {
+  "decision": "approved",
+  "decided_at": "2026-09-12T20:42:00+00:00",
+  "type": "DUPLICATE",
+  "subject_key": "001QU150PM4Z15UA71",
+  "title": "Bellhaven of Owosso",
+  "location": "Bellhaven of Owosso",
+  "account": "Bellhaven of Owosso",
+  "account_id": "001QU150PM4Z15UA71",
+  "changes": [
+   {
+    "field": "duplicate_of_account",
+    "from": "",
+    "to": "001EGU7BMJ942ZTRE6"
+   },
+   {
+    "field": "status",
+    "from": "Active",
+    "to": "Inactive"
+   }
+  ],
+  "result": {
+   "status": "applied",
+   "detail": "ok",
+   "log": [
+    "PATCH /accounts/001QU150PM4Z15UA71 ['duplicate_of_account', 'note', 'status']"
+   ],
+   "created_account_id": null
+  },
+  "attempts": [
+   {
+    "decision": "approved",
+    "decided_at": "2026-09-12T20:42:00+00:00",
+    "result": {
+     "status": "applied",
+     "detail": "ok",
+     "log": [
+      "PATCH /accounts/001QU150PM4Z15UA71 ['duplicate_of_account', 'note', 'status']"
+     ],
+     "created_account_id": null
+    }
+   }
+  ]
+ },
+ "c8d5b26782bb": {
+  "decision": "approved",
+  "decided_at": "2026-09-12T20:42:08+00:00",
+  "type": "DUPLICATE",
+  "subject_key": "001JD2MWRA74LTSN24",
+  "title": "Bellhaven of Port Clinton",
+  "location": "Bellhaven of Port Clinton",
+  "account": "Harborview Nursing & Rehab of Port Clinton",
+  "account_id": "001JD2MWRA74LTSN24",
+  "changes": [
+   {
+    "field": "duplicate_of_account",
+    "from": "",
+    "to": "001UELXDAKFRKB8932"
+   },
+   {
+    "field": "status",
+    "from": "Active",
+    "to": "Inactive"
+   }
+  ],
+  "result": {
+   "status": "applied",
+   "detail": "ok",
+   "log": [
+    "PATCH /accounts/001JD2MWRA74LTSN24 ['duplicate_of_account', 'note', 'status']"
+   ],
+   "created_account_id": null
+  },
+  "attempts": [
+   {
+    "decision": "approved",
+    "decided_at": "2026-09-12T20:42:08+00:00",
+    "result": {
+     "status": "applied",
+     "detail": "ok",
+     "log": [
+      "PATCH /accounts/001JD2MWRA74LTSN24 ['duplicate_of_account', 'note', 'status']"
+     ],
+     "created_account_id": null
+    }
+   }
+  ]
  }
 }

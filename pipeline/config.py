@@ -34,10 +34,10 @@ CONFIDENT = 0.80   # >= : treat as the same facility
 POSSIBLE = 0.55    # >= : surface to reviewer as a low-confidence match
 # < POSSIBLE      : not the same facility
 
-# Phone was not in the required field set and CRM phones are frequently a sales
-# contact line rather than the facility switchboard, so phone diffs are not
-# proposed by default. Phone is still used as a *matching* signal.
-PROPOSE_PHONE_UPDATES = os.environ.get("PROPOSE_PHONE_UPDATES", "0") == "1"
+# The number on a community's own page is its public number, so a differing CRM
+# phone is proposed as a fix (on the surviving account only). Set to 0 to use phone
+# purely as a matching signal.
+PROPOSE_PHONE_UPDATES = os.environ.get("PROPOSE_PHONE_UPDATES", "1") == "1"
 
 # Files
 SITE_SNAPSHOT = STATE_DIR / "site_locations.json"

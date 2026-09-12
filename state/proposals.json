@@ -94,121 +94,6 @@
    "near_misses": []
   },
   {
-   "id": "94e13df3a49f",
-   "type": "DUPLICATE",
-   "title": "Bellhaven of Owosso",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001QU150PM4Z15UA71",
-   "location": {
-    "slug": "bellhaven-of-owosso",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-owosso",
-    "name": "Bellhaven of Owosso",
-    "street": "1120 W Main St",
-    "city": "Owosso",
-    "state": "MI",
-    "zip": "48867",
-    "care_offerings": [
-     "Assisted Living"
-    ],
-    "phone": "(734) 503-1363",
-    "administrator": "Gloria Lambert"
-   },
-   "account": {
-    "account_id": "001QU150PM4Z15UA71",
-    "name": "Bellhaven of Owosso",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "1120 West Main Street",
-    "billing_city": "Owosso",
-    "billing_state": "MI",
-    "billing_zip": "48867",
-    "care_type": "Assisted Living",
-    "status": "Active",
-    "phone": "(330) 383-5991",
-    "lifetime_revenue": 0,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [
-    {
-     "field": "duplicate_of_account",
-     "from": "",
-     "to": "001EGU7BMJ942ZTRE6"
-    },
-    {
-     "field": "status",
-     "from": "Active",
-     "to": "Inactive"
-    }
-   ],
-   "actions": [
-    {
-     "op": "patch",
-     "account_id": "001QU150PM4Z15UA71",
-     "payload": {
-      "duplicate_of_account": "001EGU7BMJ942ZTRE6",
-      "status": "Inactive"
-     },
-     "note_append": "[ownership-sync] 2026-09-12: Duplicate of 001EGU7BMJ942ZTRE6 (Bellhaven of Owosso) \u2014 same facility at 1120 W Main St, Owosso. Survivor chosen by: billing history > correct parent > Active > completeness."
-    }
-   ],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '1120 w main st'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 48867"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Owosso, MI"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (734) 503-1363 vs (330) 383-5991"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven of Owosso' vs 'Bellhaven of Owosso'"
-    }
-   ],
-   "rationale": "'Bellhaven of Owosso' and 'Bellhaven of Owosso' both resolve to Bellhaven of Owosso (1120 W Main St, Owosso). Keeping 001EGU7BMJ942ZTRE6 (rank: AR=False, revenue=False, under parent=True, Active).",
-   "attention": "",
-   "near_misses": [],
-   "survivor": {
-    "account_id": "001EGU7BMJ942ZTRE6",
-    "name": "Bellhaven of Owosso",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "1120 W Main St",
-    "billing_city": "Owosso",
-    "billing_state": "MI",
-    "billing_zip": "48867",
-    "care_type": "Assisted Living",
-    "status": "Active",
-    "phone": "(734) 503-1363",
-    "lifetime_revenue": 0,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   }
-  },
-  {
    "id": "66560c56acc2",
    "type": "UPDATE_ADDRESS",
    "title": "Bellhaven of Portsmouth",
@@ -390,6 +275,363 @@
    "near_misses": []
   },
   {
+   "id": "c0a351d68ed4",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven Meadows of Findlay",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "001UKEFGADQ8YCZ4YM",
+   "location": {
+    "slug": "bellhaven-meadows-of-findlay",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-meadows-of-findlay",
+    "name": "Bellhaven Meadows of Findlay",
+    "street": "1800 N Blanchard St",
+    "city": "Findlay",
+    "state": "OH",
+    "zip": "45840",
+    "care_offerings": [
+     "Assisted Living",
+     "Memory Support"
+    ],
+    "phone": "(231) 533-2969",
+    "administrator": "Sam Pruitt"
+   },
+   "account": {
+    "account_id": "001UKEFGADQ8YCZ4YM",
+    "name": "Bellhaven Meadows of Findlay",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "1800 N Blanchard St",
+    "billing_city": "Findlay",
+    "billing_state": "OH",
+    "billing_zip": "45840",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(330) 975-2492",
+    "lifetime_revenue": 22000,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-meadows-of-findlay. SOP: no outstanding AR, so direct re-parent is allowed.",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 20:36:32Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(330) 975-2492",
+     "to": "(231) 533-2969"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001UKEFGADQ8YCZ4YM",
+     "payload": {
+      "phone": "(231) 533-2969"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '1800 n blanchard st'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 45840"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Findlay, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (231) 533-2969 vs (330) 975-2492"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven Meadows of Findlay' vs 'Bellhaven Meadows of Findlay'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "5375317be67b",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven of Goshen",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "001JQER1RMYKNRLNME",
+   "location": {
+    "slug": "bellhaven-of-goshen",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-goshen",
+    "name": "Bellhaven of Goshen",
+    "street": "1610 College Ave",
+    "city": "Goshen",
+    "state": "IN",
+    "zip": "46526",
+    "care_offerings": [
+     "Assisted Living"
+    ],
+    "phone": "(330) 405-6040",
+    "administrator": "Tanya Castellano"
+   },
+   "account": {
+    "account_id": "001JQER1RMYKNRLNME",
+    "name": "Bellhaven of Goshen",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "1610 College Avenue",
+    "billing_city": "Goshen",
+    "billing_state": "IN",
+    "billing_zip": "46526",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(517) 409-8156",
+    "lifetime_revenue": 121000,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(517) 409-8156",
+     "to": "(330) 405-6040"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001JQER1RMYKNRLNME",
+     "payload": {
+      "phone": "(330) 405-6040"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '1610 college ave'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 46526"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Goshen, IN"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (330) 405-6040 vs (517) 409-8156"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven of Goshen' vs 'Bellhaven of Goshen'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "82c0785d8b0c",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven of Defiance",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "001R4PXTUD9R6FNN8V",
+   "location": {
+    "slug": "bellhaven-of-defiance",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-defiance",
+    "name": "Bellhaven of Defiance",
+    "street": "700 Carpenter Rd",
+    "city": "Defiance",
+    "state": "OH",
+    "zip": "43512",
+    "care_offerings": [
+     "Short-Term Rehabilitation & Nursing"
+    ],
+    "phone": "(330) 691-2711",
+    "administrator": "Victor Barros"
+   },
+   "account": {
+    "account_id": "001R4PXTUD9R6FNN8V",
+    "name": "Bellhaven of Defiance",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "700 Carpenter Road",
+    "billing_city": "Defiance",
+    "billing_state": "OH",
+    "billing_zip": "43512",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(231) 238-4862",
+    "lifetime_revenue": 66000,
+    "outstanding_ar": 9500,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(231) 238-4862",
+     "to": "(330) 691-2711"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001R4PXTUD9R6FNN8V",
+     "payload": {
+      "phone": "(330) 691-2711"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '700 carpenter rd'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 43512"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Defiance, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (330) 691-2711 vs (231) 238-4862"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven of Defiance' vs 'Bellhaven of Defiance'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "15bd100d49cf",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven of Marion",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "0015L38R1Z5947ZZP7",
+   "location": {
+    "slug": "bellhaven-of-marion",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-marion",
+    "name": "Bellhaven of Marion",
+    "street": "199 Barks Rd W",
+    "city": "Marion",
+    "state": "OH",
+    "zip": "43302",
+    "care_offerings": [
+     "Short-Term Rehabilitation & Nursing"
+    ],
+    "phone": "(517) 847-7948",
+    "administrator": "Doug Amato"
+   },
+   "account": {
+    "account_id": "0015L38R1Z5947ZZP7",
+    "name": "Bellhaven of Marion",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "199 Barks Road West",
+    "billing_city": "Marion",
+    "billing_state": "OH",
+    "billing_zip": "43302",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(330) 314-3109",
+    "lifetime_revenue": 87000,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(330) 314-3109",
+     "to": "(517) 847-7948"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "0015L38R1Z5947ZZP7",
+     "payload": {
+      "phone": "(517) 847-7948"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '199 barks rd w'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 43302"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Marion, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (517) 847-7948 vs (330) 314-3109"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven of Marion' vs 'Bellhaven of Marion'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
    "id": "3f47a5860afa",
    "type": "UPDATE_NAME",
    "title": "Bellhaven at Sycamore Ridge",
@@ -475,6 +717,95 @@
     }
    ],
    "rationale": "Website name 'Bellhaven at Sycamore Ridge' differs from CRM 'Bellhaven of Sycamore Ridge'; same address/phone so this is a rename, not a different facility.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "276aa889a137",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven at Sycamore Ridge",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "00191H7JR16471SZ34",
+   "location": {
+    "slug": "bellhaven-at-sycamore-ridge",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-at-sycamore-ridge",
+    "name": "Bellhaven at Sycamore Ridge",
+    "street": "7420 Sycamore Ridge Dr",
+    "city": "Miamisburg",
+    "state": "OH",
+    "zip": "45342",
+    "care_offerings": [
+     "Assisted Living"
+    ],
+    "phone": "(260) 365-6510",
+    "administrator": "Tom Bloom"
+   },
+   "account": {
+    "account_id": "00191H7JR16471SZ34",
+    "name": "Bellhaven of Sycamore Ridge",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "7420 Sycamore Ridge Dr",
+    "billing_city": "Miamisburg",
+    "billing_state": "OH",
+    "billing_zip": "45342",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(419) 982-7764",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(419) 982-7764",
+     "to": "(260) 365-6510"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "00191H7JR16471SZ34",
+     "payload": {
+      "phone": "(260) 365-6510"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '7420 sycamore ridge dr'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 45342"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Miamisburg, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (260) 365-6510 vs (419) 982-7764"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven at Sycamore Ridge' vs 'Bellhaven of Sycamore Ridge'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
    "attention": "",
    "near_misses": []
   },
@@ -568,6 +899,95 @@
    "near_misses": []
   },
   {
+   "id": "720d47434351",
+   "type": "UPDATE_PHONE",
+   "title": "The Arbors at Bellhaven - Dayton",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "0010KJFP601YNTZVDA",
+   "location": {
+    "slug": "the-arbors-at-bellhaven-dayton",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/the-arbors-at-bellhaven-dayton",
+    "name": "The Arbors at Bellhaven - Dayton",
+    "street": "2210 Salem Ave",
+    "city": "Dayton",
+    "state": "OH",
+    "zip": "45406",
+    "care_offerings": [
+     "Memory Support"
+    ],
+    "phone": "(260) 254-7592",
+    "administrator": "Ray Novak"
+   },
+   "account": {
+    "account_id": "0010KJFP601YNTZVDA",
+    "name": "Arbors at Bellhaven Dayton",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "2210 Salem Ave",
+    "billing_city": "Dayton",
+    "billing_state": "OH",
+    "billing_zip": "45406",
+    "care_type": "Memory Care",
+    "status": "Active",
+    "phone": "(216) 659-9837",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(216) 659-9837",
+     "to": "(260) 254-7592"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "0010KJFP601YNTZVDA",
+     "payload": {
+      "phone": "(260) 254-7592"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '2210 salem ave'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 45406"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Dayton, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (260) 254-7592 vs (216) 659-9837"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'The Arbors at Bellhaven - Dayton' vs 'Arbors at Bellhaven Dayton'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
    "id": "a5f7d0275f79",
    "type": "UPDATE_NAME",
    "title": "Bellhaven Healthcare Centre of Ashland",
@@ -657,12 +1077,101 @@
    "near_misses": []
   },
   {
-   "id": "c8d5b26782bb",
-   "type": "DUPLICATE",
-   "title": "Bellhaven of Port Clinton",
-   "confidence": 0.825,
+   "id": "eb5dd439c976",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven Healthcare Centre of Ashland",
+   "confidence": 0.95,
    "confidence_band": "high",
-   "subject_key": "001JD2MWRA74LTSN24",
+   "subject_key": "001RJ0D7Z5MAZN5HX5",
+   "location": {
+    "slug": "bellhaven-healthcare-centre-of-ashland",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-healthcare-centre-of-ashland",
+    "name": "Bellhaven Healthcare Centre of Ashland",
+    "street": "1631 Claremont Ave",
+    "city": "Ashland",
+    "state": "OH",
+    "zip": "44805",
+    "care_offerings": [
+     "Short-Term Rehabilitation & Nursing"
+    ],
+    "phone": "(517) 314-5115",
+    "administrator": "Carla Okafor"
+   },
+   "account": {
+    "account_id": "001RJ0D7Z5MAZN5HX5",
+    "name": "Bellhaven Health Care Center of Ashland",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "1631 Claremont Ave",
+    "billing_city": "Ashland",
+    "billing_state": "OH",
+    "billing_zip": "44805",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(734) 319-7813",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(734) 319-7813",
+     "to": "(517) 314-5115"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001RJ0D7Z5MAZN5HX5",
+     "payload": {
+      "phone": "(517) 314-5115"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '1631 claremont ave'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 44805"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Ashland, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (517) 314-5115 vs (734) 319-7813"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven Healthcare Centre of Ashland' vs 'Bellhaven Health Care Center of Ashland'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "25324bd2e3ea",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven of Port Clinton",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "001UELXDAKFRKB8932",
    "location": {
     "slug": "bellhaven-of-port-clinton",
     "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-port-clinton",
@@ -678,17 +1187,17 @@
     "administrator": "Brenda Whitfield"
    },
    "account": {
-    "account_id": "001JD2MWRA74LTSN24",
-    "name": "Harborview Nursing & Rehab of Port Clinton",
-    "parent_id": "001FJZYHR7MLFMNPLL",
-    "parent_name": "Harborview Care Group (Parent Account)",
-    "billing_street": "1420 Harbor Point Drive",
+    "account_id": "001UELXDAKFRKB8932",
+    "name": "Bellhaven of Port Clinton",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "1420 Harbor Point Dr",
     "billing_city": "Port Clinton",
     "billing_state": "OH",
     "billing_zip": "43452",
     "care_type": "Skilled Nursing",
     "status": "Active",
-    "phone": "(216) 314-1338",
+    "phone": "(614) 512-8712",
     "lifetime_revenue": 0,
     "outstanding_ar": 0,
     "chow_current_account": "",
@@ -699,25 +1208,19 @@
    },
    "changes": [
     {
-     "field": "duplicate_of_account",
-     "from": "",
-     "to": "001UELXDAKFRKB8932"
-    },
-    {
-     "field": "status",
-     "from": "Active",
-     "to": "Inactive"
+     "field": "phone",
+     "from": "(614) 512-8712",
+     "to": "(330) 733-6423"
     }
    ],
    "actions": [
     {
      "op": "patch",
-     "account_id": "001JD2MWRA74LTSN24",
+     "account_id": "001UELXDAKFRKB8932",
      "payload": {
-      "duplicate_of_account": "001UELXDAKFRKB8932",
-      "status": "Inactive"
+      "phone": "(330) 733-6423"
      },
-     "note_append": "[ownership-sync] 2026-09-12: Duplicate of 001UELXDAKFRKB8932 (Bellhaven of Port Clinton) \u2014 same facility at 1420 Harbor Point Dr, Port Clinton. Survivor chosen by: billing history > correct parent > Active > completeness."
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
     }
    ],
    "evidence": [
@@ -739,37 +1242,17 @@
     {
      "signal": "phone",
      "weight": -0.1,
-     "detail": "phone differs: (330) 733-6423 vs (216) 314-1338"
+     "detail": "phone differs: (330) 733-6423 vs (614) 512-8712"
     },
     {
      "signal": "name",
-     "weight": 0.125,
-     "detail": "name token overlap 0.50: 'Bellhaven of Port Clinton' vs 'Harborview Nursing & Rehab of Port Clinton'"
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven of Port Clinton' vs 'Bellhaven of Port Clinton'"
     }
    ],
-   "rationale": "'Harborview Nursing & Rehab of Port Clinton' and 'Bellhaven of Port Clinton' both resolve to Bellhaven of Port Clinton (1420 Harbor Point Dr, Port Clinton). Keeping 001UELXDAKFRKB8932 (rank: AR=False, revenue=False, under parent=True, Active).",
+   "rationale": "CRM phone is empty or differs from the website listing.",
    "attention": "",
-   "near_misses": [],
-   "survivor": {
-    "account_id": "001UELXDAKFRKB8932",
-    "name": "Bellhaven of Port Clinton",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "1420 Harbor Point Dr",
-    "billing_city": "Port Clinton",
-    "billing_state": "OH",
-    "billing_zip": "43452",
-    "care_type": "Skilled Nursing",
-    "status": "Active",
-    "phone": "(614) 512-8712",
-    "lifetime_revenue": 0,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   }
+   "near_misses": []
   },
   {
    "id": "28d2b4fd593a",
@@ -886,6 +1369,96 @@
     "created_by_candidate": false,
     "updated_at": "2026-09-12 16:00:31Z"
    }
+  },
+  {
+   "id": "67a431298d59",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven Shores of Erie",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "001CVBBCSDM7YHN220",
+   "location": {
+    "slug": "bellhaven-shores-of-erie",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-shores-of-erie",
+    "name": "Bellhaven Shores of Erie",
+    "street": "4930 W Lake Rd",
+    "city": "Erie",
+    "state": "PA",
+    "zip": "16505",
+    "care_offerings": [
+     "Assisted Living",
+     "Memory Support"
+    ],
+    "phone": "(614) 792-9343",
+    "administrator": "Angela Quinn"
+   },
+   "account": {
+    "account_id": "001CVBBCSDM7YHN220",
+    "name": "Bellhaven Shores of Erie",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "4930 W Lake Rd",
+    "billing_city": "Erie",
+    "billing_state": "PA",
+    "billing_zip": "16505",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(419) 495-1741",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(419) 495-1741",
+     "to": "(614) 792-9343"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001CVBBCSDM7YHN220",
+     "payload": {
+      "phone": "(614) 792-9343"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '4930 w lake rd'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 16505"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Erie, PA"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (614) 792-9343 vs (419) 495-1741"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven Shores of Erie' vs 'Bellhaven Shores of Erie'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
   },
   {
    "id": "0d5324963946",
@@ -1116,6 +1689,184 @@
     "created_by_candidate": false,
     "updated_at": "2026-09-12 16:00:31Z"
    }
+  },
+  {
+   "id": "edbdbc00eb4f",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven Gardens of Monroe",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "001U1750VLVJAGG1S5",
+   "location": {
+    "slug": "bellhaven-gardens-of-monroe",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-gardens-of-monroe",
+    "name": "Bellhaven Gardens of Monroe",
+    "street": "750 Stewart Rd",
+    "city": "Monroe",
+    "state": "MI",
+    "zip": "48162",
+    "care_offerings": [
+     "Assisted Living"
+    ],
+    "phone": "(814) 412-2218",
+    "administrator": "Phil Mabry"
+   },
+   "account": {
+    "account_id": "001U1750VLVJAGG1S5",
+    "name": "Bellhaven Gardens of Monroe",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "750 Stewart Rd",
+    "billing_city": "Monroe",
+    "billing_state": "MI",
+    "billing_zip": "48162",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(814) 291-2902",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(814) 291-2902",
+     "to": "(814) 412-2218"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001U1750VLVJAGG1S5",
+     "payload": {
+      "phone": "(814) 412-2218"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '750 stewart rd'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 48162"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Monroe, MI"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (814) 412-2218 vs (814) 291-2902"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven Gardens of Monroe' vs 'Bellhaven Gardens of Monroe'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "2e0fca06a5d9",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven Crossings of Lima",
+   "confidence": 0.95,
+   "confidence_band": "high",
+   "subject_key": "001LGFPBJY4N9MB6KL",
+   "location": {
+    "slug": "bellhaven-crossings-of-lima",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-crossings-of-lima",
+    "name": "Bellhaven Crossings of Lima",
+    "street": "3115 N Cole St",
+    "city": "Lima",
+    "state": "OH",
+    "zip": "45801",
+    "care_offerings": [
+     "Assisted Living"
+    ],
+    "phone": "(231) 539-3617",
+    "administrator": "Tricia Fitch"
+   },
+   "account": {
+    "account_id": "001LGFPBJY4N9MB6KL",
+    "name": "Bellhaven Crossings of Lima",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "3115 N Cole St",
+    "billing_city": "Lima",
+    "billing_state": "OH",
+    "billing_zip": "45801",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(734) 872-9575",
+    "lifetime_revenue": 47000,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "[ownership-sync] 2026-09-12: Re-parented from Harborview Care Group to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-crossings-of-lima. SOP: no outstanding AR, so direct re-parent is allowed.",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 20:36:35Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(734) 872-9575",
+     "to": "(231) 539-3617"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001LGFPBJY4N9MB6KL",
+     "payload": {
+      "phone": "(231) 539-3617"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '3115 n cole st'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 45801"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Lima, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (231) 539-3617 vs (734) 872-9575"
+    },
+    {
+     "signal": "name",
+     "weight": 0.25,
+     "detail": "name token overlap 1.00: 'Bellhaven Crossings of Lima' vs 'Bellhaven Crossings of Lima'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
   },
   {
    "id": "1ad013d50909",
@@ -1529,6 +2280,95 @@
    "near_misses": []
   },
   {
+   "id": "9db3b9f64d14",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven of Kettering",
+   "confidence": 0.825,
+   "confidence_band": "high",
+   "subject_key": "0016KTS1UAWBRXS09J",
+   "location": {
+    "slug": "bellhaven-of-kettering",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering",
+    "name": "Bellhaven of Kettering",
+    "street": "3313 Wilmington Pike",
+    "city": "Kettering",
+    "state": "OH",
+    "zip": "45429",
+    "care_offerings": [
+     "Short-Term Rehabilitation & Nursing"
+    ],
+    "phone": "(231) 269-5449",
+    "administrator": "Priya Ashby"
+   },
+   "account": {
+    "account_id": "0016KTS1UAWBRXS09J",
+    "name": "Kettering Nursing & Rehabilitation",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "3313 Wilmington Pike",
+    "billing_city": "Kettering",
+    "billing_state": "OH",
+    "billing_zip": "45429",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(216) 345-3441",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering. SOP: no revenue history, so direct re-parent is allowed.",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 20:36:37Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(216) 345-3441",
+     "to": "(231) 269-5449"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "0016KTS1UAWBRXS09J",
+     "payload": {
+      "phone": "(231) 269-5449"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '3313 wilmington pike'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 45429"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Kettering, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (231) 269-5449 vs (216) 345-3441"
+    },
+    {
+     "signal": "name",
+     "weight": 0.125,
+     "detail": "name token overlap 0.50: 'Bellhaven of Kettering' vs 'Kettering Nursing & Rehabilitation'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
    "id": "6efa5936fa5e",
    "type": "REPARENT",
    "title": "Bellhaven of Zanesville",
@@ -1707,6 +2547,95 @@
    "near_misses": []
   },
   {
+   "id": "adc4a11ac638",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven of Zanesville",
+   "confidence": 0.762,
+   "confidence_band": "low",
+   "subject_key": "001H1JMVZWP46D5VUF",
+   "location": {
+    "slug": "bellhaven-of-zanesville",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-zanesville",
+    "name": "Bellhaven of Zanesville",
+    "street": "2680 Maple Ave",
+    "city": "Zanesville",
+    "state": "OH",
+    "zip": "43701",
+    "care_offerings": [
+     "Short-Term Rehabilitation & Nursing"
+    ],
+    "phone": "(814) 599-2533",
+    "administrator": "Dale Amato"
+   },
+   "account": {
+    "account_id": "001H1JMVZWP46D5VUF",
+    "name": "Cedar Trail of Zanesville",
+    "parent_id": "001FWSQ30SFW6S7604",
+    "parent_name": "Cedar Trail Communities (Parent Account)",
+    "billing_street": "2680 Maple Avenue",
+    "billing_city": "Zanesville",
+    "billing_state": "OH",
+    "billing_zip": "43701",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(517) 817-8191",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(517) 817-8191",
+     "to": "(814) 599-2533"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001H1JMVZWP46D5VUF",
+     "payload": {
+      "phone": "(814) 599-2533"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '2680 maple ave'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 43701"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Zanesville, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (814) 599-2533 vs (517) 817-8191"
+    },
+    {
+     "signal": "name",
+     "weight": 0.062,
+     "detail": "name token overlap 0.25: 'Bellhaven of Zanesville' vs 'Cedar Trail of Zanesville'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
    "id": "fb626773bf69",
    "type": "UPDATE_NAME",
    "title": "Bellhaven of Chagrin Falls",
@@ -1796,6 +2725,95 @@
    "near_misses": []
   },
   {
+   "id": "3bdb3f36679c",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven of Chagrin Falls",
+   "confidence": 0.7,
+   "confidence_band": "low",
+   "subject_key": "001RJU1X4NBWC1Q0G7",
+   "location": {
+    "slug": "bellhaven-of-chagrin-falls",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-chagrin-falls",
+    "name": "Bellhaven of Chagrin Falls",
+    "street": "150 River St",
+    "city": "Chagrin Falls",
+    "state": "OH",
+    "zip": "44022",
+    "care_offerings": [
+     "Assisted Living"
+    ],
+    "phone": "(231) 283-7448",
+    "administrator": "Dale Mabry"
+   },
+   "account": {
+    "account_id": "001RJU1X4NBWC1Q0G7",
+    "name": "Riverbend Manor Care Center",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "150 River St",
+    "billing_city": "Chagrin Falls",
+    "billing_state": "OH",
+    "billing_zip": "44022",
+    "care_type": "Assisted Living",
+    "status": "Active",
+    "phone": "(517) 457-9548",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(517) 457-9548",
+     "to": "(231) 283-7448"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001RJU1X4NBWC1Q0G7",
+     "payload": {
+      "phone": "(231) 283-7448"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '150 river st'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 44022"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Chagrin Falls, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (231) 283-7448 vs (517) 457-9548"
+    },
+    {
+     "signal": "name",
+     "weight": 0.0,
+     "detail": "name token overlap 0.00: 'Bellhaven of Chagrin Falls' vs 'Riverbend Manor Care Center'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
    "id": "bb819bad3f67",
    "type": "UPDATE_NAME",
    "title": "Bellhaven Willow Creek",
@@ -1881,6 +2899,95 @@
     }
    ],
    "rationale": "Website name 'Bellhaven Willow Creek' differs from CRM 'Sunny Acres Retirement Home'; same address/phone so this is a rename, not a different facility.",
+   "attention": "",
+   "near_misses": []
+  },
+  {
+   "id": "c6e6cc97284b",
+   "type": "UPDATE_PHONE",
+   "title": "Bellhaven Willow Creek",
+   "confidence": 0.7,
+   "confidence_band": "low",
+   "subject_key": "0017MN2JYAJBDS8WQZ",
+   "location": {
+    "slug": "bellhaven-willow-creek",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-willow-creek",
+    "name": "Bellhaven Willow Creek",
+    "street": "8060 Willow Creek Ln",
+    "city": "Portage",
+    "state": "MI",
+    "zip": "49024",
+    "care_offerings": [
+     "Memory Support"
+    ],
+    "phone": "(419) 394-5494",
+    "administrator": "Walt Mabry"
+   },
+   "account": {
+    "account_id": "0017MN2JYAJBDS8WQZ",
+    "name": "Sunny Acres Retirement Home",
+    "parent_id": "0015QAPLGS3FVYEEEM",
+    "parent_name": "Bellhaven Senior Living (Parent Account)",
+    "billing_street": "8060 Willow Creek Lane",
+    "billing_city": "Portage",
+    "billing_state": "MI",
+    "billing_zip": "49024",
+    "care_type": "Memory Care",
+    "status": "Active",
+    "phone": "(216) 898-7925",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "phone",
+     "from": "(216) 898-7925",
+     "to": "(419) 394-5494"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "0017MN2JYAJBDS8WQZ",
+     "payload": {
+      "phone": "(419) 394-5494"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Phone updated from website."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '8060 willow crk ln'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 49024"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Portage, MI"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (419) 394-5494 vs (216) 898-7925"
+    },
+    {
+     "signal": "name",
+     "weight": 0.0,
+     "detail": "name token overlap 0.00: 'Bellhaven Willow Creek' vs 'Sunny Acres Retirement Home'"
+    }
+   ],
+   "rationale": "CRM phone is empty or differs from the website listing.",
    "attention": "",
    "near_misses": []
   },
@@ -2365,7 +3472,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven of Maplewood' vs 'Bellhaven of Maplewood'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": [
     {
@@ -2476,7 +3583,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven of New Carlisle' vs 'Bellhaven of New Carlisle'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -2550,7 +3657,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven of Wooster' vs 'Bellhaven of Wooster'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -2624,7 +3731,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven Terrace of Akron' vs 'Bellhaven Terrace of Akron'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -2698,7 +3805,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven of Saline' vs 'Bellhaven of Saline'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -2772,7 +3879,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven of Meadville' vs 'Bellhaven of Meadville'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -2846,7 +3953,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven Woods of Toledo' vs 'Bellhaven Woods of Toledo'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -2920,7 +4027,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven of Kalamazoo' vs 'Bellhaven of Kalamazoo'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -2994,7 +4101,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven Court of Altoona' vs 'Bellhaven Court of Altoona'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -3068,7 +4175,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven of Tiffin' vs 'Bellhaven of Tiffin'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -3142,7 +4249,7 @@
      "detail": "name token overlap 1.00: 'Bellhaven of Marietta' vs 'Bellhaven of Marietta'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   },
@@ -3216,615 +4323,22 @@
      "detail": "name token overlap 1.00: 'Bellhaven of Owosso' vs 'Bellhaven of Owosso'"
     }
    ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "2720e46730e4",
-   "type": "CONFIRM",
-   "title": "Bellhaven Meadows of Findlay",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001UKEFGADQ8YCZ4YM",
-   "location": {
-    "slug": "bellhaven-meadows-of-findlay",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-meadows-of-findlay",
-    "name": "Bellhaven Meadows of Findlay",
-    "street": "1800 N Blanchard St",
-    "city": "Findlay",
-    "state": "OH",
-    "zip": "45840",
-    "care_offerings": [
-     "Assisted Living",
-     "Memory Support"
-    ],
-    "phone": "(231) 533-2969",
-    "administrator": "Sam Pruitt"
-   },
-   "account": {
-    "account_id": "001UKEFGADQ8YCZ4YM",
-    "name": "Bellhaven Meadows of Findlay",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "1800 N Blanchard St",
-    "billing_city": "Findlay",
-    "billing_state": "OH",
-    "billing_zip": "45840",
-    "care_type": "Assisted Living",
-    "status": "Active",
-    "phone": "(330) 975-2492",
-    "lifetime_revenue": 22000,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "[ownership-sync] 2026-09-12: Re-parented from no parent to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-meadows-of-findlay. SOP: no outstanding AR, so direct re-parent is allowed.",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 20:36:32Z"
-   },
-   "changes": [],
-   "actions": [],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '1800 n blanchard st'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 45840"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Findlay, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (231) 533-2969 vs (330) 975-2492"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven Meadows of Findlay' vs 'Bellhaven Meadows of Findlay'"
-    }
-   ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "67503d7f8477",
-   "type": "CONFIRM",
-   "title": "Bellhaven of Goshen",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001JQER1RMYKNRLNME",
-   "location": {
-    "slug": "bellhaven-of-goshen",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-goshen",
-    "name": "Bellhaven of Goshen",
-    "street": "1610 College Ave",
-    "city": "Goshen",
-    "state": "IN",
-    "zip": "46526",
-    "care_offerings": [
-     "Assisted Living"
-    ],
-    "phone": "(330) 405-6040",
-    "administrator": "Tanya Castellano"
-   },
-   "account": {
-    "account_id": "001JQER1RMYKNRLNME",
-    "name": "Bellhaven of Goshen",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "1610 College Avenue",
-    "billing_city": "Goshen",
-    "billing_state": "IN",
-    "billing_zip": "46526",
-    "care_type": "Assisted Living",
-    "status": "Active",
-    "phone": "(517) 409-8156",
-    "lifetime_revenue": 121000,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [],
-   "actions": [],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '1610 college ave'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 46526"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Goshen, IN"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (330) 405-6040 vs (517) 409-8156"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven of Goshen' vs 'Bellhaven of Goshen'"
-    }
-   ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "a398b7c75bca",
-   "type": "CONFIRM",
-   "title": "Bellhaven of Defiance",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001R4PXTUD9R6FNN8V",
-   "location": {
-    "slug": "bellhaven-of-defiance",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-defiance",
-    "name": "Bellhaven of Defiance",
-    "street": "700 Carpenter Rd",
-    "city": "Defiance",
-    "state": "OH",
-    "zip": "43512",
-    "care_offerings": [
-     "Short-Term Rehabilitation & Nursing"
-    ],
-    "phone": "(330) 691-2711",
-    "administrator": "Victor Barros"
-   },
-   "account": {
-    "account_id": "001R4PXTUD9R6FNN8V",
-    "name": "Bellhaven of Defiance",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "700 Carpenter Road",
-    "billing_city": "Defiance",
-    "billing_state": "OH",
-    "billing_zip": "43512",
-    "care_type": "Skilled Nursing",
-    "status": "Active",
-    "phone": "(231) 238-4862",
-    "lifetime_revenue": 66000,
-    "outstanding_ar": 9500,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [],
-   "actions": [],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '700 carpenter rd'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 43512"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Defiance, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (330) 691-2711 vs (231) 238-4862"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven of Defiance' vs 'Bellhaven of Defiance'"
-    }
-   ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "32c6eabbd00a",
-   "type": "CONFIRM",
-   "title": "Bellhaven of Marion",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "0015L38R1Z5947ZZP7",
-   "location": {
-    "slug": "bellhaven-of-marion",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-marion",
-    "name": "Bellhaven of Marion",
-    "street": "199 Barks Rd W",
-    "city": "Marion",
-    "state": "OH",
-    "zip": "43302",
-    "care_offerings": [
-     "Short-Term Rehabilitation & Nursing"
-    ],
-    "phone": "(517) 847-7948",
-    "administrator": "Doug Amato"
-   },
-   "account": {
-    "account_id": "0015L38R1Z5947ZZP7",
-    "name": "Bellhaven of Marion",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "199 Barks Road West",
-    "billing_city": "Marion",
-    "billing_state": "OH",
-    "billing_zip": "43302",
-    "care_type": "Skilled Nursing",
-    "status": "Active",
-    "phone": "(330) 314-3109",
-    "lifetime_revenue": 87000,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [],
-   "actions": [],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '199 barks rd w'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 43302"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Marion, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (517) 847-7948 vs (330) 314-3109"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven of Marion' vs 'Bellhaven of Marion'"
-    }
-   ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "bf1e5e7b7391",
-   "type": "CONFIRM",
-   "title": "Bellhaven of Port Clinton",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001UELXDAKFRKB8932",
-   "location": {
-    "slug": "bellhaven-of-port-clinton",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-port-clinton",
-    "name": "Bellhaven of Port Clinton",
-    "street": "1420 Harbor Point Dr",
-    "city": "Port Clinton",
-    "state": "OH",
-    "zip": "43452",
-    "care_offerings": [
-     "Short-Term Rehabilitation & Nursing"
-    ],
-    "phone": "(330) 733-6423",
-    "administrator": "Brenda Whitfield"
-   },
-   "account": {
-    "account_id": "001UELXDAKFRKB8932",
-    "name": "Bellhaven of Port Clinton",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "1420 Harbor Point Dr",
-    "billing_city": "Port Clinton",
-    "billing_state": "OH",
-    "billing_zip": "43452",
-    "care_type": "Skilled Nursing",
-    "status": "Active",
-    "phone": "(614) 512-8712",
-    "lifetime_revenue": 0,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [],
-   "actions": [],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '1420 harbor point dr'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 43452"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Port Clinton, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (330) 733-6423 vs (614) 512-8712"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven of Port Clinton' vs 'Bellhaven of Port Clinton'"
-    }
-   ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "5e352c72f2bb",
-   "type": "CONFIRM",
-   "title": "Bellhaven Shores of Erie",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001CVBBCSDM7YHN220",
-   "location": {
-    "slug": "bellhaven-shores-of-erie",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-shores-of-erie",
-    "name": "Bellhaven Shores of Erie",
-    "street": "4930 W Lake Rd",
-    "city": "Erie",
-    "state": "PA",
-    "zip": "16505",
-    "care_offerings": [
-     "Assisted Living",
-     "Memory Support"
-    ],
-    "phone": "(614) 792-9343",
-    "administrator": "Angela Quinn"
-   },
-   "account": {
-    "account_id": "001CVBBCSDM7YHN220",
-    "name": "Bellhaven Shores of Erie",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "4930 W Lake Rd",
-    "billing_city": "Erie",
-    "billing_state": "PA",
-    "billing_zip": "16505",
-    "care_type": "Assisted Living",
-    "status": "Active",
-    "phone": "(419) 495-1741",
-    "lifetime_revenue": 0,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [],
-   "actions": [],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '4930 w lake rd'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 16505"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Erie, PA"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (614) 792-9343 vs (419) 495-1741"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven Shores of Erie' vs 'Bellhaven Shores of Erie'"
-    }
-   ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "5e07d159f506",
-   "type": "CONFIRM",
-   "title": "Bellhaven Gardens of Monroe",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001U1750VLVJAGG1S5",
-   "location": {
-    "slug": "bellhaven-gardens-of-monroe",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-gardens-of-monroe",
-    "name": "Bellhaven Gardens of Monroe",
-    "street": "750 Stewart Rd",
-    "city": "Monroe",
-    "state": "MI",
-    "zip": "48162",
-    "care_offerings": [
-     "Assisted Living"
-    ],
-    "phone": "(814) 412-2218",
-    "administrator": "Phil Mabry"
-   },
-   "account": {
-    "account_id": "001U1750VLVJAGG1S5",
-    "name": "Bellhaven Gardens of Monroe",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "750 Stewart Rd",
-    "billing_city": "Monroe",
-    "billing_state": "MI",
-    "billing_zip": "48162",
-    "care_type": "Assisted Living",
-    "status": "Active",
-    "phone": "(814) 291-2902",
-    "lifetime_revenue": 0,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [],
-   "actions": [],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '750 stewart rd'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 48162"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Monroe, MI"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (814) 412-2218 vs (814) 291-2902"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven Gardens of Monroe' vs 'Bellhaven Gardens of Monroe'"
-    }
-   ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "5faa5ec4a0cd",
-   "type": "CONFIRM",
-   "title": "Bellhaven Crossings of Lima",
-   "confidence": 0.95,
-   "confidence_band": "high",
-   "subject_key": "001LGFPBJY4N9MB6KL",
-   "location": {
-    "slug": "bellhaven-crossings-of-lima",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-crossings-of-lima",
-    "name": "Bellhaven Crossings of Lima",
-    "street": "3115 N Cole St",
-    "city": "Lima",
-    "state": "OH",
-    "zip": "45801",
-    "care_offerings": [
-     "Assisted Living"
-    ],
-    "phone": "(231) 539-3617",
-    "administrator": "Tricia Fitch"
-   },
-   "account": {
-    "account_id": "001LGFPBJY4N9MB6KL",
-    "name": "Bellhaven Crossings of Lima",
-    "parent_id": "0015QAPLGS3FVYEEEM",
-    "parent_name": "Bellhaven Senior Living (Parent Account)",
-    "billing_street": "3115 N Cole St",
-    "billing_city": "Lima",
-    "billing_state": "OH",
-    "billing_zip": "45801",
-    "care_type": "Assisted Living",
-    "status": "Active",
-    "phone": "(734) 872-9575",
-    "lifetime_revenue": 47000,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "[ownership-sync] 2026-09-12: Re-parented from Harborview Care Group to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-crossings-of-lima. SOP: no outstanding AR, so direct re-parent is allowed.",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 20:36:35Z"
-   },
-   "changes": [],
-   "actions": [],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '3115 n cole st'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 45801"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Lima, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (231) 539-3617 vs (734) 872-9575"
-    },
-    {
-     "signal": "name",
-     "weight": 0.25,
-     "detail": "name token overlap 1.00: 'Bellhaven Crossings of Lima' vs 'Bellhaven Crossings of Lima'"
-    }
-   ],
-   "rationale": "Website and CRM agree on name, parent, address, care type, status. Nothing to change.",
+   "rationale": "Website and CRM agree on name, parent, address, care type, status, phone. Nothing to change.",
    "attention": "",
    "near_misses": []
   }
  ],
  "suppressed": 0,
- "generated_at": "2026-09-12T20:38:21+00:00",
+ "generated_at": "2026-09-12T20:46:33+00:00",
  "counts": {
   "site_locations": 35,
   "crm_accounts": 123,
-  "confirmed": 20,
+  "confirmed": 12,
   "by_type": {
    "UPDATE_NAME": 9,
-   "DUPLICATE": 7,
    "UPDATE_ADDRESS": 2,
+   "UPDATE_PHONE": 15,
+   "DUPLICATE": 5,
    "REPARENT": 1,
    "CREATE": 4,
    "NOT_ON_SITE": 3

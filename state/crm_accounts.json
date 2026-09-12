@@ -609,15 +609,15 @@
   "billing_state": "MI",
   "billing_zip": "48867",
   "care_type": "Assisted Living",
-  "status": "Active",
+  "status": "Inactive",
   "phone": "(330) 383-5991",
   "lifetime_revenue": 0,
   "outstanding_ar": 0,
   "chow_current_account": "",
-  "duplicate_of_account": "",
-  "note": "",
+  "duplicate_of_account": "001EGU7BMJ942ZTRE6",
+  "note": "[ownership-sync] 2026-09-12: Duplicate of 001EGU7BMJ942ZTRE6 (Bellhaven of Owosso) \u2014 same facility at 1120 W Main St, Owosso. Survivor chosen by: billing history > correct parent > Active > completeness.",
   "created_by_candidate": false,
-  "updated_at": "2026-09-12 16:00:31Z"
+  "updated_at": "2026-09-12 20:42:00Z"
  },
  {
   "account_id": "001UELXDAKFRKB8932",
@@ -1289,15 +1289,15 @@
   "billing_state": "OH",
   "billing_zip": "43452",
   "care_type": "Skilled Nursing",
-  "status": "Active",
+  "status": "Inactive",
   "phone": "(216) 314-1338",
   "lifetime_revenue": 0,
   "outstanding_ar": 0,
   "chow_current_account": "",
-  "duplicate_of_account": "",
-  "note": "",
+  "duplicate_of_account": "001UELXDAKFRKB8932",
+  "note": "[ownership-sync] 2026-09-12: Duplicate of 001UELXDAKFRKB8932 (Bellhaven of Port Clinton) \u2014 same facility at 1420 Harbor Point Dr, Port Clinton. Survivor chosen by: billing history > correct parent > Active > completeness.",
   "created_by_candidate": false,
-  "updated_at": "2026-09-12 16:00:31Z"
+  "updated_at": "2026-09-12 20:42:08Z"
  },
  {
   "account_id": "001BLYF02K97SZLZHH",
