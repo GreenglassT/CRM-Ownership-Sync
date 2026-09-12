@@ -55,7 +55,8 @@ def recon_rows(p: dict, parent: dict) -> list[dict]:
 
     def row(field, web, crm, key=None, after=None, note=""):
         changed = key in ch
-        return {"field": field, "web": web, "crm": crm,
+        differs = bool(web) and bool(crm) and str(web).casefold().strip() != str(crm).casefold().strip()
+        return {"field": field, "web": web, "crm": crm, "differs": differs,
                 "after": after if after is not None else (ch[key] if changed else crm), "changed": changed, "note": note}
 
     if t == "CREATE":
@@ -93,6 +94,32 @@ def recon_rows(p: dict, parent: dict) -> list[dict]:
     return rows + billing
 
 
+def describe_actions(p: dict, parent: dict) -> list[str]:
+    """What approving does, in the reviewer's words. One sentence per API call."""
+    out = []
+    for a in p["actions"]:
+        if a["op"] == "create":
+            pl = a["payload"]
+            out.append(f"Creates a new account \u201c{pl['name']}\u201d under {parent_label(parent['name'])} at {pl['billing_street']}, "
+                       f"{pl['billing_city']}, {pl['billing_state']} {pl['billing_zip']} ({pl['care_type'] or 'no care type'}, {pl['phone'] or 'no phone'}).")
+        else:
+            acct = p["account"] if p["account"] and p["account"]["account_id"] == a["account_id"] else None
+            who = f"account {a['account_id']}" + (f" (\u201c{acct['name']}\u201d)" if acct else "")
+            fields = []
+            for k, v in a["payload"].items():
+                if isinstance(v, dict):
+                    v = "the new account's id"
+                elif k == "parent_id":
+                    v = parent_label(parent["name"]) if v == parent.get("account_id") else v
+                elif k == "duplicate_of_account" and p.get("survivor"):
+                    v = f"{p['survivor']['name']} ({v})"
+                before = (acct or {}).get(k)
+                fields.append(f"{k} \u2192 {v}" + (f" (was {before})" if before not in (None, "", v) else ""))
+            note = " and appends a dated note" if a.get("note_append") else ""
+            out.append(f"Updates {who}: " + "; ".join(fields) + note + ".")
+    return out
+
+
 def _render(selected_id: str | None):
     q = load_queue()
     ledger = Ledger()
@@ -104,8 +131,9 @@ def _render(selected_id: str | None):
         return redirect(url_for("index"))
     rows = recon_rows(sel, parent) if sel else []
     successor = sel["actions"][0]["payload"] if sel and sel["type"] == "CHOW" else None
+    does = describe_actions(sel, parent) if sel and sel["actions"] else []
     return render_template("review.html", q=q, groups=groups_for(props, q.get("confirmed", [])), total=len(props), sel=sel,
-                           rows=rows, successor=successor, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
+                           rows=rows, successor=successor, does=does, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
 
 
 @app.get("/")

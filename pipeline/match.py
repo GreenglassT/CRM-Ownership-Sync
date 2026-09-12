@@ -324,14 +324,29 @@ def build_proposals(site: list[dict], crm: list[dict], links: dict | None = None
         # ---- low confidence: ask the reviewer to confirm the identity first --------
         if not confident:
             best_sc, best, best_ev = possible[0]
+            key = f"{loc['slug']}|{best['account_id']}"
             claimed.add(best["account_id"])
-            proposals.append(_proposal(
-                "CONFIRM_MATCH", f"{loc['slug']}|{best['account_id']}", loc, best,
+            # Show the reviewer exactly what each answer sets in motion: dry-run the
+            # pair as if approved, and name what happens to the location if rejected.
+            preview = build_proposals([loc], [parent, best], links={key: "approved"})["proposals"]
+            runner_up = next((a for sc, a, ev in possible[1:]), None)
+            p = _proposal(
+                "CONFIRM_MATCH", key, loc, best,
                 [{"field": "linked account", "from": None, "to": best["account_id"]}], [], best_ev,
                 f"Best candidate {best['name']!r} scores {best_sc:.2f}, below the {config.CONFIDENT:.2f} confidence bar. "
                 f"Approve to link this website location to it (field fixes follow on the next run); reject if it is a "
                 f"different facility (a new account is proposed instead).",
-                best_sc, addr_note, near_misses=[n for n in near if n["account_id"] != best["account_id"]]))
+                best_sc, addr_note, near_misses=[n for n in near if n["account_id"] != best["account_id"]])
+            def readable(c):            # parent ids mean nothing to a reviewer; show the names
+                if c["field"] == "parent_id":
+                    return {**c, "from": parent_label(best["parent_name"]), "to": pname}
+                return c
+            p["if_approved"] = [{"type": f["type"], "label": LABEL[f["type"]], "changes": [readable(c) for c in f["changes"]]} for f in preview]
+            p["if_rejected"] = (f"{best['name']} is excluded for this location; the next run asks about the runner-up, "
+                                f"{runner_up['name']} ({runner_up['account_id']}), instead." if runner_up else
+                                f"{best['name']} is excluded for this location; the next run proposes a new account "
+                                f"{loc['name']!r} under {pname}.")
+            proposals.append(p)
             continue
 
         # Duplicate group: every confident candidate, plus weaker candidates that sit

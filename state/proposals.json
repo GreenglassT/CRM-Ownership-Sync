@@ -1974,7 +1974,32 @@
    ],
    "rationale": "Best candidate 'Cedar Trail of Zanesville' scores 0.76, below the 0.80 confidence bar. Approve to link this website location to it (field fixes follow on the next run); reject if it is a different facility (a new account is proposed instead).",
    "attention": "",
-   "near_misses": []
+   "near_misses": [],
+   "if_approved": [
+    {
+     "type": "REPARENT",
+     "label": "Move under parent",
+     "changes": [
+      {
+       "field": "parent_id",
+       "from": "Cedar Trail Communities",
+       "to": "Bellhaven Senior Living"
+      }
+     ]
+    },
+    {
+     "type": "UPDATE_NAME",
+     "label": "Rename",
+     "changes": [
+      {
+       "field": "name",
+       "from": "Cedar Trail of Zanesville",
+       "to": "Bellhaven of Zanesville"
+      }
+     ]
+    }
+   ],
+   "if_rejected": "Cedar Trail of Zanesville is excluded for this location; the next run proposes a new account 'Bellhaven of Zanesville' under Bellhaven Senior Living."
   },
   {
    "id": "d122d06484d7",
@@ -2054,7 +2079,21 @@
    ],
    "rationale": "Best candidate 'Riverbend Manor Care Center' scores 0.70, below the 0.80 confidence bar. Approve to link this website location to it (field fixes follow on the next run); reject if it is a different facility (a new account is proposed instead).",
    "attention": "",
-   "near_misses": []
+   "near_misses": [],
+   "if_approved": [
+    {
+     "type": "UPDATE_NAME",
+     "label": "Rename",
+     "changes": [
+      {
+       "field": "name",
+       "from": "Riverbend Manor Care Center",
+       "to": "Bellhaven of Chagrin Falls"
+      }
+     ]
+    }
+   ],
+   "if_rejected": "Riverbend Manor Care Center is excluded for this location; the next run proposes a new account 'Bellhaven of Chagrin Falls' under Bellhaven Senior Living."
   },
   {
    "id": "98e7c1487851",
@@ -2134,7 +2173,21 @@
    ],
    "rationale": "Best candidate 'Sunny Acres Retirement Home' scores 0.70, below the 0.80 confidence bar. Approve to link this website location to it (field fixes follow on the next run); reject if it is a different facility (a new account is proposed instead).",
    "attention": "",
-   "near_misses": []
+   "near_misses": [],
+   "if_approved": [
+    {
+     "type": "UPDATE_NAME",
+     "label": "Rename",
+     "changes": [
+      {
+       "field": "name",
+       "from": "Sunny Acres Retirement Home",
+       "to": "Bellhaven Willow Creek"
+      }
+     ]
+    }
+   ],
+   "if_rejected": "Sunny Acres Retirement Home is excluded for this location; the next run proposes a new account 'Bellhaven Willow Creek' under Bellhaven Senior Living."
   },
   {
    "id": "673da8f7f9fa",
@@ -3771,7 +3824,7 @@
   }
  ],
  "suppressed": 0,
- "generated_at": "2026-09-12T19:34:43+00:00",
+ "generated_at": "2026-09-12T19:58:34+00:00",
  "counts": {
   "site_locations": 35,
   "crm_accounts": 121,

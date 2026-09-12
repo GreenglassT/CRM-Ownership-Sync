@@ -189,3 +189,13 @@ def test_proposal_id_tracks_the_write_payload(monkeypatch):
     x = build_proposals([loc(care_offerings=["Assisted Living"])], [PARENT, OTHER, old])["proposals"][0]
     y = build_proposals([loc(care_offerings=["Memory Support"])], [PARENT, OTHER, old])["proposals"][0]
     assert x["type"] == y["type"] == "CHOW" and x["id"] != y["id"]
+
+
+def test_confirm_match_previews_its_consequences():
+    a = acct(account_id="Z", name="Cedar Trail of X", parent_id="P2", parent_name="Cedar Trail", billing_street="1 Main Ave", billing_city="Xtown", billing_state="OH", billing_zip="44000")
+    out = build_proposals([loc()], [PARENT, OTHER, a])
+    p = out["proposals"][0]
+    assert p["type"] == "CONFIRM_MATCH"
+    assert [f["type"] for f in p["if_approved"]] == ["REPARENT", "UPDATE_NAME", "UPDATE_ADDRESS"]
+    assert p["if_approved"][1]["changes"][0]["to"] == "Bellhaven of X"
+    assert "new account" in p["if_rejected"]

@@ -44,6 +44,12 @@
   .recon td.after.changed { background: var(--change); color: var(--change-ink); font-weight: 500; padding-left: 8px; }
   .recon td .note { display: block; font-size: 12px; color: var(--ink-2); font-weight: 400; }
   .recon .dim { color: var(--ink-3); }
+  .recon td.differs { background: var(--change); color: var(--change-ink); padding-left: 8px; }
+  .does { margin: 6px 0 0; padding: 12px 14px; border: 1px solid var(--rule); border-radius: 4px; background: var(--panel); max-width: 72ch; }
+  .does h3 { font-size: 13px; font-weight: 600; margin: 0 0 6px; }
+  .does ul { margin: 0; padding-left: 18px; }
+  .does li { margin: 2px 0; }
+  .does .sub { color: var(--ink-2); }
 
   .successor { border: 1px solid var(--rule); border-radius: 4px; padding: 12px 14px; margin: -8px 0 22px; font-size: 13px; }
   .successor h3 { font-size: 13px; font-weight: 600; margin: 0 0 6px; }
@@ -142,7 +148,7 @@
         <tr>
           <td>{{ r.field }}</td>
           <td class="{{ 'dim' if not r.web }}">{{ r.web|default('—', true) }}</td>
-          <td class="{{ 'dim' if not r.crm }}">{{ r.crm|default('—', true) }}</td>
+          <td class="{{ 'dim' if not r.crm }} {{ 'differs' if r.differs and not writes }}">{{ r.crm|default('—', true) }}</td>
           {% if writes %}<td class="after {{ 'changed' if r.changed }} {{ 'dim' if not r.after and not r.changed }}">{{ r.after|default('—', true) }}{% if r.note %}<span class="note">{{ r.note }}</span>{% endif %}</td>{% endif %}
         </tr>
       {% endfor %}
@@ -184,12 +190,25 @@
     {% endif %}
 
     {% if writes %}
+    <div class="does">
+      <h3>Approving will</h3>
+      <ul>{% for d in does %}<li>{{ d }}</li>{% endfor %}</ul>
+    </div>
     <details>
       <summary>API calls made on approval ({{ sel.actions|length }})</summary>
       <pre>{{ sel.actions|tojson(indent=1) }}</pre>
     </details>
     {% elif decidable %}
-    <p class="explain">No API call is made for this item. Approving or rejecting only records your decision; the next pipeline run acts on it.</p>
+    <div class="does">
+      <h3>If you approve</h3>
+      <p class="sub" style="margin:0 0 6px">Nothing is written now. The pair is recorded as the same facility and the next pipeline run proposes these, each for its own approval:</p>
+      <ul>
+        {% for f in sel.if_approved %}<li><b>{{ f.label }}</b>{% for c in f.changes %} — {{ c.field }}: {{ c['from']|default('—', true) }} → {{ c.to }}{% endfor %}</li>
+        {% else %}<li>No field changes: the two records already agree.</li>{% endfor %}
+      </ul>
+      <h3 style="margin-top:10px">If you reject</h3>
+      <p class="sub" style="margin:0">{{ sel.if_rejected }}</p>
+    </div>
     {% endif %}
 
     {% if decidable %}
