@@ -1,4 +1,5 @@
 """Thin client for the CRM sandbox API. Stdlib only."""
+import http.client
 import json
 import time
 import urllib.error
@@ -33,17 +34,27 @@ class CRM:
         req = urllib.request.Request(url, data=data, method=method)
         req.add_header("Authorization", f"Bearer {self.token}")
         req.add_header("Content-Type", "application/json")
+        # POST is never retried: a lost response after the origin committed the insert
+        # would otherwise create the same account twice. Everything else is safe to retry.
+        retry_ok = method != "POST"
         for attempt in range(3):
             try:
                 with urllib.request.urlopen(req, timeout=30) as r:
                     return json.loads(r.read().decode())
-            except urllib.error.URLError as e:          # HTTPError is a subclass
-                is_http = isinstance(e, urllib.error.HTTPError)
-                detail = f"{e.code}: {e.read().decode(errors='replace')}" if is_http else str(e)
-                if (not is_http or e.code >= 500) and attempt < 2:
+            except urllib.error.HTTPError as e:
+                detail = f"{e.code}: {e.read().decode(errors='replace')}"
+                if retry_ok and e.code >= 500 and attempt < 2:
                     time.sleep(1.5 * (attempt + 1))
                     continue
                 raise CRMError(f"{method} {path} -> {detail}") from None
+            except (urllib.error.URLError, http.client.HTTPException, OSError, ValueError) as e:
+                # URLError: could not connect or send. HTTPException/OSError: the connection
+                # dropped or timed out while READING the response (urllib does not wrap
+                # those). ValueError: the body was not JSON.
+                if retry_ok and attempt < 2:
+                    time.sleep(1.5 * (attempt + 1))
+                    continue
+                raise CRMError(f"{method} {path} -> {type(e).__name__}: {e}") from None
 
     # -- reads ---------------------------------------------------------------
     def me(self):

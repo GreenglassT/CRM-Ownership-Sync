@@ -15,6 +15,7 @@ Proposal types
   UPDATE_PHONE      phone empty or differs                 -> PATCH phone
   REACTIVATE        live location but account Inactive     -> PATCH status=Active
   NOT_ON_SITE       under parent, absent from website      -> PATCH status=Needs Review
+  CONFIRM_MATCH     best candidate below the confidence bar -> reviewer links or rejects (no write)
   CONFIRM           everything agrees (informational, no action)
 """
 import datetime as dt
@@ -31,6 +32,9 @@ NOTE_TAG = "[ownership-sync]"
 # the queue: CHOW before DUPLICATE because a duplicate of a CHOW'd account points
 # at the *new* account id. The review app derives its labels from this list.
 TYPES = [
+    ("CONFIRM_MATCH", "Confirm match",
+     "The best CRM candidate scores below the confidence bar. Approve to link this website location to the account; the field "
+     "fixes are proposed on the next run. Reject if it is a different facility; a new account is proposed instead. Nothing is written either way."),
     ("CHOW", "Change of ownership",
      "The account belongs under a different parent, but it has revenue and open AR. Billing needs the old account preserved, "
      "so a successor account is created under the correct parent and the old one is linked to it. Nothing else on the old account changes."),
@@ -98,7 +102,9 @@ def score_pair(loc: dict, acct: dict) -> tuple[float, list[dict]]:
             ev.append(dict(signal="zip", weight=-0.05, detail=f"zip differs: {lz} vs {cz}"))
 
     # --- city/state ---------------------------------------------------------
-    if norm_city(loc["city"]) == norm_city(acct["billing_city"]) and loc["state"].upper() == (acct["billing_state"] or "").upper():
+    if not (loc["city"] and acct["billing_city"]):
+        ev.append(dict(signal="city", weight=0.0, detail="city missing on one side; neutral"))
+    elif norm_city(loc["city"]) == norm_city(acct["billing_city"]) and loc["state"].upper() == (acct["billing_state"] or "").upper():
         s += 0.15
         ev.append(dict(signal="city", weight=0.15, detail=f"city/state equal: {loc['city']}, {loc['state']}"))
     else:
@@ -132,7 +138,12 @@ def score_pair(loc: dict, acct: dict) -> tuple[float, list[dict]]:
 # --------------------------------------------------------------------------- #
 def find_parent(crm: list[dict]) -> dict:
     if config.PARENT_ID_OVERRIDE:
-        return next(a for a in crm if a["account_id"] == config.PARENT_ID_OVERRIDE)
+        a = next((a for a in crm if a["account_id"] == config.PARENT_ID_OVERRIDE), None)
+        if not a:
+            raise RuntimeError(f"BELLHAVEN_PARENT_ID {config.PARENT_ID_OVERRIDE!r} is not in the CRM snapshot")
+        if a["parent_id"]:
+            raise RuntimeError(f"BELLHAVEN_PARENT_ID {config.PARENT_ID_OVERRIDE!r} is not a parent account: {a['name']!r} has parent_id {a['parent_id']!r}")
+        return a
     cands = [a for a in crm if not a["parent_id"] and a["name"].lower().startswith(config.OPERATOR_NAME.lower())]
     if len(cands) != 1:
         raise RuntimeError(f"expected exactly one parent account for {config.OPERATOR_NAME!r}, found {len(cands)}")
@@ -152,14 +163,16 @@ def has_open_ar(acct: dict) -> bool:
     return (acct.get("outstanding_ar") or 0) > 0
 
 
-def survivor_rank(acct: dict, parent_id: str, match_score: float = 0.0) -> tuple:
-    """Which duplicate survives. Billing history dominates (never orphan an AR
-    balance), then the copy already under the right parent, then Active, then
-    the copy that agrees best with the website, then completeness. Ties break
-    on account_id so the choice is stable run to run."""
+def survivor_rank(acct: dict, parent_id: str, match_score: float = 0.0, successors: frozenset = frozenset()) -> tuple:
+    """Which duplicate survives. A CHOW successor always survives (it was created
+    on purpose and starts with no billing), then billing history dominates (never
+    orphan an AR balance), then the copy already under the right parent, then
+    Active, then the copy that agrees best with the website, then completeness.
+    Ties break on account_id so the choice is stable run to run."""
     completeness = sum(1 for k in ("billing_street", "billing_zip", "phone", "care_type") if acct.get(k)) / 4
     return (
-        4 * has_open_ar(acct) + 2 * has_billing_history(acct)
+        8 * (acct["account_id"] in successors)
+        + 4 * has_open_ar(acct) + 2 * has_billing_history(acct)
         + 1 * (acct["parent_id"] == parent_id) + 0.5 * (acct["status"] == "Active")
         + 0.4 * match_score + 0.25 * completeness,
         [-ord(c) for c in acct["account_id"]],   # lower id wins a pure tie
@@ -237,10 +250,19 @@ def _patch_proposal(kind, acct, loc, new, note, why, evidence, confidence, atten
 # --------------------------------------------------------------------------- #
 # Main classification
 # --------------------------------------------------------------------------- #
-def build_proposals(site: list[dict], crm: list[dict]) -> dict:
+def address_complete(loc: dict) -> bool:
+    return all(loc.get(k) for k in ("street", "city", "state", "zip"))
+
+
+def build_proposals(site: list[dict], crm: list[dict], links: dict | None = None) -> dict:
+    """`links` holds the reviewer's identity decisions for low-confidence pairs:
+    {'<slug>|<account_id>': 'approved' | 'rejected'} (see Ledger.match_links)."""
+    links = links or {}
     parent = find_parent(crm)
     pid = parent["account_id"]
     pname = parent_label(parent["name"])
+    # Accounts created by an approved CHOW: they must never lose a duplicate contest.
+    successors = frozenset(a["chow_current_account"] for a in crm if a.get("chow_current_account"))
     # Facility accounts = everything that is not a parent/corporate account.
     facilities = [a for a in crm if a["account_id"] != pid and not a["name"].endswith("(Parent Account)")]
     candidates = [a for a in facilities if not is_superseded(a)]
@@ -264,7 +286,13 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
         return sum(e["weight"] for e in ev if e["weight"] > 0)
 
     for loc in order:
-        rows = [(sc, a, ev) for sc, a, ev in scored[loc["slug"]] if a["account_id"] not in claimed]
+        def link(a):
+            return links.get(f"{loc['slug']}|{a['account_id']}")
+
+        rows = [(sc, a, ev) for sc, a, ev in scored[loc["slug"]]
+                if a["account_id"] not in claimed and link(a) != "rejected"]
+        addr_ok = address_complete(loc)
+        addr_note = "" if addr_ok else "Website address did not parse (city/state/zip missing); the address was not compared or proposed."
         # "Considered and rejected": rank by *positive* agreement so a candidate that
         # agreed on zip/city/name but was sunk by street+phone conflicts still shows
         # up with the reasons it lost. Net score alone would hide exactly those.
@@ -273,7 +301,7 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
                 for sc, a, ev in sorted(rows, key=lambda r: -positive(r[2]))[:3] if positive(ev) >= 0.35]
         near.sort(key=lambda n: -n["score"])
         possible = [(sc, a, ev) for sc, a, ev in rows if sc >= config.POSSIBLE]
-        confident = [(sc, a, ev) for sc, a, ev in possible if sc >= config.CONFIDENT]
+        confident = [(sc, a, ev) for sc, a, ev in possible if sc >= config.CONFIDENT or link(a) == "approved"]
 
         # ---- CREATE -----------------------------------------------------------
         if not possible:
@@ -284,33 +312,49 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
             payload = account_payload_from_location(loc, pid, f"Created from website listing {loc['url']}. Offerings: {', '.join(loc['care_offerings'])}. Administrator: {loc['administrator']}")
             proposals.append(_proposal("CREATE", loc["slug"], loc, None,
                                        [{"field": "(new account)", "from": None, "to": loc["name"]}],
-                                       [{"op": "create", "payload": payload}], [], rationale, 1.0, near_misses=near))
+                                       [{"op": "create", "payload": payload}], [], rationale, 1.0,
+                                       "" if addr_ok else addr_note + " The new account would have blank city/state/zip.", near_misses=near))
+            continue
+
+        # ---- low confidence: ask the reviewer to confirm the identity first --------
+        if not confident:
+            best_sc, best, best_ev = possible[0]
+            claimed.add(best["account_id"])
+            proposals.append(_proposal(
+                "CONFIRM_MATCH", f"{loc['slug']}|{best['account_id']}", loc, best,
+                [{"field": "linked account", "from": None, "to": best["account_id"]}], [], best_ev,
+                f"Best candidate {best['name']!r} scores {best_sc:.2f}, below the {config.CONFIDENT:.2f} confidence bar. "
+                f"Approve to link this website location to it (field fixes follow on the next run); reject if it is a "
+                f"different facility (a new account is proposed instead).",
+                best_sc, addr_note, near_misses=[n for n in near if n["account_id"] != best["account_id"]]))
             continue
 
         # Duplicate group: every confident candidate, plus weaker candidates that sit
         # at the *exact same street* as the location (a third stale copy of the same
         # building usually fails on name + phone but the address anchor is decisive).
-        if confident:
-            anchor = norm_street(loc["street"])
-            group = confident + [r for r in possible if r not in confident and norm_street(r[1]["billing_street"]) == anchor]
-        else:
-            group = [possible[0]]
+        anchor = norm_street(loc["street"])
+        group = confident + [r for r in possible if r not in confident and norm_street(r[1]["billing_street"]) == anchor]
         others = [n for n in near if n["account_id"] not in {a["account_id"] for _, a, _ in group}]
 
         # ---- pick survivor, mark the rest DUPLICATE -----------------------------
-        group.sort(key=lambda r: survivor_rank(r[1], pid, r[0]), reverse=True)
+        group.sort(key=lambda r: survivor_rank(r[1], pid, r[0], successors), reverse=True)
         surv_sc, surv, surv_ev = group[0]
         claimed.update(a["account_id"] for _, a, _ in group)
-        attention = ""
+        attention = addr_note
         if sum(1 for _, a, _ in group if has_billing_history(a) or has_open_ar(a)) > 1:
-            attention = "More than one duplicate carries billing history; confirm survivor with billing before approving."
+            attention += " More than one duplicate carries billing history; confirm survivor with billing before approving."
         surv_needs_chow = surv["parent_id"] != pid and has_billing_history(surv) and has_open_ar(surv)
-        dup_target = {"$chow_new_of": surv["account_id"]} if surv_needs_chow else surv["account_id"]
         surv_parent = parent_label(surv["parent_name"])
+        if surv_needs_chow and group[1:]:
+            # The losers must point at the successor, which does not exist yet. Emit
+            # only the CHOW now; once it lands the old account is superseded, the
+            # successor matches, and the next run proposes these as plain duplicates.
+            attention += (" Other copies of this building: " + ", ".join(f"{a['name']} ({a['account_id']})" for _, a, _ in group[1:])
+                          + ". They will be proposed as duplicates of the successor after this change of ownership lands.")
 
-        for sc, a, ev in group[1:]:
+        for sc, a, ev in ([] if surv_needs_chow else group[1:]):
             p = _patch_proposal(
-                "DUPLICATE", a, loc, {"duplicate_of_account": dup_target, "status": "Inactive"},
+                "DUPLICATE", a, loc, {"duplicate_of_account": surv["account_id"], "status": "Inactive"},
                 f"Duplicate of {surv['account_id']} ({surv['name']}) — same facility at {loc['street']}, {loc['city']}. "
                 f"Survivor chosen by: billing history > correct parent > Active > completeness.",
                 f"{a['name']!r} and {surv['name']!r} both resolve to {loc['name']} ({loc['street']}, {loc['city']}). "
@@ -322,6 +366,7 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
 
         # ---- survivor: parent, then field-level fixes -----------------------------
         fixes = []   # proposals on the survivor; empty means the match is confirmed as-is
+        attention = attention.strip()
         if surv_needs_chow:
             payload = account_payload_from_location(
                 loc, pid,
@@ -351,9 +396,10 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
             if surv["name"].strip().lower() != loc["name"].strip().lower():
                 fix("UPDATE_NAME", {"name": loc["name"]}, f"Renamed from {surv['name']!r} to match website listing.",
                     f"Website name {loc['name']!r} differs from CRM {surv['name']!r}; same address/phone so this is a rename, not a different facility.")
-            addr_stale = (is_po_box(surv["billing_street"]) or norm_street(surv["billing_street"]) != norm_street(loc["street"])
-                          or norm_zip(surv["billing_zip"]) != norm_zip(loc["zip"]) or norm_city(surv["billing_city"]) != norm_city(loc["city"])
-                          or (surv["billing_state"] or "").upper() != loc["state"].upper())
+            addr_stale = addr_ok and (
+                is_po_box(surv["billing_street"]) or norm_street(surv["billing_street"]) != norm_street(loc["street"])
+                or norm_zip(surv["billing_zip"]) != norm_zip(loc["zip"]) or norm_city(surv["billing_city"]) != norm_city(loc["city"])
+                or (surv["billing_state"] or "").upper() != loc["state"].upper())
             if addr_stale:
                 new = {"billing_street": loc["street"], "billing_city": loc["city"], "billing_state": loc["state"], "billing_zip": loc["zip"]}
                 why = "CRM has a PO Box; website has the street address" if is_po_box(surv["billing_street"]) else "address differs from website"
@@ -375,7 +421,7 @@ def build_proposals(site: list[dict], crm: list[dict]) -> dict:
         else:
             checked = "name, parent, address, care type, status" + (", phone" if config.PROPOSE_PHONE_UPDATES else "")
             confirms.append(_proposal("CONFIRM", surv["account_id"], loc, surv, [], [], surv_ev,
-                                      f"Website and CRM agree on {checked}. Nothing to change.", surv_sc, near_misses=others))
+                                      f"Website and CRM agree on {checked}. Nothing to change.", surv_sc, attention, near_misses=others))
 
     # ---- NOT_ON_SITE: under our parent, live, not linked to any website location ---
     for a in facilities:

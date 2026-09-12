@@ -1521,6 +1521,105 @@
    "near_misses": []
   },
   {
+   "id": "280d9cf5b5ad",
+   "type": "DUPLICATE",
+   "title": "Bellhaven of Kettering",
+   "confidence": 0.825,
+   "confidence_band": "high",
+   "subject_key": "001B7XZAA3AFALS9GP",
+   "location": {
+    "slug": "bellhaven-of-kettering",
+    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-kettering",
+    "name": "Bellhaven of Kettering",
+    "street": "3313 Wilmington Pike",
+    "city": "Kettering",
+    "state": "OH",
+    "zip": "45429",
+    "care_offerings": [
+     "Short-Term Rehabilitation & Nursing"
+    ],
+    "phone": "(231) 269-5449",
+    "administrator": "Priya Ashby"
+   },
+   "account": {
+    "account_id": "001B7XZAA3AFALS9GP",
+    "name": "Kettering Senior Campus",
+    "parent_id": "001FWSQ30SFW6S7604",
+    "parent_name": "Cedar Trail Communities (Parent Account)",
+    "billing_street": "3313 Wilmington Pk",
+    "billing_city": "Kettering",
+    "billing_state": "OH",
+    "billing_zip": "45429",
+    "care_type": "Skilled Nursing",
+    "status": "Active",
+    "phone": "(517) 646-8751",
+    "lifetime_revenue": 0,
+    "outstanding_ar": 0,
+    "chow_current_account": "",
+    "duplicate_of_account": "",
+    "note": "",
+    "created_by_candidate": false,
+    "updated_at": "2026-09-12 16:00:31Z"
+   },
+   "changes": [
+    {
+     "field": "duplicate_of_account",
+     "from": "",
+     "to": "0016KTS1UAWBRXS09J"
+    },
+    {
+     "field": "status",
+     "from": "Active",
+     "to": "Inactive"
+    }
+   ],
+   "actions": [
+    {
+     "op": "patch",
+     "account_id": "001B7XZAA3AFALS9GP",
+     "payload": {
+      "duplicate_of_account": "0016KTS1UAWBRXS09J",
+      "status": "Inactive"
+     },
+     "note_append": "[ownership-sync] 2026-09-12: Duplicate of 0016KTS1UAWBRXS09J (Kettering Nursing & Rehabilitation) \u2014 same facility at 3313 Wilmington Pike, Kettering. Survivor chosen by: billing history > correct parent > Active > completeness."
+    }
+   ],
+   "evidence": [
+    {
+     "signal": "street",
+     "weight": 0.45,
+     "detail": "normalized street equal: '3313 wilmington pike'"
+    },
+    {
+     "signal": "zip",
+     "weight": 0.2,
+     "detail": "zip equal: 45429"
+    },
+    {
+     "signal": "city",
+     "weight": 0.15,
+     "detail": "city/state equal: Kettering, OH"
+    },
+    {
+     "signal": "phone",
+     "weight": -0.1,
+     "detail": "phone differs: (231) 269-5449 vs (517) 646-8751"
+    },
+    {
+     "signal": "name",
+     "weight": 0.125,
+     "detail": "name token overlap 0.50: 'Bellhaven of Kettering' vs 'Kettering Senior Campus'"
+    }
+   ],
+   "rationale": "'Kettering Senior Campus' and 'Kettering Nursing & Rehabilitation' both resolve to Bellhaven of Kettering (3313 Wilmington Pike, Kettering). Keeping 0016KTS1UAWBRXS09J (rank: AR=False, revenue=False, under parent=False, Active).",
+   "attention": "",
+   "near_misses": [],
+   "survivor": {
+    "account_id": "0016KTS1UAWBRXS09J",
+    "name": "Kettering Nursing & Rehabilitation"
+   }
+  },
+  {
    "id": "f8a5c6e3ddf1",
    "type": "DUPLICATE",
    "title": "Bellhaven of Kettering",
@@ -1613,44 +1712,7 @@
    ],
    "rationale": "'Kettering Care Centre' and 'Kettering Nursing & Rehabilitation' both resolve to Bellhaven of Kettering (3313 Wilmington Pike, Kettering). Keeping 0016KTS1UAWBRXS09J (rank: AR=False, revenue=False, under parent=False, Active).",
    "attention": "",
-   "near_misses": [
-    {
-     "account_id": "001B7XZAA3AFALS9GP",
-     "name": "Kettering Senior Campus",
-     "parent": "Cedar Trail Communities (Parent Account)",
-     "score": 0.425,
-     "street": "3313 Wilmington Pk",
-     "city": "Kettering",
-     "phone": "(517) 646-8751",
-     "evidence": [
-      {
-       "signal": "street",
-       "weight": 0.25,
-       "detail": "same number, similar street: '3313 wilmington pike' vs '3313 wilmington pk'"
-      },
-      {
-       "signal": "zip",
-       "weight": 0.2,
-       "detail": "zip equal: 45429"
-      },
-      {
-       "signal": "city",
-       "weight": 0.15,
-       "detail": "city/state equal: Kettering, OH"
-      },
-      {
-       "signal": "phone",
-       "weight": -0.3,
-       "detail": "phone differs: (231) 269-5449 vs (517) 646-8751"
-      },
-      {
-       "signal": "name",
-       "weight": 0.125,
-       "detail": "name token overlap 0.50: 'Bellhaven of Kettering' vs 'Kettering Senior Campus'"
-      }
-     ]
-    }
-   ],
+   "near_misses": [],
    "survivor": {
     "account_id": "0016KTS1UAWBRXS09J",
     "name": "Kettering Nursing & Rehabilitation"
@@ -1743,44 +1805,7 @@
    ],
    "rationale": "Account is under no parent but the website lists it as a Bellhaven Senior Living community. SOP: no revenue history (revenue=$0, AR=$0), so re-parent directly.",
    "attention": "",
-   "near_misses": [
-    {
-     "account_id": "001B7XZAA3AFALS9GP",
-     "name": "Kettering Senior Campus",
-     "parent": "Cedar Trail Communities (Parent Account)",
-     "score": 0.425,
-     "street": "3313 Wilmington Pk",
-     "city": "Kettering",
-     "phone": "(517) 646-8751",
-     "evidence": [
-      {
-       "signal": "street",
-       "weight": 0.25,
-       "detail": "same number, similar street: '3313 wilmington pike' vs '3313 wilmington pk'"
-      },
-      {
-       "signal": "zip",
-       "weight": 0.2,
-       "detail": "zip equal: 45429"
-      },
-      {
-       "signal": "city",
-       "weight": 0.15,
-       "detail": "city/state equal: Kettering, OH"
-      },
-      {
-       "signal": "phone",
-       "weight": -0.3,
-       "detail": "phone differs: (231) 269-5449 vs (517) 646-8751"
-      },
-      {
-       "signal": "name",
-       "weight": 0.125,
-       "detail": "name token overlap 0.50: 'Bellhaven of Kettering' vs 'Kettering Senior Campus'"
-      }
-     ]
-    }
-   ]
+   "near_misses": []
   },
   {
    "id": "1c9cbe1b1fea",
@@ -1869,52 +1894,15 @@
    ],
    "rationale": "Website name 'Bellhaven of Kettering' differs from CRM 'Kettering Nursing & Rehabilitation'; same address/phone so this is a rename, not a different facility.",
    "attention": "",
-   "near_misses": [
-    {
-     "account_id": "001B7XZAA3AFALS9GP",
-     "name": "Kettering Senior Campus",
-     "parent": "Cedar Trail Communities (Parent Account)",
-     "score": 0.425,
-     "street": "3313 Wilmington Pk",
-     "city": "Kettering",
-     "phone": "(517) 646-8751",
-     "evidence": [
-      {
-       "signal": "street",
-       "weight": 0.25,
-       "detail": "same number, similar street: '3313 wilmington pike' vs '3313 wilmington pk'"
-      },
-      {
-       "signal": "zip",
-       "weight": 0.2,
-       "detail": "zip equal: 45429"
-      },
-      {
-       "signal": "city",
-       "weight": 0.15,
-       "detail": "city/state equal: Kettering, OH"
-      },
-      {
-       "signal": "phone",
-       "weight": -0.3,
-       "detail": "phone differs: (231) 269-5449 vs (517) 646-8751"
-      },
-      {
-       "signal": "name",
-       "weight": 0.125,
-       "detail": "name token overlap 0.50: 'Bellhaven of Kettering' vs 'Kettering Senior Campus'"
-      }
-     ]
-    }
-   ]
+   "near_misses": []
   },
   {
-   "id": "0d2809f58441",
-   "type": "REPARENT",
+   "id": "36913b6c9e44",
+   "type": "CONFIRM_MATCH",
    "title": "Bellhaven of Zanesville",
    "confidence": 0.762,
    "confidence_band": "low",
-   "subject_key": "001H1JMVZWP46D5VUF",
+   "subject_key": "bellhaven-of-zanesville|001H1JMVZWP46D5VUF",
    "location": {
     "slug": "bellhaven-of-zanesville",
     "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-zanesville",
@@ -1951,21 +1939,12 @@
    },
    "changes": [
     {
-     "field": "parent_id",
-     "from": "001FWSQ30SFW6S7604",
-     "to": "0015QAPLGS3FVYEEEM"
+     "field": "linked account",
+     "from": null,
+     "to": "001H1JMVZWP46D5VUF"
     }
    ],
-   "actions": [
-    {
-     "op": "patch",
-     "account_id": "001H1JMVZWP46D5VUF",
-     "payload": {
-      "parent_id": "0015QAPLGS3FVYEEEM"
-     },
-     "note_append": "[ownership-sync] 2026-09-12: Re-parented from Cedar Trail Communities to Bellhaven Senior Living; listed at https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-zanesville. SOP: no revenue history, so direct re-parent is allowed."
-    }
-   ],
+   "actions": [],
    "evidence": [
     {
      "signal": "street",
@@ -1993,106 +1972,17 @@
      "detail": "name token overlap 0.25: 'Bellhaven of Zanesville' vs 'Cedar Trail of Zanesville'"
     }
    ],
-   "rationale": "Account is under Cedar Trail Communities but the website lists it as a Bellhaven Senior Living community. SOP: no revenue history (revenue=$0, AR=$0), so re-parent directly.",
+   "rationale": "Best candidate 'Cedar Trail of Zanesville' scores 0.76, below the 0.80 confidence bar. Approve to link this website location to it (field fixes follow on the next run); reject if it is a different facility (a new account is proposed instead).",
    "attention": "",
    "near_misses": []
   },
   {
-   "id": "24e89d46be3c",
-   "type": "UPDATE_NAME",
-   "title": "Bellhaven of Zanesville",
-   "confidence": 0.762,
-   "confidence_band": "low",
-   "subject_key": "001H1JMVZWP46D5VUF",
-   "location": {
-    "slug": "bellhaven-of-zanesville",
-    "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-zanesville",
-    "name": "Bellhaven of Zanesville",
-    "street": "2680 Maple Ave",
-    "city": "Zanesville",
-    "state": "OH",
-    "zip": "43701",
-    "care_offerings": [
-     "Short-Term Rehabilitation & Nursing"
-    ],
-    "phone": "(814) 599-2533",
-    "administrator": "Dale Amato"
-   },
-   "account": {
-    "account_id": "001H1JMVZWP46D5VUF",
-    "name": "Cedar Trail of Zanesville",
-    "parent_id": "001FWSQ30SFW6S7604",
-    "parent_name": "Cedar Trail Communities (Parent Account)",
-    "billing_street": "2680 Maple Avenue",
-    "billing_city": "Zanesville",
-    "billing_state": "OH",
-    "billing_zip": "43701",
-    "care_type": "Skilled Nursing",
-    "status": "Active",
-    "phone": "(517) 817-8191",
-    "lifetime_revenue": 0,
-    "outstanding_ar": 0,
-    "chow_current_account": "",
-    "duplicate_of_account": "",
-    "note": "",
-    "created_by_candidate": false,
-    "updated_at": "2026-09-12 16:00:31Z"
-   },
-   "changes": [
-    {
-     "field": "name",
-     "from": "Cedar Trail of Zanesville",
-     "to": "Bellhaven of Zanesville"
-    }
-   ],
-   "actions": [
-    {
-     "op": "patch",
-     "account_id": "001H1JMVZWP46D5VUF",
-     "payload": {
-      "name": "Bellhaven of Zanesville"
-     },
-     "note_append": "[ownership-sync] 2026-09-12: Renamed from 'Cedar Trail of Zanesville' to match website listing."
-    }
-   ],
-   "evidence": [
-    {
-     "signal": "street",
-     "weight": 0.45,
-     "detail": "normalized street equal: '2680 maple ave'"
-    },
-    {
-     "signal": "zip",
-     "weight": 0.2,
-     "detail": "zip equal: 43701"
-    },
-    {
-     "signal": "city",
-     "weight": 0.15,
-     "detail": "city/state equal: Zanesville, OH"
-    },
-    {
-     "signal": "phone",
-     "weight": -0.1,
-     "detail": "phone differs: (814) 599-2533 vs (517) 817-8191"
-    },
-    {
-     "signal": "name",
-     "weight": 0.062,
-     "detail": "name token overlap 0.25: 'Bellhaven of Zanesville' vs 'Cedar Trail of Zanesville'"
-    }
-   ],
-   "rationale": "Website name 'Bellhaven of Zanesville' differs from CRM 'Cedar Trail of Zanesville'; same address/phone so this is a rename, not a different facility.",
-   "attention": "",
-   "near_misses": []
-  },
-  {
-   "id": "16c48c04ebf3",
-   "type": "UPDATE_NAME",
+   "id": "753b0eef62ce",
+   "type": "CONFIRM_MATCH",
    "title": "Bellhaven of Chagrin Falls",
    "confidence": 0.7,
    "confidence_band": "low",
-   "subject_key": "001RJU1X4NBWC1Q0G7",
+   "subject_key": "bellhaven-of-chagrin-falls|001RJU1X4NBWC1Q0G7",
    "location": {
     "slug": "bellhaven-of-chagrin-falls",
     "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-of-chagrin-falls",
@@ -2129,21 +2019,12 @@
    },
    "changes": [
     {
-     "field": "name",
-     "from": "Riverbend Manor Care Center",
-     "to": "Bellhaven of Chagrin Falls"
+     "field": "linked account",
+     "from": null,
+     "to": "001RJU1X4NBWC1Q0G7"
     }
    ],
-   "actions": [
-    {
-     "op": "patch",
-     "account_id": "001RJU1X4NBWC1Q0G7",
-     "payload": {
-      "name": "Bellhaven of Chagrin Falls"
-     },
-     "note_append": "[ownership-sync] 2026-09-12: Renamed from 'Riverbend Manor Care Center' to match website listing."
-    }
-   ],
+   "actions": [],
    "evidence": [
     {
      "signal": "street",
@@ -2171,17 +2052,17 @@
      "detail": "name token overlap 0.00: 'Bellhaven of Chagrin Falls' vs 'Riverbend Manor Care Center'"
     }
    ],
-   "rationale": "Website name 'Bellhaven of Chagrin Falls' differs from CRM 'Riverbend Manor Care Center'; same address/phone so this is a rename, not a different facility.",
+   "rationale": "Best candidate 'Riverbend Manor Care Center' scores 0.70, below the 0.80 confidence bar. Approve to link this website location to it (field fixes follow on the next run); reject if it is a different facility (a new account is proposed instead).",
    "attention": "",
    "near_misses": []
   },
   {
-   "id": "97c043660abe",
-   "type": "UPDATE_NAME",
+   "id": "a8c9d00e4cdb",
+   "type": "CONFIRM_MATCH",
    "title": "Bellhaven Willow Creek",
    "confidence": 0.7,
    "confidence_band": "low",
-   "subject_key": "0017MN2JYAJBDS8WQZ",
+   "subject_key": "bellhaven-willow-creek|0017MN2JYAJBDS8WQZ",
    "location": {
     "slug": "bellhaven-willow-creek",
     "url": "https://analyst-assessment-production.up.railway.app/communities/bellhaven-willow-creek",
@@ -2218,26 +2099,17 @@
    },
    "changes": [
     {
-     "field": "name",
-     "from": "Sunny Acres Retirement Home",
-     "to": "Bellhaven Willow Creek"
+     "field": "linked account",
+     "from": null,
+     "to": "0017MN2JYAJBDS8WQZ"
     }
    ],
-   "actions": [
-    {
-     "op": "patch",
-     "account_id": "0017MN2JYAJBDS8WQZ",
-     "payload": {
-      "name": "Bellhaven Willow Creek"
-     },
-     "note_append": "[ownership-sync] 2026-09-12: Renamed from 'Sunny Acres Retirement Home' to match website listing."
-    }
-   ],
+   "actions": [],
    "evidence": [
     {
      "signal": "street",
      "weight": 0.45,
-     "detail": "normalized street equal: '8060 willow creek ln'"
+     "detail": "normalized street equal: '8060 willow crk ln'"
     },
     {
      "signal": "zip",
@@ -2260,7 +2132,7 @@
      "detail": "name token overlap 0.00: 'Bellhaven Willow Creek' vs 'Sunny Acres Retirement Home'"
     }
    ],
-   "rationale": "Website name 'Bellhaven Willow Creek' differs from CRM 'Sunny Acres Retirement Home'; same address/phone so this is a rename, not a different facility.",
+   "rationale": "Best candidate 'Sunny Acres Retirement Home' scores 0.70, below the 0.80 confidence bar. Approve to link this website location to it (field fixes follow on the next run); reject if it is a different facility (a new account is proposed instead).",
    "attention": "",
    "near_misses": []
   },
@@ -3899,17 +3771,18 @@
   }
  ],
  "suppressed": 0,
- "generated_at": "2026-09-12T17:14:15+00:00",
+ "generated_at": "2026-09-12T19:17:04+00:00",
  "counts": {
   "site_locations": 35,
   "crm_accounts": 121,
   "confirmed": 16,
   "by_type": {
-   "UPDATE_NAME": 9,
-   "DUPLICATE": 6,
+   "UPDATE_NAME": 6,
+   "DUPLICATE": 7,
    "UPDATE_ADDRESS": 2,
-   "REPARENT": 4,
+   "REPARENT": 3,
    "CHOW": 2,
+   "CONFIRM_MATCH": 3,
    "CREATE": 4,
    "NOT_ON_SITE": 3
   }

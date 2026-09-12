@@ -21,16 +21,28 @@ from pipeline.scrape import scrape
 
 def run(no_scrape: bool = False) -> dict:
     config.STATE_DIR.mkdir(exist_ok=True)
-    if no_scrape and config.SITE_SNAPSHOT.exists():
-        site = json.loads(config.SITE_SNAPSHOT.read_text())
+    client = CRM()                                   # fail fast on a missing token, before crawling
+    previous = json.loads(config.SITE_SNAPSHOT.read_text()) if config.SITE_SNAPSHOT.exists() else []
+    if no_scrape and previous:
+        site = previous
     else:
         site = scrape()
+        # A maintenance page or a markup change must not turn into "every account
+        # is not on the website": refuse to publish a crawl far smaller than the last.
+        floor = max(1, len(previous) // 2)
+        if len(site) < floor:
+            raise RuntimeError(f"scrape returned {len(site)} locations but the previous snapshot had {len(previous)}; "
+                               f"refusing to publish a queue from a suspicious crawl")
         config.SITE_SNAPSHOT.write_text(json.dumps(site, indent=1))
-    crm = CRM().list_accounts()
+    incomplete = [l["name"] for l in site if not all(l.get(k) for k in ("street", "city", "state", "zip"))]
+    if incomplete:
+        print(f"WARNING: address did not parse for {incomplete}; address fixes are not proposed for them", file=sys.stderr)
+
+    crm = client.list_accounts()
     config.CRM_SNAPSHOT.write_text(json.dumps(crm, indent=1))
 
-    out = build_proposals(site, crm)
     ledger = Ledger()
+    out = build_proposals(site, crm, links=ledger.match_links())
     raw = out["proposals"]
     out["proposals"] = [p for p in raw if not ledger.is_decided(p["id"])]
     out["suppressed"] = len(raw) - len(out["proposals"])
@@ -47,7 +59,11 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-scrape", action="store_true")
     a = ap.parse_args(argv)
-    out = run(no_scrape=a.no_scrape)
+    try:
+        out = run(no_scrape=a.no_scrape)
+    except RuntimeError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 1
     c = out["counts"]
     print(f"site locations: {c['site_locations']}   crm accounts: {c['crm_accounts']}   parent: {out['parent']['name']}")
     print(f"confirmed (no action): {c['confirmed']}   suppressed (already decided): {out['suppressed']}")

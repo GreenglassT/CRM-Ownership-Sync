@@ -8,9 +8,12 @@ fetch each detail page once for the full address, all care offerings, phone and
 administrator.
 """
 import html
+import http.client
 import json
 import re
 import sys
+import time
+import urllib.error
 import urllib.request
 
 from . import config
@@ -24,8 +27,17 @@ _CITY_LINE = re.compile(r"^(.*?),\s*([A-Z]{2})\s+(\d{5})(?:-\d{4})?\s*$")
 
 def _get(path: str) -> str:
     req = urllib.request.Request(config.SITE_BASE + path, headers={"User-Agent": _UA})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read().decode("utf-8", errors="replace")
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return r.read().decode("utf-8", errors="replace")
+        except urllib.error.HTTPError as e:
+            if e.code < 500 or attempt == 2:
+                raise
+        except (urllib.error.URLError, http.client.HTTPException, OSError):
+            if attempt == 2:
+                raise
+        time.sleep(1.5 * (attempt + 1))
 
 
 def _text(fragment: str) -> str:
@@ -48,22 +60,24 @@ def discover_slugs() -> list[str]:
                 order.append(s)
 
     add(_LINK.findall(_get("/")))
-    page = 1
-    while True:
-        body = _get(f"/communities?page={page}")
-        found = [s for s, _ in _CARD.findall(body)]
-        new = [s for s in found if s not in seen]
-        add(found)
-        # The site clamps out-of-range pages to the last page, so stop when a
-        # page yields nothing new rather than trusting the "Page x of y" text.
-        if not new or page > 50:
+    prev, page = None, 1
+    while page <= 50:
+        found = [s for s, _ in _CARD.findall(_get(f"/communities?page={page}"))]
+        # The site clamps out-of-range pages to the last page, so stop on an empty
+        # page or when a page repeats the previous one. (Not "nothing new": the
+        # homepage may already link communities that also appear on page 1.)
+        if not found or found == prev:
             break
-        page += 1
+        add(found)
+        prev, page = found, page + 1
     return order
 
 
 def parse_detail(slug: str, page: str) -> dict:
-    name = _text(re.search(r"<h1>(.*?)</h1>", page, re.S).group(1))
+    m = re.search(r"<h1[^>]*>(.*?)</h1>", page, re.S)
+    name = _text(m.group(1)) if m else ""
+    if not name:                                   # never let a markup change blank the name
+        name = slug.rsplit("/", 1)[-1].replace("-", " ").title()
     addr = _field(page, "Address")
     lines = [_text(x) for x in re.split(r"<br\s*/?>", addr)]
     lines = [l for l in lines if l]

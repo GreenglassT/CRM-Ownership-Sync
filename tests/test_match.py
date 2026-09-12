@@ -1,4 +1,6 @@
 """Classification behaviour on synthetic fixtures. No network."""
+import pytest
+
 from pipeline.match import build_proposals, score_pair
 
 PARENT = {"account_id": "P1", "name": "Bellhaven Senior Living (Parent Account)", "parent_id": "", "parent_name": ""}
@@ -107,3 +109,65 @@ def test_score_penalises_two_independent_contradictions():
     s_same, _ = score_pair(loc(), acct(billing_street="1 Main St", billing_city="Xtown", billing_state="OH", billing_zip="44000", phone="555-000-0000"))
     s_conf, _ = score_pair(loc(), acct(billing_street="77 Other Rd", billing_city="Xtown", billing_state="OH", billing_zip="44000", phone="555-999-9999"))
     assert s_same >= 0.8 and s_conf < 0.55
+
+
+# --- fixes from the code review -------------------------------------------------
+
+def test_street_short_forms_normalize():
+    from pipeline.normalize import norm_street
+    assert norm_street("3313 Wilmington Pk") == norm_street("3313 Wilmington Pike")
+    assert norm_street("12 Grand Av") == norm_street("12 Grand Avenue")
+
+
+def test_chow_successor_outranks_old_copy_with_revenue():
+    old = acct(account_id="OLD", name="Bellhaven of X", parent_id="P2", parent_name="Cedar Trail", billing_street="1 Main St", billing_city="Xtown", billing_state="OH", billing_zip="44000", lifetime_revenue=50000, outstanding_ar=1200, chow_current_account="NEW")
+    new = acct(account_id="NEW", name="Bellhaven of X", billing_street="1 Main St", billing_city="Xtown", billing_state="OH", billing_zip="44000", phone="555-000-0000")
+    b = acct(account_id="B", name="Bellhaven of X", parent_id="P2", parent_name="Cedar Trail", billing_street="1 Main Street", billing_city="Xtown", billing_state="OH", billing_zip="44000", lifetime_revenue=9000)
+    out = build_proposals([loc()], [PARENT, OTHER, old, new, b])
+    dups = [p for p in out["proposals"] if p["type"] == "DUPLICATE"]
+    assert [d["account"]["account_id"] for d in dups] == ["B"] and dups[0]["survivor"]["account_id"] == "NEW"
+
+
+def test_low_confidence_match_asks_for_confirmation_first():
+    a = acct(name="Sunny Acres", parent_id="P2", parent_name="Other", billing_street="1 Main Ave", billing_city="Xtown", billing_state="OH", billing_zip="44000")
+    out = build_proposals([loc()], [PARENT, OTHER, a])
+    assert types(out) == ["CONFIRM_MATCH"] and out["proposals"][0]["actions"] == []
+    key = out["proposals"][0]["subject_key"]
+    # approved link -> the field fixes appear; rejected link -> the account is excluded and CREATE fires
+    out2 = build_proposals([loc()], [PARENT, OTHER, a], links={key: "approved"})
+    assert "REPARENT" in types(out2) and "CONFIRM_MATCH" not in types(out2)
+    out3 = build_proposals([loc()], [PARENT, OTHER, a], links={key: "rejected"})
+    assert types(out3) == ["CREATE"]
+
+
+def test_chow_survivor_defers_duplicates_to_next_run():
+    old = acct(account_id="OLD", name="Old Name", parent_id="P2", parent_name="Cedar Trail", billing_street="1 Main St", billing_city="Xtown", billing_state="OH", billing_zip="44000", lifetime_revenue=50000, outstanding_ar=1200)
+    b = acct(account_id="B", name="Bellhaven of X", billing_street="1 Main Street", billing_city="Xtown", billing_state="OH", billing_zip="44000")
+    out = build_proposals([loc()], [PARENT, OTHER, old, b])
+    assert types(out) == ["CHOW"] and "B" in out["proposals"][0]["attention"]
+    # next run: old superseded, successor present -> plain DUPLICATE with a concrete id
+    old["chow_current_account"] = "NEW"
+    new = acct(account_id="NEW", name="Bellhaven of X", billing_street="1 Main St", billing_city="Xtown", billing_state="OH", billing_zip="44000", phone="555-000-0000")
+    out2 = build_proposals([loc()], [PARENT, OTHER, old, new, b])
+    dups = [p for p in out2["proposals"] if p["type"] == "DUPLICATE"]
+    assert dups and dups[0]["changes"][0]["to"] == "NEW"
+
+
+def test_incomplete_website_address_is_never_written():
+    a = acct(name="Bellhaven of X", billing_street="1 Main St", billing_city="Xtown", billing_state="OH", billing_zip="44000", phone="555-000-0000")
+    out = build_proposals([loc(city="", state="", zip="")], [PARENT, a])
+    assert "UPDATE_ADDRESS" not in types(out)
+    out2 = build_proposals([loc(street="9 Elm St", city="", state="", zip="", phone="555-111-1111")], [PARENT, a])
+    creates = [p for p in out2["proposals"] if p["type"] == "CREATE"]
+    assert creates and creates[0]["attention"]
+
+
+def test_parent_override_errors_are_descriptive(monkeypatch):
+    from pipeline import config
+    from pipeline.match import find_parent
+    monkeypatch.setattr(config, "PARENT_ID_OVERRIDE", "NOPE")
+    with pytest.raises(RuntimeError, match="NOPE"):
+        find_parent([PARENT])
+    monkeypatch.setattr(config, "PARENT_ID_OVERRIDE", "A")
+    with pytest.raises(RuntimeError, match="not a parent"):
+        find_parent([PARENT, acct(account_id="A", name="Facility")])

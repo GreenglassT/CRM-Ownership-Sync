@@ -14,6 +14,10 @@ _STREET_WORDS = {
     "square": "sq", "north": "n", "south": "s", "east": "e", "west": "w",
     "northwest": "nw", "northeast": "ne", "southwest": "sw", "southeast": "se",
     "saint": "st", "mount": "mt", "fort": "ft",
+    # common short forms seen in hand-entered CRM addresses
+    "pk": "pike", "av": "ave", "avn": "ave", "tpke": "tpke", "turnpike": "tpke", "rte": "rte", "route": "rte",
+    "expy": "expy", "expressway": "expy", "xing": "xing", "crossing": "xing", "trce": "trce", "trace": "trce",
+    "crk": "crk", "creek": "crk",
 }
 _UNIT_WORDS = {"suite", "ste", "unit", "apt", "bldg", "building", "floor", "fl", "#"}
 
@@ -44,7 +48,7 @@ _NAME_GENERIC = {
 @lru_cache(maxsize=None)
 def norm_street(s: str) -> str:
     """'4850 Northwest Sylvania Avenue' -> '4850 nw sylvania ave'. Drops unit numbers."""
-    s = (s or "").lower().replace(".", " ").replace(",", " ")
+    s = (s or "").lower().replace(".", " ").replace(",", " ").replace("#", " # ")
     s = re.sub(r"[^a-z0-9 #]", " ", s)
     toks, out, skip = s.split(), [], False
     for t in toks:
@@ -71,7 +75,8 @@ def street_number(s: str) -> str:
 
 @lru_cache(maxsize=None)
 def norm_phone(s: str) -> str:
-    d = re.sub(r"\D", "", s or "")
+    s = re.sub(r"(?i)\s*(x|ext\.?|extension)\s*\d+\s*$", "", s or "")   # drop extensions
+    d = re.sub(r"\D", "", s)
     return d[-10:] if len(d) >= 10 else ""
 
 

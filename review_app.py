@@ -6,6 +6,7 @@ written without a click.
     python review_app.py            # http://127.0.0.1:5055
 """
 import json
+import threading
 
 from flask import Flask, abort, flash, redirect, render_template, request, url_for
 
@@ -19,6 +20,11 @@ import run_pipeline
 app = Flask(__name__)
 app.secret_key = "local-review-only"
 app.jinja_env.filters["parent"] = parent_label
+
+# One decision at a time: the ledger check, the CRM write and the ledger record must
+# not interleave with another request's (a held key or a double click would
+# otherwise approve the same item twice).
+_decide_lock = threading.Lock()
 
 
 def load_queue() -> dict:
@@ -81,10 +87,9 @@ def recon_rows(p: dict, parent: dict) -> list[dict]:
         row("Status", "on website", A["status"], key="status"),
     ]
     if t == "DUPLICATE":
-        target = ch["duplicate_of_account"]
         surv = p.get("survivor") or {}
-        after = f"{surv.get('name', '')} {target}".strip() if isinstance(target, str) else f"successor account of {surv.get('name', '')}"
-        rows.append(row("Duplicate of", "", A["duplicate_of_account"], key="duplicate_of_account", after=after))
+        rows.append(row("Duplicate of", "", A["duplicate_of_account"], key="duplicate_of_account",
+                        after=f"{surv.get('name', '')} {ch['duplicate_of_account']}".strip()))
     return rows + billing
 
 
@@ -95,8 +100,9 @@ def _render(selected_id: str | None):
     parent = q.get("parent") or {}
     sel = next((p for p in props + q.get("confirmed", []) if p["id"] == selected_id), None) if selected_id else None
     if selected_id and not sel:
-        abort(404)
-    rows = recon_rows(sel, parent) if sel and sel["actions"] else []
+        flash(("ok", "That item has been decided or is no longer in the queue."))
+        return redirect(url_for("index"))
+    rows = recon_rows(sel, parent) if sel else []
     successor = sel["actions"][0]["payload"] if sel and sel["type"] == "CHOW" else None
     return render_template("review.html", q=q, groups=groups_for(props, q.get("confirmed", [])), total=len(props), sel=sel,
                            rows=rows, successor=successor, label=LABEL, explain=EXPLAIN, parent=parent, history_count=len(ledger.data))
@@ -117,25 +123,30 @@ def show(pid):
 
 @app.post("/decide/<pid>")
 def decide(pid):
-    decision = request.form["decision"]
-    ledger = Ledger()
-    props = open_items(load_queue(), ledger)
-    ids = [p["id"] for p in props]
-    p = next((x for x in props if x["id"] == pid), None)
-    if not p:
-        flash(("error", "That item is no longer in the queue."))
-        return redirect(url_for("index"))
-    label = f"{LABEL.get(p['type'], p['type'])}: {p['title']}"
-    if decision == "reject":
-        ledger.record(p, "rejected")
-        flash(("ok", f"Rejected. {label}."))
-    else:
-        result = apply_proposal(p, CRM(), ledger)
-        ledger.record(p, "approved", result)
-        if result["status"] == "applied":
-            flash(("ok", f"Approved. {label}. " + "; ".join(result["log"]) + "."))
+    decision = request.form.get("decision")
+    if decision not in ("approve", "reject"):
+        abort(400)
+    with _decide_lock:
+        ledger = Ledger()
+        props = open_items(load_queue(), ledger)
+        ids = [p["id"] for p in props]
+        p = next((x for x in props if x["id"] == pid), None)
+        if not p:
+            flash(("error", "That item is no longer in the queue (already decided, or the pipeline was re-run)."))
+            return redirect(url_for("index"))
+        label = f"{LABEL.get(p['type'], p['type'])}: {p['title']}"
+        if decision == "reject":
+            ledger.record(p, "rejected")
+            flash(("ok", f"Rejected. {label}."))
         else:
-            flash(("error", f"Not written ({result['status']}). {label}. {result['detail']}"))
+            result = apply_proposal(p, CRM(), ledger)
+            ledger.record(p, "approved", result)
+            created = f" Created {result['created_account_id']}." if result.get("created_account_id") else ""
+            if result["status"] == "applied":
+                flash(("ok", f"Approved. {label}.{created} " + "; ".join(result["log"]) + "."))
+            else:
+                flash(("error", f"Not written ({result['status']}). {label}. {result['detail']}{created} "
+                                f"The item stays in the queue; approving again will reuse any account already created."))
     i = ids.index(pid)
     nxt = ids[i + 1] if i + 1 < len(ids) else (ids[i - 1] if i > 0 else None)
     return redirect(url_for("show", pid=nxt) if nxt else url_for("index"))

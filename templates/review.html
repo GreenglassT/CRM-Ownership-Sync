@@ -23,6 +23,9 @@
   .kind { font-size: 13px; color: var(--ink-2); margin: 0; }
   .kind code { font-family: inherit; color: var(--ink-3); margin-left: 8px; }
   .detail h2 { font-size: 22px; font-weight: 600; margin: 2px 0 14px; letter-spacing: -0.01em; }
+  .ids { margin: -8px 0 12px; font-size: 13px; color: var(--ink-2); }
+  .ids span { color: var(--ink); }
+  .prior { margin: 0 0 12px; font-size: 13px; color: var(--ink-2); white-space: pre-line; max-width: 72ch; }
   .conf { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); margin-bottom: 18px; }
   .conf .track { width: 140px; height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; }
   .conf .fill { height: 100%; background: var(--sel); }
@@ -98,7 +101,7 @@
         {% for it in g.entries %}
             <a class="row {{ 'on' if sel and sel.id == it.id }}" href="{{ url_for('show', pid=it.id) }}">
               <span class="t">{{ it.title }}</span>
-              <span class="s">{% if it.confidence_band == 'low' and it.actions %}<span class="low">Low confidence.</span> {% endif %}{% if it.account and it.location and it.account.name != it.location.name %}CRM: {{ it.account.name }}{% elif not it.account %}no CRM account{% elif not it.location %}{{ it.account.billing_city }}, {{ it.account.billing_state }}{% else %}{{ it.account.parent_name|parent }}{% endif %}</span>
+              <span class="s">{% if it.confidence_band == 'low' and it.type != 'CONFIRM' %}<span class="low">Low confidence.</span> {% endif %}{% if it.account and it.location and it.account.name != it.location.name %}CRM: {{ it.account.name }}{% elif not it.account %}no CRM account{% elif not it.location %}{{ it.account.billing_city }}, {{ it.account.billing_state }}{% else %}{{ it.account.parent_name|parent }}{% endif %}</span>
             </a>
         {% endfor %}
       </div>
@@ -113,6 +116,12 @@
   {% else %}
     <p class="kind">{{ label[sel.type] }}<code>{{ sel.type }}</code></p>
     <h2>{{ sel.title }}</h2>
+    <p class="ids">
+      {% if sel.account %}CRM account <span>{{ sel.account.account_id }}</span>{% endif %}
+      {% if sel.account and sel.location %} · {% endif %}
+      {% if sel.location and sel.location.url %}<a href="{{ sel.location.url }}" target="_blank" rel="noopener">website listing</a>{% endif %}
+    </p>
+    {% if sel.account and sel.account.note %}<p class="prior">Existing note on the account: {{ sel.account.note }}</p>{% endif %}
     <div class="conf" aria-label="Match confidence">
       <span>Match confidence</span>
       <span class="track"><span class="fill {{ sel.confidence_band }}" style="width: {{ (sel.confidence * 100)|round|int }}%"></span></span>
@@ -123,16 +132,18 @@
     <p class="explain">{{ explain[sel.type] }}</p>
     {% if sel.attention %}<p class="attention">{{ sel.attention }}</p>{% endif %}
 
-    {% if sel.actions %}
+    {% set decidable = sel.type != 'CONFIRM' %}
+    {% set writes = sel.actions|length > 0 %}
+    {% if rows %}
     <table class="recon">
-      <thead><tr><th></th><th>Website</th><th>CRM now</th><th>After approval</th></tr></thead>
+      <thead><tr><th></th><th>Website</th><th>CRM now</th>{% if writes %}<th>After approval</th>{% endif %}</tr></thead>
       <tbody>
       {% for r in rows %}
         <tr>
           <td>{{ r.field }}</td>
           <td class="{{ 'dim' if not r.web }}">{{ r.web|default('—', true) }}</td>
           <td class="{{ 'dim' if not r.crm }}">{{ r.crm|default('—', true) }}</td>
-          <td class="after {{ 'changed' if r.changed }} {{ 'dim' if not r.after and not r.changed }}">{{ r.after|default('—', true) }}{% if r.note %}<span class="note">{{ r.note }}</span>{% endif %}</td>
+          {% if writes %}<td class="after {{ 'changed' if r.changed }} {{ 'dim' if not r.after and not r.changed }}">{{ r.after|default('—', true) }}{% if r.note %}<span class="note">{{ r.note }}</span>{% endif %}</td>{% endif %}
         </tr>
       {% endfor %}
       </tbody>
@@ -172,15 +183,19 @@
     </details>
     {% endif %}
 
-    {% if sel.actions %}
+    {% if writes %}
     <details>
       <summary>API calls made on approval ({{ sel.actions|length }})</summary>
       <pre>{{ sel.actions|tojson(indent=1) }}</pre>
     </details>
+    {% elif decidable %}
+    <p class="explain">No API call is made for this item. Approving or rejecting only records your decision; the next pipeline run acts on it.</p>
+    {% endif %}
 
+    {% if decidable %}
     <form class="decide" method="post" action="{{ url_for('decide', pid=sel.id) }}" id="decide">
-      <button class="btn primary" name="decision" value="approve">Approve and update CRM</button>
-      <button class="btn quiet" name="decision" value="reject">Reject</button>
+      <button class="btn primary" name="decision" value="approve">{{ 'Approve and update CRM' if writes else 'Approve: same facility' }}</button>
+      <button class="btn quiet" name="decision" value="reject">{{ 'Reject' if writes else 'Reject: different facility' }}</button>
       <span class="keys"><kbd>j</kbd> <kbd>k</kbd> move <kbd>a</kbd> approve <kbd>r</kbd> reject</span>
     </form>
     {% else %}
@@ -196,10 +211,14 @@
     var form = document.getElementById('decide');
     document.addEventListener('keydown', function (e) {
       if (e.target.tagName === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.repeat) return;                                    // a held key must not fire twice
       if (e.key === 'j' && rows[cur + 1]) { rows[cur + 1].click(); }
       else if (e.key === 'k' && rows[cur - 1]) { rows[cur - 1].click(); }
       else if (e.key === 'a' && form) { form.querySelector('[value=approve]').click(); }
       else if (e.key === 'r' && form) { form.querySelector('[value=reject]').click(); }
+    });
+    if (form) form.addEventListener('submit', function () {  // one decision per page load
+      form.querySelectorAll('button').forEach(function (b) { b.disabled = true; });
     });
     var on = document.querySelector('.queue .row.on');
     if (on) on.scrollIntoView({ block: 'nearest' });

@@ -1,0 +1,18 @@
+{
+ "p1": {
+  "decision": "approved",
+  "decided_at": "2026-09-12T19:12:56+00:00",
+  "type": "UPDATE_NAME",
+  "subject_key": "A",
+  "location": "X",
+  "account": "Old",
+  "account_id": "A",
+  "changes": [],
+  "result": {
+   "status": "applied",
+   "detail": "ok",
+   "log": [],
+   "created_account_id": null
+  }
+ }
+}
